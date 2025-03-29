@@ -1,11 +1,25 @@
 extends Control
 
+enum ProductionType {
+	EXTERNAL,
+	INTERNAL
+}
+
 const USER_PREF_PATH: String = "user://user_preferences.json"
 
-@onready var customer_line = get_node("VBoxContainer/CustomerLine")
+@onready var form_vbox = get_node("WorkspaceHBox/FormVBox")
+@onready var customer_line = get_node("WorkspaceHBox/FormVBox/CustomerLine")
+@onready var customer_option = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerOption")
+@onready var customer_edit = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit")
+@onready var project_name_edit = get_node("WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit")
+@onready var production_type_option = get_node("WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption")
+@onready var generate_folder_button = get_node("WorkspaceHBox/FormVBox/ChooseFolderButton")
+@onready var summary_label = get_node("WorkspaceHBox/SummaryLabel")
 
 var user_preferences: UserPreferences
-var project_name: String = "A"
+var customer_name: String = ""
+var project_name: String = ""
+var production_type: ProductionType = ProductionType.EXTERNAL
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,16 +32,32 @@ func _process(_delta: float) -> void:
 
 func update_controls() -> void:
 	if not user_preferences.has_default_path:
-		get_node("VBoxContainer/GenerateFolderButton").disabled = true
+		generate_folder_button.disabled = true
 	else:
-		get_node("VBoxContainer/GenerateFolderButton").disabled = false
+		generate_folder_button.disabled = false
 	
-	get_node("VBoxContainer/Label").text = ""
-	customer_line.get_node("CustomerOption").clear()
-	customer_line.get_node("CustomerOption").add_item("<New customer>")
+	customer_option.clear()
+	customer_option.add_item("<New customer>")
 	for d in DirAccess.get_directories_at(user_preferences.default_path):
-		get_node("VBoxContainer/Label").text += d + "\n"
-		customer_line.get_node("CustomerOption").add_item(d)
+		customer_option.add_item(d)
+
+func update_summary() -> void:
+	summary_label.text = "Customer name : " + customer_name
+	if DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name):
+		if DirAccess.get_directories_at(user_preferences.default_path + "/" + customer_name).size() == 0:
+			print("No project")
+		else:
+			form_vbox.get_node("Label").text = ""
+			for d in DirAccess.get_directories_at(user_preferences.default_path + "/" + customer_name):
+				form_vbox.get_node("Label").text += "\n" + d
+	
+	summary_label.text += "\n" + "Project name : " + project_name_edit.text
+	
+	if production_type_option.selected > -1:
+		if production_type == ProductionType.EXTERNAL:
+			summary_label.text += "\n" + "External project"
+		else:
+			summary_label.text += "\n" + "Internal project"
 
 func _on_choose_folder_button_pressed() -> void:
 	PrintUtility.print_info("User trying to choose folder ...")
@@ -58,9 +88,26 @@ func _on_generate_folder_button_pressed() -> void:
 		_:
 			PrintUtility.print_error("Unkown error : " + str(result))
 
-
 func _on_customer_option_item_selected(index: int) -> void:
 	if index == 0:
-		customer_line.get_node("CustomerEdit").visible = true
+		customer_edit.visible = true
+		customer_name = customer_edit.text
 	else:
-		customer_line.get_node("CustomerEdit").visible = false
+		customer_edit.visible = false
+		customer_name = customer_option.get_item_text(index)
+	update_summary()
+
+func _on_customer_edit_text_changed(new_text: String) -> void:
+	customer_name = new_text
+	update_summary()
+
+func _on_project_name_edit_text_changed(new_text: String) -> void:
+	update_summary()
+
+func _on_production_type_option_item_selected(index: int) -> void:
+	match index:
+		0:
+			production_type = ProductionType.EXTERNAL
+		1:
+			production_type = ProductionType.INTERNAL
+	update_summary()
