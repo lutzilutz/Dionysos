@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://rvfixiqdxhj5"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_h26jr"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h26jr")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+initial_position = 2
+size = Vector2i(617, 375)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ChooseFolderButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Choose Folder"
+
+[node name="SavePrefButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Save Preferences"
+
+[node name="GenerateFolderButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Generate Folders"
+
+[connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="pressed" from="VBoxContainer/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SavePrefButton" to="." method="_on_save_pref_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
