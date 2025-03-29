@@ -5,7 +5,6 @@ const USER_PREF_PATH: String = "user://user_preferences.json"
 @onready var customer_line = get_node("VBoxContainer/CustomerLine")
 
 var user_preferences: UserPreferences
-#var path: String = "F:/"
 var project_name: String = "A"
 
 # Called when the node enters the scene tree for the first time.
@@ -22,10 +21,6 @@ func update_controls() -> void:
 		get_node("VBoxContainer/GenerateFolderButton").disabled = true
 	else:
 		get_node("VBoxContainer/GenerateFolderButton").disabled = false
-	
-	
-	
-	#print(DirAccess.get_directories_at(user_preferences.default_path))
 	
 	get_node("VBoxContainer/Label").text = ""
 	customer_line.get_node("CustomerOption").clear()
@@ -62,12 +57,10 @@ func _on_generate_folder_button_pressed() -> void:
 			PrintUtility.print_error("Folder already exists")
 		_:
 			PrintUtility.print_error("Unkown error : " + str(result))
-	print(result)
 
 
 func _on_customer_option_item_selected(index: int) -> void:
 	if index == 0:
 		customer_line.get_node("CustomerEdit").visible = true
 	else:
-		print(customer_line.get_node("CustomerEdit"))
 		customer_line.get_node("CustomerEdit").visible = false
