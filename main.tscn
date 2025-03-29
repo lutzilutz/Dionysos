@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=4 format=3 uid="uid://rvfixiqdxhj5"]
 
-[ext_resource type="Script" path="res://main.gd" id="1_h26jr"]
+[ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://main.gd" id="1_h26jr"]
+[ext_resource type="Texture2D" uid="uid://d3pk1xx7sc4ni" path="res://resources/branding/logo_head.png" id="2_us6ij"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -11,6 +13,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h26jr")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.0235294)
+position = Vector2(640, 360)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_us6ij")
+metadata/_edit_lock_ = true
+
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
 initial_position = 2
@@ -20,24 +29,73 @@ file_mode = 2
 access = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -640.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ChooseFolderButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("3_4krfr")
 text = "Choose Folder"
 
 [node name="SavePrefButton" type="Button" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
+theme = ExtResource("3_4krfr")
 text = "Save Preferences"
+
+[node name="CustomerLine" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CustomerLabel" type="Label" parent="VBoxContainer/CustomerLine"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+text = "Customer name"
+
+[node name="CustomerOption" type="OptionButton" parent="VBoxContainer/CustomerLine"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+selected = 0
+item_count = 1
+popup/item_0/text = "<New Customer>"
+popup/item_0/id = 0
+
+[node name="CustomerEdit" type="LineEdit" parent="VBoxContainer/CustomerLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_4krfr")
+placeholder_text = "Enter name here ..."
+
+[node name="ProjectNameLine" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ProjectNameLabel" type="Label" parent="VBoxContainer/ProjectNameLine"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+text = "Project name"
+
+[node name="ProjectNameEdit" type="LineEdit" parent="VBoxContainer/ProjectNameLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_4krfr")
+placeholder_text = "Enter name here ..."
 
 [node name="GenerateFolderButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("3_4krfr")
 text = "Generate Folders"
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="pressed" from="VBoxContainer/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/SavePrefButton" to="." method="_on_save_pref_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
 [connection signal="pressed" from="VBoxContainer/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]

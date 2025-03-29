@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://dltvaum6axc0k"]
+
+[resource]
+Button/font_sizes/font_size = 12
+Label/font_sizes/font_size = 12
+LineEdit/font_sizes/font_size = 12
+OptionButton/font_sizes/font_size = 12

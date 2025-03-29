@@ -2,11 +2,13 @@ class_name UserPreferences extends Resource
 
 @export var default_path: String = ""
 @export var has_default_path: bool = false
+@export var customers: Array = []
 
 func save_to_file(path:String) -> Error:
 	var json = {
 		"default_path": default_path,
-		"has_default_path": has_default_path
+		"has_default_path": has_default_path,
+		"customers": customers
 	}
 	var file = FileAccess.open(path, FileAccess.WRITE)
 
@@ -26,7 +28,8 @@ static func load_from_file(path: String) -> UserPreferences:
 		var new_file = FileAccess.open(path, FileAccess.WRITE)
 		var new_json = {
 			"default_path": "",
-			"has_default_path": false
+			"has_default_path": false,
+			"customers": []
 		}
 		if new_file:
 			new_file.store_string(JSON.stringify(new_json))
@@ -35,6 +38,8 @@ static func load_from_file(path: String) -> UserPreferences:
 		else:
 			PrintUtility.print_error("Can't write a new file user_preferences.json")
 			PrintUtility.print_error(str(new_file.get_open_error()))
+	else:
+		PrintUtility.print_info("user_preferences.json found")
 	
 	PrintUtility.print_info("Loading user_preferences.json ...")
 	var file = FileAccess.get_file_as_string(path)
@@ -42,12 +47,6 @@ static func load_from_file(path: String) -> UserPreferences:
 	var res = UserPreferences.new()
 	res.default_path = json.get("default_path", "")
 	res.has_default_path = json.get("has_default_path", false)
+	res.customers = json.get("customers", [])
 	
 	return res
-
-#func generate_default_preferences_file(fa: FileAccess) -> void:
-	#var json = {
-		#"default_path": default_path,
-		#"has_default_path": has_default_path
-	#}
-	#
