@@ -7,6 +7,8 @@ enum ProductionType {
 
 const USER_PREF_PATH: String = "user://user_preferences.json"
 
+var FolderLabel = preload("res://scenes/folder_label.tscn")
+
 @onready var form_vbox = get_node("WorkspaceHBox/FormVBox")
 @onready var customer_line = get_node("WorkspaceHBox/FormVBox/CustomerLine")
 @onready var customer_option = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerOption")
@@ -14,7 +16,9 @@ const USER_PREF_PATH: String = "user://user_preferences.json"
 @onready var project_name_edit = get_node("WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit")
 @onready var production_type_option = get_node("WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption")
 @onready var generate_folder_button = get_node("WorkspaceHBox/FormVBox/ChooseFolderButton")
-@onready var summary_label = get_node("WorkspaceHBox/SummaryLabel")
+@onready var summary_vbox = get_node("WorkspaceHBox/SummaryVBox")
+@onready var summary_label = get_node("WorkspaceHBox/SummaryVBox/SummaryLabel")
+@onready var summary_folders_vbox = get_node("WorkspaceHBox/SummaryVBox/SummaryFoldersVBox")
 
 var user_preferences: UserPreferences
 var customer_name: String = ""
@@ -25,10 +29,40 @@ var production_type: ProductionType = ProductionType.EXTERNAL
 func _ready() -> void:
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
 	update_controls()
+	generate_folders_label()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
+
+func generate_folders_label() -> void:
+	for c in summary_folders_vbox.get_children():
+		c.queue_free()
+	add_new_folder("01 Preproduction")
+	add_new_folder("02 Production")
+	add_new_folder("03 Audio")
+	add_new_folder("          Production audio")
+	add_new_folder("          SFX")
+	add_new_folder("          Sound track")
+	add_new_folder("04 Footage")
+	add_new_folder("05 VFX")
+	add_new_folder("06 Assets")
+	add_new_folder("07 Working renders")
+	if production_type == ProductionType.EXTERNAL:
+		add_new_folder("          Offline drafts")
+		add_new_folder("          Online drafts")
+	else:
+		add_new_folder("          Drafts")
+	add_new_folder("08 Final renders")
+	add_new_folder("09 Working edit files")
+	add_new_folder("10 DaVinci project archive")
+	add_new_folder("11 Notes")
+	add_new_folder("00 Vous etes ici - lisez-moi.txt")
+
+func add_new_folder(text: String) -> void:
+	var temp_label = FolderLabel.instantiate()
+	temp_label.text = text
+	summary_folders_vbox.add_child(temp_label)
 
 func update_controls() -> void:
 	if not user_preferences.has_default_path:
@@ -58,6 +92,8 @@ func update_summary() -> void:
 			summary_label.text += "\n" + "External project"
 		else:
 			summary_label.text += "\n" + "Internal project"
+	
+	summary_label.text += "\n"
 
 func _on_choose_folder_button_pressed() -> void:
 	PrintUtility.print_info("User trying to choose folder ...")
@@ -77,6 +113,16 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 func _on_file_dialog_canceled() -> void:
 	PrintUtility.print_info("User cancelled folder choice")
 
+func _on_pre_generate_folder_button_pressed() -> void:
+	PrintUtility.print_info("Start pre-generating folders ...")
+	
+	for i in range(summary_folders_vbox.get_child_count()):
+		summary_folders_vbox.get_child(i).delay = i * (2.0 / summary_folders_vbox.get_child_count())
+	
+	for e in summary_folders_vbox.get_children():
+		e.activate()
+	summary_vbox.get_node("TestLabel").activate()
+
 func _on_generate_folder_button_pressed() -> void:
 	PrintUtility.print_info("Start generating folders ...")
 	var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
@@ -87,6 +133,7 @@ func _on_generate_folder_button_pressed() -> void:
 			PrintUtility.print_error("Folder already exists")
 		_:
 			PrintUtility.print_error("Unkown error : " + str(result))
+
 
 func _on_customer_option_item_selected(index: int) -> void:
 	if index == 0:
@@ -111,3 +158,4 @@ func _on_production_type_option_item_selected(index: int) -> void:
 		1:
 			production_type = ProductionType.INTERNAL
 	update_summary()
+	generate_folders_label()

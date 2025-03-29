@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=5 format=3 uid="uid://rvfixiqdxhj5"]
 
-[ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://main.gd" id="1_h26jr"]
+[ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://d3pk1xx7sc4ni" path="res://resources/branding/logo_head.png" id="2_us6ij"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
+[ext_resource type="PackedScene" uid="uid://cmr2hrl5555gh" path="res://scenes/folder_label.tscn" id="4_jyhfs"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -104,6 +105,11 @@ popup/item_0/id = 0
 popup/item_1/text = "Homemade"
 popup/item_1/id = 1
 
+[node name="PreGenerateFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+text = "Pre-Generate Folders"
+
 [node name="GenerateFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
@@ -113,11 +119,22 @@ text = "Generate Folders"
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 
-[node name="SummaryLabel" type="Label" parent="WorkspaceHBox"]
+[node name="SummaryVBox" type="VBoxContainer" parent="WorkspaceHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SummaryLabel" type="Label" parent="WorkspaceHBox/SummaryVBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("3_4krfr")
+
+[node name="TestLabel" parent="WorkspaceHBox/SummaryVBox" instance=ExtResource("4_jyhfs")]
+visible = false
+layout_mode = 2
+
+[node name="SummaryFoldersVBox" type="VBoxContainer" parent="WorkspaceHBox/SummaryVBox"]
+layout_mode = 2
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
@@ -127,4 +144,5 @@ theme = ExtResource("3_4krfr")
 [connection signal="text_changed" from="WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
 [connection signal="text_changed" from="WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
 [connection signal="item_selected" from="WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="pressed" from="WorkspaceHBox/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
 [connection signal="pressed" from="WorkspaceHBox/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
