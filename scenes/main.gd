@@ -10,6 +10,7 @@ const USER_PREF_PATH: String = "user://user_preferences.json"
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
 @onready var form_vbox = get_node("WorkspaceHBox/FormVBox")
+@onready var choose_folder_button = get_node("WorkspaceHBox/FormVBox/ChooseFolderButton")
 @onready var customer_line = get_node("WorkspaceHBox/FormVBox/CustomerLine")
 @onready var customer_label = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerLabel")
 @onready var customer_option = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerOption")
@@ -50,19 +51,33 @@ func generate_folders_label() -> void:
 	add_new_folder("          Production audio")
 	add_new_folder("          SFX")
 	add_new_folder("          Sound track")
+	add_new_folder("                    01 Sound track temp")
+	add_new_folder("                    02 Final licensed tracks")
+	add_new_folder("                    03 License agreements and contracts")
 	add_new_folder("04 Footage")
+	add_new_folder("          A001")
 	add_new_folder("05 VFX")
+	add_new_folder("          Shots")
 	add_new_folder("06 Assets")
+	add_new_folder("          00 Drop-box")
+	add_new_folder("          01 Logo and branding")
+	add_new_folder("          02 Branding guidelines")
 	add_new_folder("07 Working renders")
 	if production_type == ProductionType.EXTERNAL:
 		add_new_folder("          Offline drafts")
 		add_new_folder("          Online drafts")
 	else:
 		add_new_folder("          Drafts")
+	add_new_folder("          Process renders")
+	add_new_folder("          Screenshots")
 	add_new_folder("08 Final renders")
 	add_new_folder("09 Working edit files")
 	add_new_folder("10 DaVinci project archive")
 	add_new_folder("11 Notes")
+	add_new_folder("          Director notes")
+	add_new_folder("          Editor notes")
+	add_new_folder("          Production notes")
+	add_new_folder("          PVs and transcriptions")
 	add_new_folder("00 Vous etes ici - lisez-moi.txt")
 
 func add_new_folder(text: String) -> void:
@@ -71,6 +86,9 @@ func add_new_folder(text: String) -> void:
 	summary_folders_vbox.add_child(temp_label)
 
 func update_controls() -> void: # Updating form controls depending how much user has filled it
+	
+	# Choose folder button
+	choose_folder_button.disabled = info_locked
 	
 	# Customer name
 	customer_label.disable(not user_preferences.has_default_path or info_locked)
