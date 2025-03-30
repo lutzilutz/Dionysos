@@ -50,3 +50,9 @@ static func load_from_file(path: String) -> UserPreferences:
 	res.customers = json.get("customers", [])
 	
 	return res
+
+func reset_user_preferences(path: String) -> void:
+	default_path = ""
+	has_default_path = false
+	customers = []
+	save_to_file(path)

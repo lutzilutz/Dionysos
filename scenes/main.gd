@@ -9,21 +9,21 @@ const USER_PREF_PATH: String = "user://user_preferences.json"
 
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
-@onready var form_vbox = get_node("WorkspaceHBox/FormVBox")
-@onready var choose_folder_button = get_node("WorkspaceHBox/FormVBox/ChooseFolderButton")
-@onready var customer_line = get_node("WorkspaceHBox/FormVBox/CustomerLine")
-@onready var customer_label = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerLabel")
-@onready var customer_option = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerOption")
-@onready var customer_edit = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit")
-@onready var project_name_label = get_node("WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameLabel")
-@onready var project_name_edit = get_node("WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit")
-@onready var production_type_label = get_node("WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeLabel")
-@onready var production_type_option = get_node("WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption")
-@onready var preview_folder_button = get_node("WorkspaceHBox/FormVBox/PreGenerateFolderButton")
-@onready var generate_folder_button = get_node("WorkspaceHBox/FormVBox/GenerateFolderButton")
-@onready var summary_vbox = get_node("WorkspaceHBox/SummaryVBox")
-@onready var summary_label = get_node("WorkspaceHBox/SummaryVBox/SummaryLabel")
-@onready var summary_folders_vbox = get_node("WorkspaceHBox/SummaryVBox/SummaryFoldersVBox")
+@onready var form_vbox = get_node("Window/WorkspaceHBox/FormVBox")
+@onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormVBox/ChooseFolderButton")
+@onready var customer_line = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine")
+@onready var customer_label = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerLabel")
+@onready var customer_option = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerOption")
+@onready var customer_edit = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit")
+@onready var project_name_label = get_node("Window/WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameLabel")
+@onready var project_name_edit = get_node("Window/WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit")
+@onready var production_type_label = get_node("Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeLabel")
+@onready var production_type_option = get_node("Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption")
+@onready var preview_folder_button = get_node("Window/WorkspaceHBox/FormVBox/PreGenerateFolderButton")
+@onready var generate_folder_button = get_node("Window/WorkspaceHBox/FormVBox/GenerateFolderButton")
+@onready var summary_vbox = get_node("Window/WorkspaceHBox/SummaryVBox")
+@onready var summary_label = get_node("Window/WorkspaceHBox/SummaryVBox/SummaryLabel")
+@onready var summary_folders_vbox = get_node("Window/WorkspaceHBox/SummaryVBox/SummaryFoldersVBox")
 
 var user_preferences: UserPreferences
 var customer_name: String = ""
@@ -96,6 +96,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 	customer_label.disable(not user_preferences.has_default_path or info_locked)
 	customer_option.disabled = not user_preferences.has_default_path or info_locked
 	customer_edit.editable = user_preferences.has_default_path and not info_locked
+	customer_edit.visible = customer_option.selected == 0
 	
 	# Project name
 	project_name_label.disable(not (user_preferences.has_default_path and customer_name != "" and not info_locked))
@@ -119,7 +120,7 @@ func path_has_conflict() -> bool:
 
 func build_customer_options() -> void:
 	customer_option.clear()
-	customer_option.add_item("<New customer>")
+	customer_option.add_item("<Nouveau client>")
 	for d in DirAccess.get_directories_at(user_preferences.default_path):
 		customer_option.add_item(d)
 
@@ -228,3 +229,40 @@ func _on_production_type_option_item_selected(index: int) -> void:
 	update_controls()
 	update_summary()
 	generate_folders_label()
+
+# MenuBar signals =================================================================================
+
+func _on_file_menu_id_pressed(id: int) -> void:
+	match id:
+		0:
+			PrintUtility.print_info("Quitting the software ...")
+			get_tree().quit()
+		1:
+			PrintUtility.print_info("Starting new project ...")
+			customer_name = ""
+			customer_option.selected = 0
+			customer_edit.text = ""
+			project_name = ""
+			project_name_edit.text = ""
+			project_name_edit.modulate = Color(1,1,1,1)
+			production_type_option.selected = -1
+			info_locked = false
+			for c in summary_folders_vbox.get_children():
+				c.desactivate()
+			preview_folder_button.text = "Lock and Preview"
+			update_controls()
+			update_summary()
+		_:
+			PrintUtility.print_info("Unkown file menu option")
+
+func _on_edit_menu_id_pressed(id: int) -> void:
+	match id:
+		0:
+			PrintUtility.print_info("Reset preferences")
+			user_preferences.reset_user_preferences(USER_PREF_PATH)
+			project_name = ""
+			customer_name = ""
+			update_controls()
+			update_summary()
+		_:
+			PrintUtility.print_info("Unkown edition menu option")

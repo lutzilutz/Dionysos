@@ -29,7 +29,7 @@ ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 
-[node name="WorkspaceHBox" type="HBoxContainer" parent="."]
+[node name="Window" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,63 +37,86 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FormVBox" type="VBoxContainer" parent="WorkspaceHBox"]
+[node name="MenuBar" type="MenuBar" parent="Window"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+
+[node name="FileMenu" type="PopupMenu" parent="Window/MenuBar"]
+title = "Fichier"
+item_count = 2
+item_0/text = "Nouveau projet"
+item_0/id = 1
+item_1/text = "Quitter"
+item_1/id = 0
+
+[node name="EditMenu" type="PopupMenu" parent="Window/MenuBar"]
+auto_translate_mode = 1
+title = "Modifier"
+item_count = 1
+item_0/text = "Réinitialiser les préférences"
+item_0/id = 0
+
+[node name="WorkspaceHBox" type="HBoxContainer" parent="Window"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FormVBox" type="VBoxContainer" parent="Window/WorkspaceHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ChooseFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]
+[node name="ChooseFolderButton" type="Button" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 text = "Choose Folder"
 
-[node name="SavePrefButton" type="Button" parent="WorkspaceHBox/FormVBox"]
+[node name="SavePrefButton" type="Button" parent="Window/WorkspaceHBox/FormVBox"]
 visible = false
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 text = "Save Preferences"
 
-[node name="CustomerLine" type="HBoxContainer" parent="WorkspaceHBox/FormVBox"]
+[node name="CustomerLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 
-[node name="CustomerLabel" parent="WorkspaceHBox/FormVBox/CustomerLine" instance=ExtResource("4_tbgi4")]
+[node name="CustomerLabel" parent="Window/WorkspaceHBox/FormVBox/CustomerLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Nom du client"
 
-[node name="CustomerOption" type="OptionButton" parent="WorkspaceHBox/FormVBox/CustomerLine"]
+[node name="CustomerOption" type="OptionButton" parent="Window/WorkspaceHBox/FormVBox/CustomerLine"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 selected = 0
 item_count = 1
-popup/item_0/text = "<New Customer>"
+popup/item_0/text = "<Nouveau client>"
 popup/item_0/id = 0
 
-[node name="CustomerEdit" type="LineEdit" parent="WorkspaceHBox/FormVBox/CustomerLine"]
+[node name="CustomerEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormVBox/CustomerLine"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_4krfr")
 placeholder_text = "Enter name here ..."
 
-[node name="ProjectNameLine" type="HBoxContainer" parent="WorkspaceHBox/FormVBox"]
+[node name="ProjectNameLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 
-[node name="ProjectNameLabel" parent="WorkspaceHBox/FormVBox/ProjectNameLine" instance=ExtResource("4_tbgi4")]
+[node name="ProjectNameLabel" parent="Window/WorkspaceHBox/FormVBox/ProjectNameLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Nom du projet"
 
-[node name="ProjectNameEdit" type="LineEdit" parent="WorkspaceHBox/FormVBox/ProjectNameLine"]
+[node name="ProjectNameEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormVBox/ProjectNameLine"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_4krfr")
 placeholder_text = "Enter name here ..."
 
-[node name="ProductionTypeLine" type="HBoxContainer" parent="WorkspaceHBox/FormVBox"]
+[node name="ProductionTypeLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 
-[node name="ProductionTypeLabel" parent="WorkspaceHBox/FormVBox/ProductionTypeLine" instance=ExtResource("4_tbgi4")]
+[node name="ProductionTypeLabel" parent="Window/WorkspaceHBox/FormVBox/ProductionTypeLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Type de production"
 
-[node name="ProductionTypeOption" type="OptionButton" parent="WorkspaceHBox/FormVBox/ProductionTypeLine"]
+[node name="ProductionTypeOption" type="OptionButton" parent="Window/WorkspaceHBox/FormVBox/ProductionTypeLine"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 item_count = 2
@@ -102,40 +125,43 @@ popup/item_0/id = 0
 popup/item_1/text = "Projet interne"
 popup/item_1/id = 1
 
-[node name="PreGenerateFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]
+[node name="PreGenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 text = "Lock and Preview"
 
-[node name="GenerateFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]
+[node name="GenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 text = "Generate Folders"
 
-[node name="Label" type="Label" parent="WorkspaceHBox/FormVBox"]
+[node name="Label" type="Label" parent="Window/WorkspaceHBox/FormVBox"]
+visible = false
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 
-[node name="SummaryVBox" type="VBoxContainer" parent="WorkspaceHBox"]
+[node name="SummaryVBox" type="VBoxContainer" parent="Window/WorkspaceHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SummaryLabel" type="Label" parent="WorkspaceHBox/SummaryVBox"]
+[node name="SummaryLabel" type="Label" parent="Window/WorkspaceHBox/SummaryVBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("3_4krfr")
 
-[node name="SummaryFoldersVBox" type="VBoxContainer" parent="WorkspaceHBox/SummaryVBox"]
+[node name="SummaryFoldersVBox" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryVBox"]
 layout_mode = 2
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
-[connection signal="pressed" from="WorkspaceHBox/FormVBox/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
-[connection signal="pressed" from="WorkspaceHBox/FormVBox/SavePrefButton" to="." method="_on_save_pref_button_pressed"]
-[connection signal="item_selected" from="WorkspaceHBox/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
-[connection signal="text_changed" from="WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
-[connection signal="text_changed" from="WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
-[connection signal="item_selected" from="WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
-[connection signal="pressed" from="WorkspaceHBox/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
-[connection signal="pressed" from="WorkspaceHBox/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
+[connection signal="id_pressed" from="Window/MenuBar/FileMenu" to="." method="_on_file_menu_id_pressed"]
+[connection signal="id_pressed" from="Window/MenuBar/EditMenu" to="." method="_on_edit_menu_id_pressed"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormVBox/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormVBox/SavePrefButton" to="." method="_on_save_pref_button_pressed"]
+[connection signal="item_selected" from="Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
+[connection signal="item_selected" from="Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
