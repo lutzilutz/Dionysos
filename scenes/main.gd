@@ -11,11 +11,15 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 
 @onready var form_vbox = get_node("WorkspaceHBox/FormVBox")
 @onready var customer_line = get_node("WorkspaceHBox/FormVBox/CustomerLine")
+@onready var customer_label = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerLabel")
 @onready var customer_option = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerOption")
 @onready var customer_edit = get_node("WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit")
+@onready var project_name_label = get_node("WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameLabel")
 @onready var project_name_edit = get_node("WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit")
+@onready var production_type_label = get_node("WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeLabel")
 @onready var production_type_option = get_node("WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption")
-@onready var generate_folder_button = get_node("WorkspaceHBox/FormVBox/ChooseFolderButton")
+@onready var preview_folder_button = get_node("WorkspaceHBox/FormVBox/PreGenerateFolderButton")
+@onready var generate_folder_button = get_node("WorkspaceHBox/FormVBox/GenerateFolderButton")
 @onready var summary_vbox = get_node("WorkspaceHBox/SummaryVBox")
 @onready var summary_label = get_node("WorkspaceHBox/SummaryVBox/SummaryLabel")
 @onready var summary_folders_vbox = get_node("WorkspaceHBox/SummaryVBox/SummaryFoldersVBox")
@@ -23,7 +27,8 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 var user_preferences: UserPreferences
 var customer_name: String = ""
 var project_name: String = ""
-var production_type: ProductionType = ProductionType.EXTERNAL
+var production_type: ProductionType
+var has_previewed: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -65,10 +70,24 @@ func add_new_folder(text: String) -> void:
 	summary_folders_vbox.add_child(temp_label)
 
 func update_controls() -> void:
-	if not user_preferences.has_default_path:
-		generate_folder_button.disabled = true
-	else:
-		generate_folder_button.disabled = false
+	# Updating form controls depending how much user has filled it
+	
+	# Customer name
+	customer_label.disable(not user_preferences.has_default_path)
+	customer_option.disabled = not user_preferences.has_default_path
+	customer_edit.editable = user_preferences.has_default_path
+	
+	# Project name
+	project_name_label.disable(not (user_preferences.has_default_path and customer_name != ""))
+	project_name_edit.editable = user_preferences.has_default_path and customer_name != ""
+	
+	# Production type
+	production_type_label.disable(not (user_preferences.has_default_path and customer_name != "" and project_name != ""))
+	production_type_option.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "")
+	
+	# Buttons
+	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1)
+	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and has_previewed)
 	
 	customer_option.clear()
 	customer_option.add_item("<New customer>")
@@ -85,7 +104,7 @@ func update_summary() -> void:
 			for d in DirAccess.get_directories_at(user_preferences.default_path + "/" + customer_name):
 				form_vbox.get_node("Label").text += "\n" + d
 	
-	summary_label.text += "\n" + "Project name : " + project_name_edit.text
+	summary_label.text += "\n" + "Project name : " + project_name
 	
 	if production_type_option.selected > -1:
 		if production_type == ProductionType.EXTERNAL:
@@ -108,6 +127,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	PrintUtility.print_info("Selected folder is : " + dir + "/")
 	user_preferences.default_path = dir
 	user_preferences.has_default_path = true
+	user_preferences.save_to_file(USER_PREF_PATH)
 	update_controls()
 
 func _on_file_dialog_canceled() -> void:
@@ -122,6 +142,9 @@ func _on_pre_generate_folder_button_pressed() -> void:
 	for e in summary_folders_vbox.get_children():
 		e.activate()
 	summary_vbox.get_node("TestLabel").activate()
+	
+	has_previewed = true
+	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:
 	PrintUtility.print_info("Start generating folders ...")
@@ -142,13 +165,17 @@ func _on_customer_option_item_selected(index: int) -> void:
 	else:
 		customer_edit.visible = false
 		customer_name = customer_option.get_item_text(index)
+	update_controls()
 	update_summary()
 
 func _on_customer_edit_text_changed(new_text: String) -> void:
 	customer_name = new_text
+	update_controls()
 	update_summary()
 
 func _on_project_name_edit_text_changed(new_text: String) -> void:
+	project_name = new_text
+	update_controls()
 	update_summary()
 
 func _on_production_type_option_item_selected(index: int) -> void:
@@ -157,5 +184,6 @@ func _on_production_type_option_item_selected(index: int) -> void:
 			production_type = ProductionType.EXTERNAL
 		1:
 			production_type = ProductionType.INTERNAL
+	update_controls()
 	update_summary()
 	generate_folders_label()

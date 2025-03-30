@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=6 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://d3pk1xx7sc4ni" path="res://resources/branding/logo_head.png" id="2_us6ij"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
 [ext_resource type="PackedScene" uid="uid://cmr2hrl5555gh" path="res://scenes/folder_label.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -55,10 +56,9 @@ text = "Save Preferences"
 [node name="CustomerLine" type="HBoxContainer" parent="WorkspaceHBox/FormVBox"]
 layout_mode = 2
 
-[node name="CustomerLabel" type="Label" parent="WorkspaceHBox/FormVBox/CustomerLine"]
+[node name="CustomerLabel" parent="WorkspaceHBox/FormVBox/CustomerLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
-theme = ExtResource("3_4krfr")
-text = "Customer name"
+text = "Nom du client"
 
 [node name="CustomerOption" type="OptionButton" parent="WorkspaceHBox/FormVBox/CustomerLine"]
 layout_mode = 2
@@ -77,10 +77,9 @@ placeholder_text = "Enter name here ..."
 [node name="ProjectNameLine" type="HBoxContainer" parent="WorkspaceHBox/FormVBox"]
 layout_mode = 2
 
-[node name="ProjectNameLabel" type="Label" parent="WorkspaceHBox/FormVBox/ProjectNameLine"]
+[node name="ProjectNameLabel" parent="WorkspaceHBox/FormVBox/ProjectNameLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
-theme = ExtResource("3_4krfr")
-text = "Project name"
+text = "Nom du projet"
 
 [node name="ProjectNameEdit" type="LineEdit" parent="WorkspaceHBox/FormVBox/ProjectNameLine"]
 layout_mode = 2
@@ -91,10 +90,9 @@ placeholder_text = "Enter name here ..."
 [node name="ProductionTypeLine" type="HBoxContainer" parent="WorkspaceHBox/FormVBox"]
 layout_mode = 2
 
-[node name="ProductionTypeLabel" type="Label" parent="WorkspaceHBox/FormVBox/ProductionTypeLine"]
+[node name="ProductionTypeLabel" parent="WorkspaceHBox/FormVBox/ProductionTypeLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
-theme = ExtResource("3_4krfr")
-text = "External customer"
+text = "Type de production"
 
 [node name="ProductionTypeOption" type="OptionButton" parent="WorkspaceHBox/FormVBox/ProductionTypeLine"]
 layout_mode = 2
