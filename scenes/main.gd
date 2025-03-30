@@ -12,30 +12,30 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
 
-@onready var form_vbox = get_node("Window/WorkspaceHBox/FormVBox")
-@onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormVBox/ChooseFolderButton")
-@onready var customer_line = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine")
-@onready var customer_label = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerLabel")
-@onready var customer_option = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerOption")
-@onready var customer_edit = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit")
-@onready var project_name_label = get_node("Window/WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameLabel")
-@onready var project_name_edit = get_node("Window/WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit")
-@onready var production_type_label = get_node("Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeLabel")
-@onready var production_type_option = get_node("Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption")
+@onready var form_vbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox")
+@onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderButton")
+@onready var customer_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine")
+@onready var customer_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerLabel")
+@onready var customer_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerOption")
+@onready var customer_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerEdit")
+@onready var project_name_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameLabel")
+@onready var project_name_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit")
+@onready var production_type_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeLabel")
+@onready var production_type_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption")
 
-@onready var production_audio_label = get_node("Window/WorkspaceHBox/FormVBox/ProductionAudioLine/ProductionAudioLabel")
-@onready var production_audio_checkbox = get_node("Window/WorkspaceHBox/FormVBox/ProductionAudioLine/ProductionAudioCheckBox")
-@onready var music_Label = get_node("Window/WorkspaceHBox/FormVBox/MusicLine/MusicLabel")
-@onready var music_checkbox = get_node("Window/WorkspaceHBox/FormVBox/MusicLine/MusicCheckBox")
-@onready var audio_sfx_Label = get_node("Window/WorkspaceHBox/FormVBox/AudioSFXLine/AudioSFXLabel")
-@onready var audio_sfx_checkbox = get_node("Window/WorkspaceHBox/FormVBox/AudioSFXLine/AudioSFXCheckBox")
+@onready var production_audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioLabel")
+@onready var production_audio_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox")
+@onready var music_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicLabel")
+@onready var music_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicCheckBox")
+@onready var audio_sfx_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXLabel")
+@onready var audio_sfx_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox")
 
-@onready var preview_folder_button = get_node("Window/WorkspaceHBox/FormVBox/PreGenerateFolderButton")
-@onready var generate_folder_button = get_node("Window/WorkspaceHBox/FormVBox/GenerateFolderButton")
+@onready var preview_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton")
+@onready var generate_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton")
 
-@onready var summary_vbox = get_node("Window/WorkspaceHBox/SummaryVBox")
-@onready var summary_label = get_node("Window/WorkspaceHBox/SummaryVBox/SummaryLabel")
-@onready var summary_folders_vbox = get_node("Window/WorkspaceHBox/SummaryVBox/SummaryFoldersVBox")
+@onready var summary_vbox = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox")
+@onready var summary_label = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryLabel")
+@onready var summary_folders_vbox = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryFoldersVBox")
 
 var user_preferences: UserPreferences
 var customer_name: String = ""
@@ -93,6 +93,127 @@ func generate_folders_label() -> void:
 	add_new_folder("          Production notes")
 	add_new_folder("          PVs and transcriptions")
 	add_new_folder("00 Vous etes ici - lisez-moi.txt")
+	
+	generate_folders_tree()
+
+func generate_folders_tree() -> void:
+	var folder_id: int = 1
+	var tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
+	tree.clear()
+	var root = tree.create_item()
+	tree.hide_root = true
+	
+	# Preproduction
+	var preprod_folder: TreeItem = tree.create_item(root)
+	var preprod_string: String = "0" + str(folder_id) + " Preproduction"
+	preprod_folder.set_text(0, preprod_string)
+	folder_id += 1
+	
+	# Production
+	var prod_folder: TreeItem = tree.create_item(root)
+	var prod_string: String = "0" + str(folder_id) + " Production"
+	prod_folder.set_text(0, prod_string)
+	folder_id += 1
+	
+	# Audio
+	var audio_folder: TreeItem = tree.create_item(root)
+	var audio_string: String = "0" + str(folder_id) + " Audio"
+	audio_folder.set_text(0, audio_string)
+	if use_production_audio:
+		var prod_audio_f: TreeItem = tree.create_item(audio_folder)
+		prod_audio_f.set_text(0, "Production audio")
+	if use_music:
+		var music_f: TreeItem = tree.create_item(audio_folder)
+		music_f.set_text(0, "Sound track")
+		var sub_music_f: TreeItem = tree.create_item(music_f)
+		sub_music_f.set_text(0, "01 Sound track temp")
+		sub_music_f = tree.create_item(music_f)
+		sub_music_f.set_text(0, "02 Final licensed tracks")
+		sub_music_f = tree.create_item(music_f)
+		sub_music_f.set_text(0, "03 License agreements and contracts")
+	if use_audio_sfx:
+		var audio_sfx_f: TreeItem = tree.create_item(audio_folder)
+		audio_sfx_f.set_text(0, "SFX")
+	folder_id += 1
+	
+	# Footage
+	var foot_folder: TreeItem = tree.create_item(root)
+	var foot_string: String = "0" + str(folder_id) + " Footage"
+	foot_folder.set_text(0, foot_string)
+	folder_id += 1
+	
+	# VFX
+	var vfx_folder: TreeItem = tree.create_item(root)
+	var vfx_string: String = "0" + str(folder_id) + " VFX"
+	vfx_folder.set_text(0, vfx_string)
+	folder_id += 1
+	
+	# Assets
+	var assets_folder: TreeItem = tree.create_item(root)
+	var assets_string: String = "0" + str(folder_id) + " Assets"
+	assets_folder.set_text(0, assets_string)
+	folder_id += 1
+	
+	# Working renders
+	var w_renders_folder: TreeItem = tree.create_item(root)
+	var w_renders_string: String = "0" + str(folder_id) + " Working renders"
+	w_renders_folder.set_text(0, w_renders_string)
+	var sub_w_renders_folder: TreeItem# = tree.create_item(w_renders_folder)
+	var sub_w_renders_string: String# = "Offline drafts"
+	if production_type == ProductionType.EXTERNAL:
+		sub_w_renders_folder = tree.create_item(w_renders_folder)
+		sub_w_renders_folder.set_text(0, "Offline drafts")
+		sub_w_renders_folder = tree.create_item(w_renders_folder)
+		sub_w_renders_folder.set_text(0, "Online drafts")
+	elif production_type == ProductionType.INTERNAL:
+		sub_w_renders_folder = tree.create_item(w_renders_folder)
+		sub_w_renders_folder.set_text(0, "Drafts")
+	else:
+		PrintUtility.print_error("Unknown production type : " + str(production_type))
+	
+	sub_w_renders_folder = tree.create_item(w_renders_folder)
+	sub_w_renders_folder.set_text(0, "Process renders")
+	sub_w_renders_folder = tree.create_item(w_renders_folder)
+	sub_w_renders_folder.set_text(0, "Screenshots")
+	folder_id += 1
+	
+	# Final renders
+	var f_renders_folder: TreeItem = tree.create_item(root)
+	var f_renders_string: String = "0" + str(folder_id) + " Final renders"
+	f_renders_folder.set_text(0, f_renders_string)
+	folder_id += 1
+	
+	# Working edit files
+	var w_edit_folder: TreeItem = tree.create_item(root)
+	var w_edit_string: String = "0" + str(folder_id) + " Working edit files"
+	w_edit_folder.set_text(0, w_edit_string)
+	folder_id += 1
+	
+	# DaVinci project archive
+	var dv_archive_folder: TreeItem = tree.create_item(root)
+	var dv_archive_string: String = "0" + str(folder_id) + " DaVinci project archive" if folder_id < 10 else str(folder_id) + " DaVinci project archive"
+	dv_archive_folder.set_text(0, dv_archive_string)
+	folder_id += 1
+	
+	# Notes
+	var notes_folder: TreeItem = tree.create_item(root)
+	var notes_string: String = "0" + str(folder_id) + " Notes" if folder_id < 10 else str(folder_id) + " Notes"
+	notes_folder.set_text(0, notes_string)
+	var sub_notes_folder: TreeItem = tree.create_item(notes_folder)
+	sub_notes_folder.set_text(0, "Director notes")
+	sub_notes_folder = tree.create_item(notes_folder)
+	sub_notes_folder.set_text(0, "Editor notes")
+	sub_notes_folder = tree.create_item(notes_folder)
+	sub_notes_folder.set_text(0, "Production notes")
+	sub_notes_folder = tree.create_item(notes_folder)
+	sub_notes_folder.set_text(0, "PV and transcriptions")
+	folder_id += 1
+	
+	# Read-me
+	var rm_folder: TreeItem = tree.create_item(root)
+	var rm_string: String = "00 Vous etes ici - lisez-moi.txt"
+	rm_folder.set_text(0, rm_string)
+	folder_id += 1
 
 func add_new_folder(text: String) -> void:
 	var temp_label = FolderLabel.instantiate()
@@ -139,6 +260,10 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Buttons
 	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and not path_has_conflict())
 	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and info_locked)
+	
+	# Tree
+	get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").mouse_filter = MouseFilter.MOUSE_FILTER_IGNORE if not info_locked else MouseFilter.MOUSE_FILTER_STOP
+	get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").modulate = Color(1,1,1,1) if info_locked else Color(1,1,1,0.5)
 
 func path_has_conflict() -> bool:
 	return DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name + "/" + project_name)
