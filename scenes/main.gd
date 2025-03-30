@@ -32,7 +32,15 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var audio_sfx_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox")
 
 @onready var video_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VideoTitleLabel")
-@onready var vfx_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXLabel")
+
+@onready var daycount_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine")
+@onready var daycount_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountLabel")
+@onready var daycount_spin = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin")
+@onready var cameracount_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine")
+@onready var cameracount_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountLabel")
+@onready var cameracount_spin = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountSpin")
+@onready var vfx_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine")
+@onready var vfx_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXLabel")
 @onready var vfx_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox")
 
 @onready var preview_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton")
@@ -42,16 +50,24 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var summary_label = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryLabel")
 @onready var summary_folders_vbox = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryFoldersVBox")
 
+@onready var folder_tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
+
 var user_preferences: UserPreferences
 var customer_name: String = ""
 var project_name: String = ""
 var production_type: ProductionType
+
+var daycount: int = 1
+var cameracount: int = 1
+var use_vfx: bool = true
+
 var use_production_audio: bool = true
 var use_music: bool = true
 var use_audio_sfx: bool = true
-var use_vfx: bool = true
 var has_previewed: bool = false
 var info_locked: bool = false
+
+var control_hovered
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -151,6 +167,10 @@ func generate_folders_tree() -> void:
 	var foot_folder: TreeItem = tree.create_item(root)
 	var foot_string: String = "0" + str(folder_id) + " Footage"
 	foot_folder.set_text(0, foot_string)
+	for c in range(cameracount):
+		for d in range(daycount):
+			var tmp_f: TreeItem = tree.create_item(foot_folder)
+			tmp_f.set_text(0, char(c + 65) + daycount_int_to_string(d + 1))
 	folder_id += 1
 	
 	# VFX
@@ -232,6 +252,57 @@ func add_new_folder(text: String) -> void:
 	temp_label.text = text
 	summary_folders_vbox.add_child(temp_label)
 
+func update_hovering() -> void:
+	if user_preferences.has_default_path and not info_locked and customer_name != "" and project_name != "" and production_type_option.selected != -1:
+		if control_hovered == daycount_line:
+			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			while tmp_tree_item != null:
+				tmp_tree_item.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
+				if tmp_tree_item.get_child_count() > 0:
+					for c in tmp_tree_item.get_children():
+						c.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
+				check_tree_item_for_daycount(tmp_tree_item)
+				tmp_tree_item = tmp_tree_item.get_next()
+		elif control_hovered == cameracount_line:
+			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			while tmp_tree_item != null:
+				tmp_tree_item.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
+				if tmp_tree_item.get_child_count() > 0:
+					for c in tmp_tree_item.get_children():
+						c.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
+				check_tree_item_for_cameracount(tmp_tree_item)
+				tmp_tree_item = tmp_tree_item.get_next()
+		elif control_hovered == vfx_line:
+			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			while tmp_tree_item != null:
+				tmp_tree_item.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
+				if tmp_tree_item.get_child_count() > 0:
+					for c in tmp_tree_item.get_children():
+						c.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
+				check_tree_item_for_vfx(tmp_tree_item)
+				tmp_tree_item = tmp_tree_item.get_next()
+
+func check_tree_item_for_daycount(tree_item: TreeItem) -> void:
+	if tree_item.get_text(0).find("Footage") != -1:
+		tree_item.set_custom_color(0, Color(1,0.5,0,1))
+		if tree_item.get_child_count() > 0:
+			for c in tree_item.get_children():
+				c.set_custom_color(0, Color(1,0.5,0,1))
+
+func check_tree_item_for_cameracount(tree_item: TreeItem) -> void:
+	if tree_item.get_text(0).find("Footage") != -1:
+		tree_item.set_custom_color(0, Color(1,0.5,0,1))
+		if tree_item.get_child_count() > 0:
+			for c in tree_item.get_children():
+				c.set_custom_color(0, Color(1,0.5,0,1))
+
+func check_tree_item_for_vfx(tree_item: TreeItem) -> void:
+	if tree_item.get_text(0).find("VFX") != -1:
+		tree_item.set_custom_color(0, Color(1,0.5,0,1))
+		if tree_item.get_child_count() > 0:
+			for c in tree_item.get_children():
+				c.set_custom_color(0, Color(1,0.5,0,1))
+
 func update_controls() -> void: # Updating form controls depending how much user has filled it
 	
 	var customer_editable = user_preferences.has_default_path and not info_locked
@@ -272,7 +343,11 @@ func update_controls() -> void: # Updating form controls depending how much user
 	
 	# Video
 	video_label.disable(not secondary_options_editable)
-	vfx_Label.disable(not secondary_options_editable)
+	daycount_label.disable(not secondary_options_editable)
+	daycount_spin.editable = secondary_options_editable
+	cameracount_label.disable(not secondary_options_editable)
+	cameracount_spin.editable = secondary_options_editable
+	vfx_label.disable(not secondary_options_editable)
 	vfx_checkbox.disabled = not secondary_options_editable
 	
 	# Buttons
@@ -284,8 +359,8 @@ func update_controls() -> void: # Updating form controls depending how much user
 		generate_folders_tree()
 	else:
 		get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").clear()
-	get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").mouse_filter = MouseFilter.MOUSE_FILTER_IGNORE if not info_locked else MouseFilter.MOUSE_FILTER_STOP
-	get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").modulate = Color(1,1,1,1) if info_locked else Color(1,1,1,0.5)
+	#get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").mouse_filter = MouseFilter.MOUSE_FILTER_IGNORE if not info_locked else MouseFilter.MOUSE_FILTER_STOP
+	#get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").modulate = Color(1,1,1,1) if info_locked else Color(1,1,1,0.5)
 
 func path_has_conflict() -> bool:
 	return DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name + "/" + project_name)
@@ -418,6 +493,12 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			project_name_edit.text = ""
 			project_name_edit.modulate = Color(1,1,1,1)
 			production_type_option.selected = -1
+			daycount = 1
+			daycount_spin.value = 1
+			cameracount = 1
+			cameracount_spin.value = 1
+			use_vfx = true
+			vfx_checkbox.button_pressed = true
 			use_production_audio = true
 			production_audio_checkbox.button_pressed = true
 			use_music = true
@@ -466,6 +547,41 @@ func _on_audio_sfx_check_box_toggled(toggled_on: bool) -> void:
 	use_audio_sfx = toggled_on
 	update_controls()
 
+
+func _on_day_count_spin_value_changed(value: float) -> void:
+	daycount = value
+	update_controls()
+	_on_day_count_line_mouse_entered()
+
+func _on_day_count_line_mouse_entered() -> void:
+	control_hovered = daycount_line
+	update_hovering()
+
+func _on_camera_count_spin_value_changed(value: float) -> void:
+	cameracount = value
+	update_controls()
+	_on_camera_count_line_mouse_entered()
+
+func _on_camera_count_line_mouse_entered() -> void:
+	control_hovered = cameracount_line
+	update_hovering()
+
 func _on_vfx_check_box_toggled(toggled_on: bool) -> void:
 	use_vfx = toggled_on
 	update_controls()
+	_on_vfx_line_mouse_entered()
+
+func _on_vfx_line_mouse_entered() -> void:
+	control_hovered = vfx_line
+	update_hovering()
+
+# =================================================================================================
+
+func daycount_int_to_string(value: int) -> String:
+	var tmp_string: String = ""
+	if value < 10:
+		tmp_string += "0"
+	if value < 100:
+		tmp_string += "0"
+	tmp_string += str(value)
+	return tmp_string

@@ -151,6 +151,57 @@ popup/item_1/id = 1
 [node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
+[node name="VideoTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
+layout_mode = 2
+text = "Vidéo"
+
+[node name="DayCountLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+layout_mode = 2
+
+[node name="DayCountLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Jours de tournage"
+
+[node name="DayCountSpin" type="SpinBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine"]
+modulate = Color(2, 2, 2, 1)
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+allow_greater = true
+
+[node name="CameraCountLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+layout_mode = 2
+
+[node name="CameraCountLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Nombre de caméra"
+
+[node name="CameraCountSpin" type="SpinBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine"]
+modulate = Color(2, 2, 2, 1)
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+min_value = 1.0
+max_value = 26.0
+value = 1.0
+
+[node name="VFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+layout_mode = 2
+
+[node name="VFXLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Effets visuels VFX"
+
+[node name="VFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
+modulate = Color(2, 2, 2, 1)
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+button_pressed = true
+
+[node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+layout_mode = 2
+
 [node name="AudioTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
 layout_mode = 2
 text = "Audio et musique"
@@ -189,26 +240,6 @@ layout_mode = 2
 text = "Bruitages audio SFX"
 
 [node name="AudioSFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine"]
-modulate = Color(2, 2, 2, 1)
-layout_mode = 2
-theme = ExtResource("3_4krfr")
-button_pressed = true
-
-[node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
-layout_mode = 2
-
-[node name="VideoTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
-layout_mode = 2
-text = "Vidéo"
-
-[node name="VFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
-layout_mode = 2
-
-[node name="VFXLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" instance=ExtResource("4_tbgi4")]
-layout_mode = 2
-text = "Effets visuels VFX"
-
-[node name="VFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
 modulate = Color(2, 2, 2, 1)
 layout_mode = 2
 theme = ExtResource("3_4krfr")
@@ -266,6 +297,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_4krfr")
+select_mode = 2
 
 [node name="VersionLabel" type="Label" parent="."]
 modulate = Color(0.458405, 0.458405, 0.458405, 1)
@@ -289,9 +321,17 @@ text = "Version 0.1.0"
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" to="." method="_on_day_count_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_line_mouse_entered"]
+[connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_spin_value_changed"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine" to="." method="_on_camera_count_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_line_mouse_entered"]
+[connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_spin_value_changed"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" to="." method="_on_vfx_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_line_mouse_entered"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_check_box_toggled"]
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox" to="." method="_on_production_audio_check_box_toggled"]
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicCheckBox" to="." method="_on_music_check_box_toggled"]
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
-[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_check_box_toggled"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
