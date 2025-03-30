@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=5 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://d3pk1xx7sc4ni" path="res://resources/branding/logo_head.png" id="2_us6ij"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
 [ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
-[ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="4_tefeu"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -83,10 +82,6 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GeneralTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
-layout_mode = 2
-text = "Informations générales"
-
 [node name="ChooseFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
@@ -151,10 +146,6 @@ popup/item_1/id = 1
 [node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
-[node name="AudioTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
-layout_mode = 2
-text = "Audio et musique"
-
 [node name="ProductionAudioLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
@@ -195,26 +186,6 @@ theme = ExtResource("3_4krfr")
 button_pressed = true
 
 [node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
-layout_mode = 2
-
-[node name="VideoTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
-layout_mode = 2
-text = "Vidéo"
-
-[node name="VFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
-layout_mode = 2
-
-[node name="VFXLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" instance=ExtResource("4_tbgi4")]
-layout_mode = 2
-text = "Effets visuels VFX"
-
-[node name="VFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
-modulate = Color(2, 2, 2, 1)
-layout_mode = 2
-theme = ExtResource("3_4krfr")
-button_pressed = true
-
-[node name="HSeparator3" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
 [node name="PreGenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
@@ -292,6 +263,5 @@ text = "Version 0.1.0"
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox" to="." method="_on_production_audio_check_box_toggled"]
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicCheckBox" to="." method="_on_music_check_box_toggled"]
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
-[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_check_box_toggled"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]

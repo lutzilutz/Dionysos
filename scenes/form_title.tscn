@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bykv8asyllwbm"]
+
+[ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="1_8f2a1"]
+[ext_resource type="Script" uid="uid://c3mnm54kyk5dx" path="res://scenes/form_title.gd" id="1_qid82"]
+
+[node name="FormTitle" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("1_8f2a1")
+script = ExtResource("1_qid82")

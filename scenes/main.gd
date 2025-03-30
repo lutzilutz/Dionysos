@@ -23,12 +23,17 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var production_type_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeLabel")
 @onready var production_type_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption")
 
+@onready var audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioTitleLabel")
 @onready var production_audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioLabel")
 @onready var production_audio_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox")
 @onready var music_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicLabel")
 @onready var music_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicCheckBox")
 @onready var audio_sfx_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXLabel")
 @onready var audio_sfx_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox")
+
+@onready var video_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VideoTitleLabel")
+@onready var vfx_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXLabel")
+@onready var vfx_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox")
 
 @onready var preview_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton")
 @onready var generate_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton")
@@ -44,6 +49,7 @@ var production_type: ProductionType
 var use_production_audio: bool = true
 var use_music: bool = true
 var use_audio_sfx: bool = true
+var use_vfx: bool = true
 var has_previewed: bool = false
 var info_locked: bool = false
 
@@ -94,7 +100,10 @@ func generate_folders_label() -> void:
 	add_new_folder("          PVs and transcriptions")
 	add_new_folder("00 Vous etes ici - lisez-moi.txt")
 	
-	generate_folders_tree()
+	#if customer_name != "" and project_name != "":
+		#generate_folders_tree()
+	#else:
+		#get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").clear()
 
 func generate_folders_tree() -> void:
 	var folder_id: int = 1
@@ -107,12 +116,14 @@ func generate_folders_tree() -> void:
 	var preprod_folder: TreeItem = tree.create_item(root)
 	var preprod_string: String = "0" + str(folder_id) + " Preproduction"
 	preprod_folder.set_text(0, preprod_string)
+	preprod_folder.set_tooltip_text(0, "Dossier préproduction : recherche, direction artistique, budget, casting, ...")
 	folder_id += 1
 	
 	# Production
 	var prod_folder: TreeItem = tree.create_item(root)
 	var prod_string: String = "0" + str(folder_id) + " Production"
 	prod_folder.set_text(0, prod_string)
+	prod_folder.set_tooltip_text(0, "Dossier production : script, plan de tournage, débouillement, horaires, ...")
 	folder_id += 1
 	
 	# Audio
@@ -143,10 +154,11 @@ func generate_folders_tree() -> void:
 	folder_id += 1
 	
 	# VFX
-	var vfx_folder: TreeItem = tree.create_item(root)
-	var vfx_string: String = "0" + str(folder_id) + " VFX"
-	vfx_folder.set_text(0, vfx_string)
-	folder_id += 1
+	if use_vfx:
+		var vfx_folder: TreeItem = tree.create_item(root)
+		var vfx_string: String = "0" + str(folder_id) + " VFX"
+		vfx_folder.set_text(0, vfx_string)
+		folder_id += 1
 	
 	# Assets
 	var assets_folder: TreeItem = tree.create_item(root)
@@ -250,6 +262,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 	production_type_option.disabled = not production_type_editable
 	
 	# Audio checkboxes
+	audio_label.disable(not secondary_options_editable)
 	production_audio_label.disable(not secondary_options_editable)
 	production_audio_checkbox.disabled = not secondary_options_editable
 	music_Label.disable(not secondary_options_editable)
@@ -257,11 +270,20 @@ func update_controls() -> void: # Updating form controls depending how much user
 	audio_sfx_Label.disable(not secondary_options_editable)
 	audio_sfx_checkbox.disabled = not secondary_options_editable
 	
+	# Video
+	video_label.disable(not secondary_options_editable)
+	vfx_Label.disable(not secondary_options_editable)
+	vfx_checkbox.disabled = not secondary_options_editable
+	
 	# Buttons
 	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and not path_has_conflict())
 	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and info_locked)
 	
 	# Tree
+	if customer_name != "" and project_name != "":
+		generate_folders_tree()
+	else:
+		get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").clear()
 	get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").mouse_filter = MouseFilter.MOUSE_FILTER_IGNORE if not info_locked else MouseFilter.MOUSE_FILTER_STOP
 	get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").modulate = Color(1,1,1,1) if info_locked else Color(1,1,1,0.5)
 
@@ -434,12 +456,16 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 
 func _on_production_audio_check_box_toggled(toggled_on: bool) -> void:
 	use_production_audio = toggled_on
-	generate_folders_label()
+	update_controls()
 
 func _on_music_check_box_toggled(toggled_on: bool) -> void:
 	use_music = toggled_on
-	generate_folders_label()
+	update_controls()
 
 func _on_audio_sfx_check_box_toggled(toggled_on: bool) -> void:
 	use_audio_sfx = toggled_on
-	generate_folders_label()
+	update_controls()
+
+func _on_vfx_check_box_toggled(toggled_on: bool) -> void:
+	use_vfx = toggled_on
+	update_controls()
