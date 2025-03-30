@@ -1,16 +1,52 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dltvaum6axc0k"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://dltvaum6axc0k"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agf87"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d0fb5"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mvy8b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gyv3l"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45boc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2hw34"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6fnd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ilbv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a4aic"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_turyj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_46eit"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ai24b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ekebd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ka0j"]
+
 [resource]
-Button/font_sizes/font_size = 12
+Button/font_sizes/font_size = 14
 Button/styles/focus = SubResource("StyleBoxEmpty_agf87")
 Label/font_sizes/font_size = 10
-LineEdit/font_sizes/font_size = 12
+LineEdit/font_sizes/font_size = 10
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_d0fb5")
 MenuBar/font_sizes/font_size = 12
-OptionButton/font_sizes/font_size = 12
-PopupMenu/font_sizes/font_size = 12
+OptionButton/font_sizes/font_size = 10
+PopupMenu/font_sizes/font_size = 10
 Tree/font_sizes/font_size = 10
+Tree/styles/button_pressed = SubResource("StyleBoxEmpty_mvy8b")
+Tree/styles/cursor = SubResource("StyleBoxEmpty_gyv3l")
+Tree/styles/cursor_unfocused = SubResource("StyleBoxEmpty_45boc")
+Tree/styles/custom_button = SubResource("StyleBoxEmpty_2hw34")
+Tree/styles/custom_button_hover = SubResource("StyleBoxEmpty_l6fnd")
+Tree/styles/custom_button_pressed = SubResource("StyleBoxEmpty_2ilbv")
+Tree/styles/focus = SubResource("StyleBoxEmpty_a4aic")
+Tree/styles/panel = SubResource("StyleBoxEmpty_turyj")
+Tree/styles/selected = SubResource("StyleBoxEmpty_46eit")
+Tree/styles/selected_focus = SubResource("StyleBoxEmpty_ai24b")
+Tree/styles/title_button_normal = SubResource("StyleBoxEmpty_ekebd")
+Tree/styles/title_button_pressed = SubResource("StyleBoxEmpty_8ka0j")

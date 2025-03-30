@@ -70,6 +70,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_ph3nu")
 
 [node name="EndButton" type="Button" parent="CenterContainer/VBoxContainer"]
 modulate = Color(2, 2, 2, 1)
+custom_minimum_size = Vector2(137.81, 40.14)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8ho6b")

@@ -14,4 +14,5 @@ func _on_end_button_pressed() -> void:
 	tween = get_tree().create_tween()
 	tween.tween_property(self, "modulate", Color(1,1,1,0), 1)
 	await tween.finished
+	PrintUtility.print_signal("Tutorial transition finished")
 	tutorial_ended.emit()
