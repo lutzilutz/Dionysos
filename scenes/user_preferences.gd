@@ -4,13 +4,17 @@ class_name UserPreferences extends Resource
 @export var has_default_path: bool = false
 @export var customers: Array = []
 @export var hide_dry_kats_logo: bool = false
+@export var show_highlights: bool = true
+@export var has_seen_tutorial: bool = false
 
 func save_to_file(path:String) -> Error:
 	var json = {
 		"default_path": default_path,
 		"has_default_path": has_default_path,
 		"customers": customers,
-		"hide_dry_kats_logo": hide_dry_kats_logo
+		"hide_dry_kats_logo": hide_dry_kats_logo,
+		"show_highlights": show_highlights,
+		"has_seen_tutorial": has_seen_tutorial
 	}
 	var file = FileAccess.open(path, FileAccess.WRITE)
 
@@ -32,7 +36,9 @@ static func load_from_file(path: String) -> UserPreferences:
 			"default_path": "",
 			"has_default_path": false,
 			"customers": [],
-			"hide_dry_kats_logo": false
+			"hide_dry_kats_logo": false,
+			"show_highlights": true,
+			"has_seen_tutorial": false
 		}
 		if new_file:
 			new_file.store_string(JSON.stringify(new_json))
@@ -52,6 +58,8 @@ static func load_from_file(path: String) -> UserPreferences:
 	res.has_default_path = json.get("has_default_path", false)
 	res.customers = json.get("customers", [])
 	res.hide_dry_kats_logo = json.get("hide_dry_kats_logo", false)
+	res.show_highlights = json.get("show_highlights", true)
+	res.has_seen_tutorial = json.get("has_seen_tutorial", false)
 	
 	return res
 
@@ -60,4 +68,6 @@ func reset_user_preferences(path: String) -> void:
 	has_default_path = false
 	customers = []
 	hide_dry_kats_logo = false
+	show_highlights = true
+	has_seen_tutorial = false
 	save_to_file(path)

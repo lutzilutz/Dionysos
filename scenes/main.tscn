@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=7 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://d3pk1xx7sc4ni" path="res://resources/branding/logo_head.png" id="2_us6ij"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
 [ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="4_tefeu"]
+[ext_resource type="PackedScene" uid="uid://chx2gfya25vkc" path="res://scenes/tutorial.tscn" id="6_tefeu"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -44,6 +45,7 @@ theme = ExtResource("3_4krfr")
 
 [node name="FileMenu" type="PopupMenu" parent="Window/MenuBar"]
 title = "Fichier"
+size = Vector2i(111, 100)
 item_count = 2
 item_0/text = "Nouveau projet"
 item_0/id = 1
@@ -53,19 +55,28 @@ item_1/id = 0
 [node name="EditMenu" type="PopupMenu" parent="Window/MenuBar"]
 auto_translate_mode = 1
 title = "Préférences"
-item_count = 2
+size = Vector2i(254, 100)
+item_count = 4
 item_0/text = "Cacher logo Dry Kats"
 item_0/checkable = 1
 item_0/id = 1
-item_1/text = "Réinitialiser les préférences"
-item_1/id = 0
+item_1/text = "Afficher le surlignage"
+item_1/checkable = 1
+item_1/id = 2
+item_2/id = 3
+item_2/separator = true
+item_3/text = "Réinitialiser les préférences"
+item_3/id = 0
 
 [node name="HelpMenu" type="PopupMenu" parent="Window/MenuBar"]
 auto_translate_mode = 1
 title = "Aide"
-item_count = 1
-item_0/text = "Aidez-moi !"
-item_0/id = 0
+size = Vector2i(117, 100)
+item_count = 2
+item_0/text = "Revoir le tutoriel"
+item_0/id = 1
+item_1/text = "Aidez-moi !"
+item_1/id = 0
 
 [node name="WorkspaceHBox" type="HBoxContainer" parent="Window"]
 layout_mode = 2
@@ -299,6 +310,10 @@ size_flags_vertical = 3
 theme = ExtResource("3_4krfr")
 select_mode = 2
 
+[node name="Tutorial" parent="." instance=ExtResource("6_tefeu")]
+visible = false
+layout_mode = 1
+
 [node name="VersionLabel" type="Label" parent="."]
 modulate = Color(0.458405, 0.458405, 0.458405, 1)
 layout_mode = 1
@@ -315,6 +330,7 @@ text = "Version 0.1.0"
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="id_pressed" from="Window/MenuBar/FileMenu" to="." method="_on_file_menu_id_pressed"]
 [connection signal="id_pressed" from="Window/MenuBar/EditMenu" to="." method="_on_edit_menu_id_pressed"]
+[connection signal="id_pressed" from="Window/MenuBar/HelpMenu" to="." method="_on_help_menu_id_pressed"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/SavePrefButton" to="." method="_on_save_pref_button_pressed"]
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]

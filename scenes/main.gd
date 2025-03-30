@@ -12,6 +12,8 @@ const TREE_HIGHLIGHTED: Color = Color(0.8, 0.4, 0, 1)
 
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
+@onready var tutorial = get_node("Tutorial")
+
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
 
@@ -78,10 +80,22 @@ var control_hovered
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
+	tutorial.tutorial_ended.connect(_on_tutorial_ended)
+	update_tutorial_screen()
 	update_edit_hide_logo()
+	update_edit_show_highlights()
 	if user_preferences.has_default_path:
 		build_customer_options()
 	update_controls()
+
+func _on_tutorial_ended() -> void:
+	user_preferences.has_seen_tutorial = true
+	user_preferences.save_to_file(USER_PREF_PATH)
+	update_tutorial_screen()
+
+func update_tutorial_screen() -> void:
+	tutorial.reset_tutorial()
+	tutorial.visible = not user_preferences.has_seen_tutorial
 
 func generate_folders_label() -> void:
 	for c in summary_folders_vbox.get_children():
@@ -121,11 +135,6 @@ func generate_folders_label() -> void:
 	add_new_folder("          Production notes")
 	add_new_folder("          PVs and transcriptions")
 	add_new_folder("00 Vous etes ici - lisez-moi.txt")
-	
-	#if customer_name != "" and project_name != "":
-		#generate_folders_tree()
-	#else:
-		#get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").clear()
 
 func generate_folders_tree() -> void:
 	var folder_id: int = 1
@@ -259,7 +268,7 @@ func add_new_folder(text: String) -> void:
 	summary_folders_vbox.add_child(temp_label)
 
 func update_hovering() -> void:
-	if user_preferences.has_default_path and not info_locked and customer_name != "" and project_name != "" and production_type_option.selected != -1:
+	if user_preferences.has_default_path and not info_locked and customer_name != "" and project_name != "" and production_type_option.selected != -1 and user_preferences.show_highlights:
 		reset_tree_highlights()
 		if control_hovered == daycount_line:
 			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
@@ -293,19 +302,21 @@ func update_hovering() -> void:
 				tmp_tree_item = tmp_tree_item.get_next()
 
 func reset_tree_highlights() -> void:
-	var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
-	if folder_tree.get_root().get_child_count() > 0:
-		for c in folder_tree.get_root().get_children():
-			c.set_custom_color(0, TREE_DEFAULT)
-			if c.get_child_count() > 0:
-				for cc in c.get_children():
-					cc.set_custom_color(0, TREE_DEFAULT)
-					if cc.get_child_count() > 0:
-						for ccc in cc.get_children():
-							ccc.set_custom_color(0, TREE_DEFAULT)
-							if ccc.get_child_count() > 0:
-								for cccc in ccc.get_children():
-									cccc.set_custom_color(0, TREE_DEFAULT)
+	if folder_tree.get_root() != null:
+		if folder_tree.get_root().get_child_count() > 0:
+			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			if folder_tree.get_root().get_child_count() > 0:
+				for c in folder_tree.get_root().get_children():
+					c.set_custom_color(0, TREE_DEFAULT)
+					if c.get_child_count() > 0:
+						for cc in c.get_children():
+							cc.set_custom_color(0, TREE_DEFAULT)
+							if cc.get_child_count() > 0:
+								for ccc in cc.get_children():
+									ccc.set_custom_color(0, TREE_DEFAULT)
+									if ccc.get_child_count() > 0:
+										for cccc in ccc.get_children():
+											cccc.set_custom_color(0, TREE_DEFAULT)
 
 func check_tree_item_for_daycount(tree_item: TreeItem) -> void:
 	if tree_item.get_text(0).find("Footage") != -1:
@@ -411,8 +422,6 @@ func update_controls() -> void: # Updating form controls depending how much user
 		generate_folders_tree()
 	else:
 		get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").clear()
-	#get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").mouse_filter = MouseFilter.MOUSE_FILTER_IGNORE if not info_locked else MouseFilter.MOUSE_FILTER_STOP
-	#get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").modulate = Color(1,1,1,1) if info_locked else Color(1,1,1,0.5)
 
 func path_has_conflict() -> bool:
 	return DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name + "/" + project_name)
@@ -427,7 +436,8 @@ func update_summary() -> void:
 	summary_label.text = "Customer name : " + customer_name
 	if DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name):
 		if DirAccess.get_directories_at(user_preferences.default_path + "/" + customer_name).size() == 0:
-			print("No project")
+			#print("No project")
+			pass
 		else:
 			form_vbox.get_node("Label").text = ""
 			for d in DirAccess.get_directories_at(user_preferences.default_path + "/" + customer_name):
@@ -570,22 +580,41 @@ func update_edit_hide_logo() -> void:
 	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_dry_kats_logo)
 	background_logo_sprite.visible = not user_preferences.hide_dry_kats_logo
 
+func update_edit_show_highlights() -> void:
+	edit_menu.set_item_checked(edit_menu.get_item_index(2), user_preferences.show_highlights)
+	if not user_preferences.show_highlights:
+		reset_tree_highlights()
+
 func _on_edit_menu_id_pressed(id: int) -> void:
 	match id:
-		0:
+		0: # Reset preferences
 			PrintUtility.print_info("Reset preferences")
 			user_preferences.reset_user_preferences(USER_PREF_PATH)
 			project_name = ""
 			customer_name = ""
 			update_edit_hide_logo()
+			update_edit_show_highlights()
 			update_controls()
 			update_summary()
-		1:
+		1: # Hide logo
 			user_preferences.hide_dry_kats_logo = not user_preferences.hide_dry_kats_logo
 			user_preferences.save_to_file(USER_PREF_PATH)
 			update_edit_hide_logo()
+		2: # Show highlight
+			user_preferences.show_highlights = not user_preferences.show_highlights
+			user_preferences.save_to_file(USER_PREF_PATH)
+			update_edit_show_highlights()
 		_:
 			PrintUtility.print_info("Unkown edition menu option")
+
+func _on_help_menu_id_pressed(id: int) -> void:
+	match id:
+		0: # Help-me
+			pass
+		1: # Rewatch tutorial
+			user_preferences.has_seen_tutorial = false
+			user_preferences.save_to_file(USER_PREF_PATH)
+			update_tutorial_screen()
 
 func _on_production_audio_check_box_toggled(toggled_on: bool) -> void:
 	use_production_audio = toggled_on
