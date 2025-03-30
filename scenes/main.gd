@@ -29,6 +29,7 @@ var customer_name: String = ""
 var project_name: String = ""
 var production_type: ProductionType
 var has_previewed: bool = false
+var info_locked: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -69,26 +70,26 @@ func add_new_folder(text: String) -> void:
 	temp_label.text = text
 	summary_folders_vbox.add_child(temp_label)
 
-func update_controls() -> void:
-	# Updating form controls depending how much user has filled it
+func update_controls() -> void: # Updating form controls depending how much user has filled it
 	
 	# Customer name
-	customer_label.disable(not user_preferences.has_default_path)
-	customer_option.disabled = not user_preferences.has_default_path
-	customer_edit.editable = user_preferences.has_default_path
+	customer_label.disable(not user_preferences.has_default_path or info_locked)
+	customer_option.disabled = not user_preferences.has_default_path or info_locked
+	customer_edit.editable = user_preferences.has_default_path and not info_locked
 	
 	# Project name
-	project_name_label.disable(not (user_preferences.has_default_path and customer_name != ""))
-	project_name_edit.editable = user_preferences.has_default_path and customer_name != ""
+	project_name_label.disable(not (user_preferences.has_default_path and customer_name != "" and not info_locked))
+	project_name_edit.editable = user_preferences.has_default_path and customer_name != "" and not info_locked
 	
 	# Production type
-	production_type_label.disable(not (user_preferences.has_default_path and customer_name != "" and project_name != ""))
-	production_type_option.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "")
+	production_type_label.disable(not (user_preferences.has_default_path and customer_name != "" and project_name != "" and not info_locked))
+	production_type_option.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and not info_locked)
 	
 	# Buttons
 	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1)
-	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and has_previewed)
-	
+	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and info_locked)
+
+func build_customer_options() -> void:
 	customer_option.clear()
 	customer_option.add_item("<New customer>")
 	for d in DirAccess.get_directories_at(user_preferences.default_path):
@@ -128,22 +129,31 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	user_preferences.default_path = dir
 	user_preferences.has_default_path = true
 	user_preferences.save_to_file(USER_PREF_PATH)
+	build_customer_options()
 	update_controls()
 
 func _on_file_dialog_canceled() -> void:
 	PrintUtility.print_info("User cancelled folder choice")
 
 func _on_pre_generate_folder_button_pressed() -> void:
-	PrintUtility.print_info("Start pre-generating folders ...")
+	info_locked = not info_locked
 	
-	for i in range(summary_folders_vbox.get_child_count()):
-		summary_folders_vbox.get_child(i).delay = i * (2.0 / summary_folders_vbox.get_child_count())
+	if info_locked: PrintUtility.print_info("Start previewing folders ...")
+	else: PrintUtility.print_info("Cancelled previewing folders")
 	
-	for e in summary_folders_vbox.get_children():
-		e.activate()
-	summary_vbox.get_node("TestLabel").activate()
-	
-	has_previewed = true
+	if info_locked:
+		# Compute delay per element to last in total 2 seconds
+		for i in range(summary_folders_vbox.get_child_count()):
+			summary_folders_vbox.get_child(i).delay = i * (2.0 / summary_folders_vbox.get_child_count())
+		# Activate all elements
+		for e in summary_folders_vbox.get_children():
+			e.activate()
+		has_previewed = true
+		preview_folder_button.text = "Cancel"
+	else:
+		for c in summary_folders_vbox.get_children():
+			c.desactivate()
+		preview_folder_button.text = "Lock and Preview"
 	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:

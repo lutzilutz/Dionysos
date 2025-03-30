@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=5 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://d3pk1xx7sc4ni" path="res://resources/branding/logo_head.png" id="2_us6ij"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
-[ext_resource type="PackedScene" uid="uid://cmr2hrl5555gh" path="res://scenes/folder_label.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
 
 [node name="Main" type="Control"]
@@ -106,7 +105,7 @@ popup/item_1/id = 1
 [node name="PreGenerateFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
-text = "Pre-Generate Folders"
+text = "Lock and Preview"
 
 [node name="GenerateFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]
 layout_mode = 2
@@ -126,10 +125,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("3_4krfr")
-
-[node name="TestLabel" parent="WorkspaceHBox/SummaryVBox" instance=ExtResource("4_jyhfs")]
-visible = false
-layout_mode = 2
 
 [node name="SummaryFoldersVBox" type="VBoxContainer" parent="WorkspaceHBox/SummaryVBox"]
 layout_mode = 2

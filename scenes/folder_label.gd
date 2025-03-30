@@ -17,3 +17,8 @@ func activate() -> void:
 	tween.tween_interval(delay)
 	tween.tween_property(self, "offset_left", 0, 1)
 	tween.parallel().tween_property(self, "modulate", Color(1,1,1,1), 1)
+
+func desactivate() -> void:
+	if tween:
+		tween.kill()
+	modulate = Color(1,1,1,0)
