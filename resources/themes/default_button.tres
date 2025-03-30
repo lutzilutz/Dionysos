@@ -2,7 +2,7 @@
 
 [resource]
 Button/font_sizes/font_size = 12
-Label/font_sizes/font_size = 12
+Label/font_sizes/font_size = 10
 LineEdit/font_sizes/font_size = 12
 OptionButton/font_sizes/font_size = 12
 PopupMenu/font_sizes/font_size = 12

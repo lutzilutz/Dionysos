@@ -97,9 +97,9 @@ text = "Type de production"
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 item_count = 2
-popup/item_0/text = "External customer"
+popup/item_0/text = "Client externe"
 popup/item_0/id = 0
-popup/item_1/text = "Homemade"
+popup/item_1/text = "Projet interne"
 popup/item_1/id = 1
 
 [node name="PreGenerateFolderButton" type="Button" parent="WorkspaceHBox/FormVBox"]

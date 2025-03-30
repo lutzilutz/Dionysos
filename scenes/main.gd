@@ -35,6 +35,8 @@ var info_locked: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
+	if user_preferences.has_default_path:
+		build_customer_options()
 	update_controls()
 	generate_folders_label()
 
@@ -98,14 +100,22 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Project name
 	project_name_label.disable(not (user_preferences.has_default_path and customer_name != "" and not info_locked))
 	project_name_edit.editable = user_preferences.has_default_path and customer_name != "" and not info_locked
+	if not project_name_label.is_disabled and project_name != "":
+		if path_has_conflict():
+			project_name_edit.modulate = Color(1,0.5,0,1)
+		else:
+			project_name_edit.modulate = Color(1,1,1,1)
 	
 	# Production type
 	production_type_label.disable(not (user_preferences.has_default_path and customer_name != "" and project_name != "" and not info_locked))
 	production_type_option.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and not info_locked)
 	
 	# Buttons
-	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1)
+	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and not path_has_conflict())
 	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and info_locked)
+
+func path_has_conflict() -> bool:
+	return DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name + "/" + project_name)
 
 func build_customer_options() -> void:
 	customer_option.clear()
@@ -125,11 +135,14 @@ func update_summary() -> void:
 	
 	summary_label.text += "\n" + "Project name : " + project_name
 	
+	if customer_name != "" and project_name != "":
+		summary_label.text += "\n" + "Chemin du projet : " + user_preferences.default_path + "/" + customer_name + "/" + project_name
+	
 	if production_type_option.selected > -1:
 		if production_type == ProductionType.EXTERNAL:
-			summary_label.text += "\n" + "External project"
+			summary_label.text += "\n" + "Client externe"
 		else:
-			summary_label.text += "\n" + "Internal project"
+			summary_label.text += "\n" + "Projet interne"
 	
 	summary_label.text += "\n"
 
