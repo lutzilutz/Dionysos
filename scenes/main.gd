@@ -7,6 +7,9 @@ enum ProductionType {
 
 const USER_PREF_PATH: String = "user://user_preferences.json"
 
+const TREE_DEFAULT: Color = Color(0.7, 0.7, 0.7, 1)
+const TREE_HIGHLIGHTED: Color = Color(0.8, 0.4, 0, 1)
+
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
@@ -24,11 +27,14 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var production_type_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption")
 
 @onready var audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioTitleLabel")
+@onready var production_audio_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine")
 @onready var production_audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioLabel")
 @onready var production_audio_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox")
-@onready var music_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicLabel")
+@onready var music_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine")
+@onready var music_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicLabel")
 @onready var music_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicCheckBox")
-@onready var audio_sfx_Label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXLabel")
+@onready var audio_sfx_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine")
+@onready var audio_sfx_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXLabel")
 @onready var audio_sfx_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox")
 
 @onready var video_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/VideoTitleLabel")
@@ -254,54 +260,100 @@ func add_new_folder(text: String) -> void:
 
 func update_hovering() -> void:
 	if user_preferences.has_default_path and not info_locked and customer_name != "" and project_name != "" and production_type_option.selected != -1:
+		reset_tree_highlights()
 		if control_hovered == daycount_line:
 			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
 			while tmp_tree_item != null:
-				tmp_tree_item.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
-				if tmp_tree_item.get_child_count() > 0:
-					for c in tmp_tree_item.get_children():
-						c.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
 				check_tree_item_for_daycount(tmp_tree_item)
 				tmp_tree_item = tmp_tree_item.get_next()
 		elif control_hovered == cameracount_line:
 			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
 			while tmp_tree_item != null:
-				tmp_tree_item.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
-				if tmp_tree_item.get_child_count() > 0:
-					for c in tmp_tree_item.get_children():
-						c.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
 				check_tree_item_for_cameracount(tmp_tree_item)
 				tmp_tree_item = tmp_tree_item.get_next()
 		elif control_hovered == vfx_line:
 			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
 			while tmp_tree_item != null:
-				tmp_tree_item.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
-				if tmp_tree_item.get_child_count() > 0:
-					for c in tmp_tree_item.get_children():
-						c.set_custom_color(0, Color.from_rgba8(179, 179, 179, 255))
 				check_tree_item_for_vfx(tmp_tree_item)
 				tmp_tree_item = tmp_tree_item.get_next()
+		elif control_hovered == production_audio_line:
+			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			while tmp_tree_item != null:
+				check_tree_item_for_production_audio(tmp_tree_item)
+				tmp_tree_item = tmp_tree_item.get_next()
+		elif control_hovered == music_line:
+			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			while tmp_tree_item != null:
+				check_tree_item_for_music(tmp_tree_item)
+				tmp_tree_item = tmp_tree_item.get_next()
+		elif control_hovered == audio_sfx_line:
+			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			while tmp_tree_item != null:
+				check_tree_item_for_audio_sfx(tmp_tree_item)
+				tmp_tree_item = tmp_tree_item.get_next()
+
+func reset_tree_highlights() -> void:
+	var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+	if folder_tree.get_root().get_child_count() > 0:
+		for c in folder_tree.get_root().get_children():
+			c.set_custom_color(0, TREE_DEFAULT)
+			if c.get_child_count() > 0:
+				for cc in c.get_children():
+					cc.set_custom_color(0, TREE_DEFAULT)
+					if cc.get_child_count() > 0:
+						for ccc in cc.get_children():
+							ccc.set_custom_color(0, TREE_DEFAULT)
+							if ccc.get_child_count() > 0:
+								for cccc in ccc.get_children():
+									cccc.set_custom_color(0, TREE_DEFAULT)
 
 func check_tree_item_for_daycount(tree_item: TreeItem) -> void:
 	if tree_item.get_text(0).find("Footage") != -1:
-		tree_item.set_custom_color(0, Color(1,0.5,0,1))
+		tree_item.set_custom_color(0, TREE_HIGHLIGHTED)
 		if tree_item.get_child_count() > 0:
 			for c in tree_item.get_children():
-				c.set_custom_color(0, Color(1,0.5,0,1))
+				c.set_custom_color(0, TREE_HIGHLIGHTED)
 
 func check_tree_item_for_cameracount(tree_item: TreeItem) -> void:
 	if tree_item.get_text(0).find("Footage") != -1:
-		tree_item.set_custom_color(0, Color(1,0.5,0,1))
+		tree_item.set_custom_color(0, TREE_HIGHLIGHTED)
 		if tree_item.get_child_count() > 0:
 			for c in tree_item.get_children():
-				c.set_custom_color(0, Color(1,0.5,0,1))
+				c.set_custom_color(0, TREE_HIGHLIGHTED)
 
 func check_tree_item_for_vfx(tree_item: TreeItem) -> void:
 	if tree_item.get_text(0).find("VFX") != -1:
-		tree_item.set_custom_color(0, Color(1,0.5,0,1))
+		tree_item.set_custom_color(0, TREE_HIGHLIGHTED)
 		if tree_item.get_child_count() > 0:
 			for c in tree_item.get_children():
-				c.set_custom_color(0, Color(1,0.5,0,1))
+				c.set_custom_color(0, TREE_HIGHLIGHTED)
+
+func check_tree_item_for_production_audio(tree_item: TreeItem) -> void:
+	if tree_item.get_text(0).find("Audio") != -1:
+		tree_item.set_custom_color(0, TREE_HIGHLIGHTED)
+		if tree_item.get_child_count() > 0:
+			for c in tree_item.get_children():
+				if c.get_text(0).find("Production audio") != -1:
+					c.set_custom_color(0, TREE_HIGHLIGHTED)
+
+func check_tree_item_for_music(tree_item: TreeItem) -> void:
+	if tree_item.get_text(0).find("Audio") != -1:
+		tree_item.set_custom_color(0, TREE_HIGHLIGHTED)
+		if tree_item.get_child_count() > 0:
+			for c in tree_item.get_children():
+				if c.get_text(0).find("Sound track") != -1:
+					c.set_custom_color(0, TREE_HIGHLIGHTED)
+					if c.get_child_count() > 0:
+						for cc in c.get_children():
+							cc.set_custom_color(0, TREE_HIGHLIGHTED)
+
+func check_tree_item_for_audio_sfx(tree_item: TreeItem) -> void:
+	if tree_item.get_text(0).find("Audio") != -1:
+		tree_item.set_custom_color(0, TREE_HIGHLIGHTED)
+		if tree_item.get_child_count() > 0:
+			for c in tree_item.get_children():
+				if c.get_text(0).find("SFX") != -1:
+					c.set_custom_color(0, TREE_HIGHLIGHTED)
 
 func update_controls() -> void: # Updating form controls depending how much user has filled it
 	
@@ -336,9 +388,9 @@ func update_controls() -> void: # Updating form controls depending how much user
 	audio_label.disable(not secondary_options_editable)
 	production_audio_label.disable(not secondary_options_editable)
 	production_audio_checkbox.disabled = not secondary_options_editable
-	music_Label.disable(not secondary_options_editable)
+	music_label.disable(not secondary_options_editable)
 	music_checkbox.disabled = not secondary_options_editable
-	audio_sfx_Label.disable(not secondary_options_editable)
+	audio_sfx_label.disable(not secondary_options_editable)
 	audio_sfx_checkbox.disabled = not secondary_options_editable
 	
 	# Video
@@ -538,15 +590,29 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 func _on_production_audio_check_box_toggled(toggled_on: bool) -> void:
 	use_production_audio = toggled_on
 	update_controls()
+	_on_production_audio_line_mouse_entered()
+
+func _on_production_audio_line_mouse_entered() -> void:
+	control_hovered = production_audio_line
+	update_hovering()
 
 func _on_music_check_box_toggled(toggled_on: bool) -> void:
 	use_music = toggled_on
 	update_controls()
+	_on_music_line_mouse_entered()
+
+func _on_music_line_mouse_entered() -> void:
+	control_hovered = music_line
+	update_hovering()
 
 func _on_audio_sfx_check_box_toggled(toggled_on: bool) -> void:
 	use_audio_sfx = toggled_on
 	update_controls()
+	_on_audio_sfx_line_mouse_entered()
 
+func _on_audio_sfx_line_mouse_entered() -> void:
+	control_hovered = audio_sfx_line
+	update_hovering()
 
 func _on_day_count_spin_value_changed(value: float) -> void:
 	daycount = value
