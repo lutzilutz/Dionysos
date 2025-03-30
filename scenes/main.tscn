@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h26jr")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="BackgroundLogoSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.0235294)
 position = Vector2(640, 360)
 scale = Vector2(0.4, 0.4)
@@ -51,9 +51,19 @@ item_1/id = 0
 
 [node name="EditMenu" type="PopupMenu" parent="Window/MenuBar"]
 auto_translate_mode = 1
-title = "Modifier"
+title = "Préférences"
+item_count = 2
+item_0/text = "Cacher logo Dry Kats"
+item_0/checkable = 1
+item_0/id = 1
+item_1/text = "Réinitialiser les préférences"
+item_1/id = 0
+
+[node name="HelpMenu" type="PopupMenu" parent="Window/MenuBar"]
+auto_translate_mode = 1
+title = "Aide"
 item_count = 1
-item_0/text = "Réinitialiser les préférences"
+item_0/text = "Aidez-moi !"
 item_0/id = 0
 
 [node name="WorkspaceHBox" type="HBoxContainer" parent="Window"]
@@ -125,15 +135,60 @@ popup/item_0/id = 0
 popup/item_1/text = "Projet interne"
 popup/item_1/id = 1
 
+[node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormVBox"]
+layout_mode = 2
+
+[node name="ProductionAudioLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormVBox"]
+layout_mode = 2
+
+[node name="ProductionAudioLabel" parent="Window/WorkspaceHBox/FormVBox/ProductionAudioLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Tournage avec audio"
+
+[node name="ProductionAudioCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormVBox/ProductionAudioLine"]
+modulate = Color(2, 2, 2, 1)
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+button_pressed = true
+
+[node name="MusicLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormVBox"]
+layout_mode = 2
+
+[node name="MusicLabel" parent="Window/WorkspaceHBox/FormVBox/MusicLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Utilisation de musique"
+
+[node name="MusicCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormVBox/MusicLine"]
+modulate = Color(2, 2, 2, 1)
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+button_pressed = true
+
+[node name="AudioSFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormVBox"]
+layout_mode = 2
+
+[node name="AudioSFXLabel" parent="Window/WorkspaceHBox/FormVBox/AudioSFXLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Bruitages audio SFX"
+
+[node name="AudioSFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormVBox/AudioSFXLine"]
+modulate = Color(2, 2, 2, 1)
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+button_pressed = true
+
+[node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormVBox"]
+layout_mode = 2
+
 [node name="PreGenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
-text = "Lock and Preview"
+text = "Verrouiller et prévisualiser"
 
 [node name="GenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormVBox"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
-text = "Generate Folders"
+text = "!!! Générer les dossiers !!!"
 
 [node name="Label" type="Label" parent="Window/WorkspaceHBox/FormVBox"]
 visible = false
@@ -152,6 +207,19 @@ theme = ExtResource("3_4krfr")
 
 [node name="SummaryFoldersVBox" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryVBox"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VersionLabel" type="Label" parent="."]
+modulate = Color(0.458405, 0.458405, 0.458405, 1)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -14.0
+offset_right = 62.0
+grow_vertical = 0
+theme = ExtResource("3_4krfr")
+text = "Version 0.1.0"
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
@@ -163,5 +231,8 @@ layout_mode = 2
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormVBox/ProductionAudioLine/ProductionAudioCheckBox" to="." method="_on_production_audio_check_box_toggled"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormVBox/MusicLine/MusicCheckBox" to="." method="_on_music_check_box_toggled"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]

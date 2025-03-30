@@ -9,6 +9,9 @@ const USER_PREF_PATH: String = "user://user_preferences.json"
 
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
+@onready var edit_menu = get_node("Window/MenuBar/EditMenu")
+@onready var background_logo_sprite = get_node("BackgroundLogoSprite")
+
 @onready var form_vbox = get_node("Window/WorkspaceHBox/FormVBox")
 @onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormVBox/ChooseFolderButton")
 @onready var customer_line = get_node("Window/WorkspaceHBox/FormVBox/CustomerLine")
@@ -19,8 +22,17 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var project_name_edit = get_node("Window/WorkspaceHBox/FormVBox/ProjectNameLine/ProjectNameEdit")
 @onready var production_type_label = get_node("Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeLabel")
 @onready var production_type_option = get_node("Window/WorkspaceHBox/FormVBox/ProductionTypeLine/ProductionTypeOption")
+
+@onready var production_audio_label = get_node("Window/WorkspaceHBox/FormVBox/ProductionAudioLine/ProductionAudioLabel")
+@onready var production_audio_checkbox = get_node("Window/WorkspaceHBox/FormVBox/ProductionAudioLine/ProductionAudioCheckBox")
+@onready var music_Label = get_node("Window/WorkspaceHBox/FormVBox/MusicLine/MusicLabel")
+@onready var music_checkbox = get_node("Window/WorkspaceHBox/FormVBox/MusicLine/MusicCheckBox")
+@onready var audio_sfx_Label = get_node("Window/WorkspaceHBox/FormVBox/AudioSFXLine/AudioSFXLabel")
+@onready var audio_sfx_checkbox = get_node("Window/WorkspaceHBox/FormVBox/AudioSFXLine/AudioSFXCheckBox")
+
 @onready var preview_folder_button = get_node("Window/WorkspaceHBox/FormVBox/PreGenerateFolderButton")
 @onready var generate_folder_button = get_node("Window/WorkspaceHBox/FormVBox/GenerateFolderButton")
+
 @onready var summary_vbox = get_node("Window/WorkspaceHBox/SummaryVBox")
 @onready var summary_label = get_node("Window/WorkspaceHBox/SummaryVBox/SummaryLabel")
 @onready var summary_folders_vbox = get_node("Window/WorkspaceHBox/SummaryVBox/SummaryFoldersVBox")
@@ -29,20 +41,19 @@ var user_preferences: UserPreferences
 var customer_name: String = ""
 var project_name: String = ""
 var production_type: ProductionType
+var use_production_audio: bool = true
+var use_music: bool = true
+var use_audio_sfx: bool = true
 var has_previewed: bool = false
 var info_locked: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
+	update_edit_hide_logo()
 	if user_preferences.has_default_path:
 		build_customer_options()
 	update_controls()
-	generate_folders_label()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
 
 func generate_folders_label() -> void:
 	for c in summary_folders_vbox.get_children():
@@ -50,12 +61,13 @@ func generate_folders_label() -> void:
 	add_new_folder("01 Preproduction")
 	add_new_folder("02 Production")
 	add_new_folder("03 Audio")
-	add_new_folder("          Production audio")
-	add_new_folder("          SFX")
-	add_new_folder("          Sound track")
-	add_new_folder("                    01 Sound track temp")
-	add_new_folder("                    02 Final licensed tracks")
-	add_new_folder("                    03 License agreements and contracts")
+	if use_production_audio: add_new_folder("          Production audio")
+	if use_audio_sfx: add_new_folder("          SFX")
+	if use_music:
+		add_new_folder("          Sound track")
+		add_new_folder("                    01 Sound track temp")
+		add_new_folder("                    02 Final licensed tracks")
+		add_new_folder("                    03 License agreements and contracts")
 	add_new_folder("04 Footage")
 	add_new_folder("          A001")
 	add_new_folder("05 VFX")
@@ -89,27 +101,40 @@ func add_new_folder(text: String) -> void:
 
 func update_controls() -> void: # Updating form controls depending how much user has filled it
 	
+	var customer_editable = user_preferences.has_default_path and not info_locked
+	var project_name_editable = customer_editable and customer_name != ""
+	var production_type_editable = project_name_editable and project_name != ""
+	var secondary_options_editable = production_type_editable and production_type_option.selected != -1
+	
 	# Choose folder button
 	choose_folder_button.disabled = info_locked
 	
 	# Customer name
-	customer_label.disable(not user_preferences.has_default_path or info_locked)
-	customer_option.disabled = not user_preferences.has_default_path or info_locked
-	customer_edit.editable = user_preferences.has_default_path and not info_locked
+	customer_label.disable(not customer_editable)
+	customer_option.disabled = not customer_editable
+	customer_edit.editable = customer_editable
 	customer_edit.visible = customer_option.selected == 0
 	
 	# Project name
-	project_name_label.disable(not (user_preferences.has_default_path and customer_name != "" and not info_locked))
-	project_name_edit.editable = user_preferences.has_default_path and customer_name != "" and not info_locked
-	if not project_name_label.is_disabled and project_name != "":
+	project_name_label.disable(not project_name_editable)
+	project_name_edit.editable = project_name_editable
+	if project_name_editable and project_name != "":
 		if path_has_conflict():
 			project_name_edit.modulate = Color(1,0.5,0,1)
 		else:
 			project_name_edit.modulate = Color(1,1,1,1)
 	
 	# Production type
-	production_type_label.disable(not (user_preferences.has_default_path and customer_name != "" and project_name != "" and not info_locked))
-	production_type_option.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and not info_locked)
+	production_type_label.disable(not production_type_editable)
+	production_type_option.disabled = not production_type_editable
+	
+	# Audio checkboxes
+	production_audio_label.disable(not secondary_options_editable)
+	production_audio_checkbox.disabled = not secondary_options_editable
+	music_Label.disable(not secondary_options_editable)
+	music_checkbox.disabled = not secondary_options_editable
+	audio_sfx_Label.disable(not secondary_options_editable)
+	audio_sfx_checkbox.disabled = not secondary_options_editable
 	
 	# Buttons
 	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and not path_has_conflict())
@@ -181,11 +206,11 @@ func _on_pre_generate_folder_button_pressed() -> void:
 		for e in summary_folders_vbox.get_children():
 			e.activate()
 		has_previewed = true
-		preview_folder_button.text = "Cancel"
+		preview_folder_button.text = "Annuler"
 	else:
 		for c in summary_folders_vbox.get_children():
 			c.desactivate()
-		preview_folder_button.text = "Lock and Preview"
+		preview_folder_button.text = "Verrouiller et prévisualiser"
 	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:
@@ -246,14 +271,24 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			project_name_edit.text = ""
 			project_name_edit.modulate = Color(1,1,1,1)
 			production_type_option.selected = -1
+			use_production_audio = true
+			production_audio_checkbox.button_pressed = true
+			use_music = true
+			music_checkbox.button_pressed = true
+			use_audio_sfx = true
+			audio_sfx_checkbox.button_pressed = true
 			info_locked = false
 			for c in summary_folders_vbox.get_children():
 				c.desactivate()
-			preview_folder_button.text = "Lock and Preview"
+			preview_folder_button.text = "Verrouiller et prévisualiser"
 			update_controls()
 			update_summary()
 		_:
 			PrintUtility.print_info("Unkown file menu option")
+
+func update_edit_hide_logo() -> void:
+	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_dry_kats_logo)
+	background_logo_sprite.visible = not user_preferences.hide_dry_kats_logo
 
 func _on_edit_menu_id_pressed(id: int) -> void:
 	match id:
@@ -262,7 +297,24 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			user_preferences.reset_user_preferences(USER_PREF_PATH)
 			project_name = ""
 			customer_name = ""
+			update_edit_hide_logo()
 			update_controls()
 			update_summary()
+		1:
+			user_preferences.hide_dry_kats_logo = not user_preferences.hide_dry_kats_logo
+			user_preferences.save_to_file(USER_PREF_PATH)
+			update_edit_hide_logo()
 		_:
 			PrintUtility.print_info("Unkown edition menu option")
+
+func _on_production_audio_check_box_toggled(toggled_on: bool) -> void:
+	use_production_audio = toggled_on
+	generate_folders_label()
+
+func _on_music_check_box_toggled(toggled_on: bool) -> void:
+	use_music = toggled_on
+	generate_folders_label()
+
+func _on_audio_sfx_check_box_toggled(toggled_on: bool) -> void:
+	use_audio_sfx = toggled_on
+	generate_folders_label()

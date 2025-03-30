@@ -26,4 +26,4 @@ window/per_pixel_transparency/allowed=true
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0.0728425, 0.0728427, 0.0728426, 1)
+environment/defaults/default_clear_color=Color(0.0687981, 0.0687984, 0.0687982, 1)

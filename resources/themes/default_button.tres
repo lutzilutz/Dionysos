@@ -1,7 +1,10 @@
-[gd_resource type="Theme" format=3 uid="uid://dltvaum6axc0k"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dltvaum6axc0k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agf87"]
 
 [resource]
 Button/font_sizes/font_size = 12
+Button/styles/focus = SubResource("StyleBoxEmpty_agf87")
 Label/font_sizes/font_size = 10
 LineEdit/font_sizes/font_size = 12
 MenuBar/font_sizes/font_size = 12
