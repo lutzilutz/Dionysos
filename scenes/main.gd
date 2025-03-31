@@ -507,15 +507,15 @@ func _on_pre_generate_folder_button_pressed() -> void:
 	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:
-	PrintUtility.print_info("Start generating folders ...")
-	var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
-	match result:
-		0:
-			PrintUtility.print_info("Success")
-		32:
-			PrintUtility.print_error("Folder already exists")
-		_:
-			PrintUtility.print_error("Unkown error : " + str(result))
+	PrintUtility.print_WIP("Start generating folders ...")
+	#var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
+	#match result:
+		#0:
+			#PrintUtility.print_info("Success")
+		#32:
+			#PrintUtility.print_error("Folder already exists")
+		#_:
+			#PrintUtility.print_error("Unkown error : " + str(result))
 
 
 func _on_customer_option_item_selected(index: int) -> void:
