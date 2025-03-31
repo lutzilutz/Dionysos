@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
-[ext_resource type="Texture2D" uid="uid://crms50xqmr4hi" path="res://resources/branding/Dionysos logo v01.png" id="2_tefeu"]
+[ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
 [ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="4_tefeu"]

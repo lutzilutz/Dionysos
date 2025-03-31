@@ -14,7 +14,7 @@ config/name="DK Dionysos"
 config/version="0.1.1"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="uid://cld3csx6b0wyj"
+config/icon="uid://bmilsg2l8tatg"
 
 [display]
 
