@@ -9,6 +9,8 @@ signal tutorial_ended
 @onready var tutorial_faq = get_node("VBoxContainer/TutorialContainer/TutorialFAQ")
 @onready var tutorial_outro = get_node("VBoxContainer/TutorialContainer/TutorialOutro")
 
+@onready var page_label = get_node("VBoxContainer/PageLabel")
+
 @onready var previous_button = get_node("VBoxContainer/MarginContainer/CenterContainer/Buttons/PreviousButton")
 @onready var next_button = get_node("VBoxContainer/MarginContainer/CenterContainer/Buttons/NextButton")
 
@@ -61,6 +63,7 @@ func reset_tutorial() -> void:
 	for c in tutorial_container.get_children():
 		c.visible = false
 	tutorial_intro.visible = true
+	update_controls()
 
 func update_visibility() -> void:
 	for c in tutorial_container.get_children():
@@ -68,6 +71,7 @@ func update_visibility() -> void:
 	tutorial_container.get_children()[page_index].visible = true
 
 func update_controls() -> void:
+	page_label.text = str(page_index+1) + "/" + str(page_count)
 	previous_button.visible = page_index > 0
 	next_button.text = "Suivant" if page_index < page_count-1 else "Terminer"
 

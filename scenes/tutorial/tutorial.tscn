@@ -27,8 +27,9 @@ grow_vertical = 2
 color = Color(0.0705882, 0.0705882, 0.0705882, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.127)
+modulate = Color(1, 1, 1, 0.083)
 position = Vector2(640, 360)
+scale = Vector2(1.14, 1.14)
 texture = ExtResource("2_g7eoy")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -62,9 +63,14 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
+[node name="PageLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "x/x"
+horizontal_alignment = 1
+
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_top = 9
 theme_override_constants/margin_bottom = 50
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/MarginContainer"]

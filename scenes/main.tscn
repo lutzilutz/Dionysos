@@ -336,7 +336,7 @@ offset_top = -14.0
 offset_right = 62.0
 grow_vertical = 0
 theme = ExtResource("3_4krfr")
-text = "Version 0.1.0"
+text = "Version x.x.x"
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
