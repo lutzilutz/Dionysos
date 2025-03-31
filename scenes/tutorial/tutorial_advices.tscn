@@ -5,7 +5,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lmuui"]
 
-[node name="Tutorial002" type="VBoxContainer"]
+[node name="TutorialAdvices" type="VBoxContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -27,7 +27,7 @@ text = "> Préparer un dossier (n'importe où sur ton ordinateur) contenant uniq
 autowrap_mode = 2
 
 [node name="FolderTree" type="Tree" parent="."]
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 233.685)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_7aklf")

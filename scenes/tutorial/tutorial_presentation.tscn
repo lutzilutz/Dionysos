@@ -1,27 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://bold22vhsyo8q"]
+[gd_scene load_steps=3 format=3 uid="uid://c5mu5ctyftsii"]
 
-[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_w1bod"]
+[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_lancu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nnl2y"]
 
-[node name="Tutorial001_Intro" type="VBoxContainer"]
+[node name="TutorialPresentation" type="VBoxContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="WelcomeLabel" type="Label" parent="."]
 layout_mode = 2
-theme = ExtResource("1_w1bod")
-text = "Bienvenue sur Dionysos"
-horizontal_alignment = 1
-
-[node name="ByDKLabel" type="Label" parent="."]
-layout_mode = 2
-text = "Un logiciel Dry Kats"
+theme = ExtResource("1_lancu")
+text = "Présentation"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 74
+theme_override_constants/separation = 50
 theme_override_styles/separator = SubResource("StyleBoxEmpty_nnl2y")
 
 [node name="BodyText" type="Label" parent="."]
@@ -31,6 +26,8 @@ text = "Ce logiciel te permettra de créer une structure de dossier pour un nouv
 
 Tu auras besoin d'avoir avec toi le nom du client, ainsi que le nom temporaire du projet.
 
-Il y a plusieurs options possibles. Dans le doute, laisser les valeurs par défaut."
+Il y a plusieurs options possibles. Dans le doute, laisser les valeurs par défaut.
+
+Pour le moment ce logiciel n'a pas d'autres fonctionnalités. Suivant les besoins de Dry Kats, d'autres features pourraient venir plus tard (génération de liste de matériel pour tournage, par exemple)."
 horizontal_alignment = 1
 autowrap_mode = 2

@@ -4,7 +4,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nnl2y"]
 
-[node name="Tutorial999_Outro" type="VBoxContainer"]
+[node name="TutorialOutro" type="VBoxContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
 

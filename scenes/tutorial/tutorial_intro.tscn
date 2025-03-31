@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://bold22vhsyo8q"]
+
+[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_w1bod"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nnl2y"]
+
+[sub_resource type="FontVariation" id="FontVariation_w1bod"]
+variation_transform = Transform2D(1, 0.28, 0, 1, 0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nnl2y"]
+font = SubResource("FontVariation_w1bod")
+font_color = Color(0.605274, 0.605274, 0.605274, 1)
+
+[node name="TutorialIntro" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WelcomeLabel" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_w1bod")
+text = "Bienvenue sur Dionysos"
+horizontal_alignment = 1
+
+[node name="ByDKLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Un logiciel Dry Kats"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 50
+theme_override_styles/separator = SubResource("StyleBoxEmpty_nnl2y")
+
+[node name="ByDKLabel2" type="Label" parent="."]
+layout_mode = 2
+text = "And the God of Frenzy saw the 3-eyed beast
+Searching in its numerous folders for a forgotten file.
+Dionysos eyes brightened up with a flame of pure joy, and said :
+\"Hey beast, want more folders ?\""
+label_settings = SubResource("LabelSettings_nnl2y")
+horizontal_alignment = 1

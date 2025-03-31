@@ -3,9 +3,11 @@ extends Control
 signal tutorial_ended
 
 @onready var tutorial_container = get_node("VBoxContainer/TutorialContainer")
-@onready var tutorial_001 = get_node("VBoxContainer/TutorialContainer/Tutorial001_Intro")
-@onready var tutorial_002 = get_node("VBoxContainer/TutorialContainer/Tutorial002")
-@onready var tutorial_999 = get_node("VBoxContainer/TutorialContainer/Tutorial999_Outro")
+@onready var tutorial_intro = get_node("VBoxContainer/TutorialContainer/TutorialIntro")
+@onready var tutorial_presentation = get_node("VBoxContainer/TutorialContainer/TutorialPresentation")
+@onready var tutorial_advices = get_node("VBoxContainer/TutorialContainer/TutorialAdvices")
+@onready var tutorial_faq = get_node("VBoxContainer/TutorialContainer/TutorialFAQ")
+@onready var tutorial_outro = get_node("VBoxContainer/TutorialContainer/TutorialOutro")
 
 @onready var previous_button = get_node("VBoxContainer/MarginContainer/CenterContainer/Buttons/PreviousButton")
 @onready var next_button = get_node("VBoxContainer/MarginContainer/CenterContainer/Buttons/NextButton")
@@ -27,7 +29,7 @@ func _ready() -> void:
 	initialize_tuto_pages()
 
 func initialize_tuto_pages() -> void:
-	var tree = tutorial_002.get_node("FolderTree")
+	var tree = tutorial_advices.get_node("FolderTree")
 	var root = tree.create_item()
 	root.set_text(0, "Ton dossier vidéo")
 	
@@ -58,7 +60,7 @@ func reset_tutorial() -> void:
 	page_count = tutorial_container.get_child_count()
 	for c in tutorial_container.get_children():
 		c.visible = false
-	tutorial_001.visible = true
+	tutorial_intro.visible = true
 
 func update_visibility() -> void:
 	for c in tutorial_container.get_children():

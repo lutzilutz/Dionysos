@@ -20,7 +20,8 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
 
 @onready var form_vbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox")
-@onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderButton")
+@onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton")
+@onready var choose_folder_result = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderResult")
 @onready var customer_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine")
 @onready var customer_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerLabel")
 @onready var customer_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerOption")
@@ -381,6 +382,8 @@ func update_controls() -> void: # Updating form controls depending how much user
 	
 	# Choose folder button
 	choose_folder_button.disabled = info_locked
+	choose_folder_result.text = user_preferences.default_path
+	choose_folder_result.tooltip_text = user_preferences.default_path
 	
 	# Customer name
 	customer_label.disable(not customer_editable)
