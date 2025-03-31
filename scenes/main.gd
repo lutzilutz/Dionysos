@@ -18,6 +18,7 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
+@onready var preferences_dialog = get_node("PreferencesDialog")
 
 @onready var form_vbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox")
 @onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton")
@@ -94,6 +95,16 @@ func _ready() -> void:
 	if user_preferences.has_default_path:
 		build_customer_options()
 	update_controls()
+	update_preferences_dialog()
+
+func update_preferences_dialog() -> void:
+	var label = get_node("PreferencesDialog/PreferencesLabel")
+	label.text = "Chemin du dossier : " + user_preferences.default_path
+	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
+	label.text += "\nClients : " + str(user_preferences.customers)
+	label.text += "\nCacher logo : " + str(user_preferences.hide_dry_kats_logo)
+	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
+	label.text += "\nA vu le tutoriel : " + str(user_preferences.has_seen_tutorial)
 
 func _on_tutorial_ended() -> void:
 	user_preferences.has_seen_tutorial = true
@@ -613,6 +624,9 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			user_preferences.show_highlights = not user_preferences.show_highlights
 			user_preferences.save_to_file(USER_PREF_PATH)
 			update_edit_show_highlights()
+		4: # Show preferences summary
+			update_preferences_dialog()
+			preferences_dialog.visible = true
 		_:
 			PrintUtility.print_info("Unkown edition menu option")
 
