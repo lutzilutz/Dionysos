@@ -13,9 +13,7 @@ const TREE_HIGHLIGHTED: Color = Color(0.8, 0.4, 0, 1)
 @export var checked_color: Color = Color(0,1,0)
 @export var warning_color: Color = Color(1,0.5,0)
 
-const CURRENT_VERSION: String = "0.1.1"
-
-var FolderLabel = preload("res://scenes/folder_label.tscn")
+#const CURRENT_VERSION: String = "0.1.1"
 
 var empty_texture: Texture2D = preload("res://resources/icons/empty_16.png")
 var error_texture: Texture2D = preload("res://resources/icons/cancel_16.png")
@@ -126,45 +124,6 @@ func _on_tutorial_ended() -> void:
 func update_tutorial_screen() -> void:
 	tutorial.reset_tutorial()
 	tutorial.visible = not user_preferences.has_seen_tutorial
-
-func generate_folders_label() -> void:
-	for c in summary_folders_vbox.get_children():
-		c.queue_free()
-	add_new_folder("01 Preproduction")
-	add_new_folder("02 Production")
-	add_new_folder("03 Audio")
-	if use_production_audio: add_new_folder("          Production audio")
-	if use_audio_sfx: add_new_folder("          SFX")
-	if use_music:
-		add_new_folder("          Sound track")
-		add_new_folder("                    01 Sound track temp")
-		add_new_folder("                    02 Final licensed tracks")
-		add_new_folder("                    03 License agreements and contracts")
-	add_new_folder("04 Footage")
-	add_new_folder("          A001")
-	add_new_folder("05 VFX")
-	add_new_folder("          Shots")
-	add_new_folder("06 Assets")
-	add_new_folder("          00 Drop-box")
-	add_new_folder("          01 Logo and branding")
-	add_new_folder("          02 Branding guidelines")
-	add_new_folder("07 Working renders")
-	if production_type == ProductionType.EXTERNAL:
-		add_new_folder("          Offline drafts")
-		add_new_folder("          Online drafts")
-	else:
-		add_new_folder("          Drafts")
-	add_new_folder("          Process renders")
-	add_new_folder("          Screenshots")
-	add_new_folder("08 Final renders")
-	add_new_folder("09 Working edit files")
-	add_new_folder("10 DaVinci project archive")
-	add_new_folder("11 Notes")
-	add_new_folder("          Director notes")
-	add_new_folder("          Editor notes")
-	add_new_folder("          Production notes")
-	add_new_folder("          PVs and transcriptions")
-	add_new_folder("00 Vous etes ici - lisez-moi.txt")
 
 func generate_folders_tree() -> void:
 	var folder_id: int = 1
@@ -292,11 +251,6 @@ func generate_folders_tree() -> void:
 	var rm_string: String = "00 Vous etes ici - lisez-moi.txt"
 	rm_folder.set_text(0, rm_string)
 	folder_id += 1
-
-func add_new_folder(text: String) -> void:
-	var temp_label = FolderLabel.instantiate()
-	temp_label.text = text
-	summary_folders_vbox.add_child(temp_label)
 
 func update_hovering() -> void:
 	if user_preferences.has_default_path and not info_locked and customer_name != "" and project_name != "" and production_type_option.selected != -1 and user_preferences.show_highlights:
@@ -580,7 +534,6 @@ func _on_production_type_option_item_selected(index: int) -> void:
 			production_type = ProductionType.INTERNAL
 	update_controls()
 	update_summary()
-	generate_folders_label()
 
 # MenuBar signals =================================================================================
 
