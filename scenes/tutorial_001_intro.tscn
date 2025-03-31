@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://bold22vhsyo8q"]
+
+[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_w1bod"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nnl2y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_poi8u"]
+
+[node name="Tutorial001_Intro" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WelcomeLabel" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_w1bod")
+text = "Bienvenue sur Dionysos"
+horizontal_alignment = 1
+
+[node name="ByDKLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Un logiciel Dry Kats"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 74
+theme_override_styles/separator = SubResource("StyleBoxEmpty_nnl2y")
+
+[node name="BodyText" type="Label" parent="."]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+text = "Ce logiciel te permettra de créer une structure de dossier pour un nouveau projet vidéo, sur ton ordinateur.
+
+Tu auras besoin d'avoir avec toi le nom du client, ainsi que le nom temporaire du projet.
+
+Il y a plusieurs options possibles. Dans le doute, laisser les valeurs par défaut."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 74
+theme_override_styles/separator = SubResource("StyleBoxEmpty_nnl2y")
+
+[node name="NextButton" type="Button" parent="."]
+modulate = Color(2, 2, 2, 1)
+custom_minimum_size = Vector2(137.81, 40.14)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = SubResource("StyleBoxEmpty_poi8u")
+text = "Suivant"

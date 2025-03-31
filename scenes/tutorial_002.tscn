@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bejqrbt876jdl"]
+
+[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_lmuui"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_poi8u"]
+
+[node name="Tutorial002" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WelcomeLabel" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_lmuui")
+text = "Page 2"
+horizontal_alignment = 1
+
+[node name="NextButton" type="Button" parent="."]
+modulate = Color(2, 2, 2, 1)
+custom_minimum_size = Vector2(137.81, 40.14)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = SubResource("StyleBoxEmpty_poi8u")
+text = "Suivant"

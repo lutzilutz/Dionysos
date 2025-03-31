@@ -10,6 +10,8 @@ const USER_PREF_PATH: String = "user://user_preferences.json"
 const TREE_DEFAULT: Color = Color(0.7, 0.7, 0.7, 1)
 const TREE_HIGHLIGHTED: Color = Color(0.8, 0.4, 0, 1)
 
+const CURRENT_VERSION: String = "0.1.1"
+
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
 @onready var tutorial = get_node("Tutorial")
@@ -60,6 +62,8 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 
 @onready var folder_tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
 
+@onready var version_label = get_node("VersionLabel")
+
 var user_preferences: UserPreferences
 var customer_name: String = ""
 var project_name: String = ""
@@ -79,6 +83,8 @@ var control_hovered
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	version_label.set_text("Version " + ProjectSettings.get_setting("application/config/version"))
+	
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
 	tutorial.tutorial_ended.connect(_on_tutorial_ended)
 	update_tutorial_screen()
