@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=9 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="3_4krfr"]
 [ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="4_tefeu"]
-[ext_resource type="Texture2D" uid="uid://cu2wifmjgnga8" path="res://resources/icons/checked_64.png" id="6_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://dy0vbm26sh3nt" path="res://resources/icons/checked_16.png" id="6_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://chx2gfya25vkc" path="res://scenes/tutorial/tutorial.tscn" id="6_tefeu"]
+[ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="7_tipki"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -89,6 +90,7 @@ size_flags_vertical = 3
 [node name="FormContainer" type="MarginContainer" parent="Window/WorkspaceHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.4
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -129,7 +131,7 @@ text_overrun_behavior = 3
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
-expand_mode = 3
+stretch_mode = 5
 
 [node name="CustomerLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
@@ -155,8 +157,8 @@ placeholder_text = "Entrer le nom du client ici ..."
 [node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
-texture = ExtResource("6_o6xl0")
-expand_mode = 3
+texture = ExtResource("7_tipki")
+stretch_mode = 5
 
 [node name="ProjectNameLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
@@ -175,7 +177,7 @@ placeholder_text = "Entrer le nom du projet ici ..."
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
-expand_mode = 3
+stretch_mode = 5
 
 [node name="ProductionTypeLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
@@ -198,10 +200,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine"]
-modulate = Color(0, 0.52, 0, 1)
+modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
-expand_mode = 3
 stretch_mode = 5
 
 [node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]

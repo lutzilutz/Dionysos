@@ -10,12 +10,16 @@ const USER_PREF_PATH: String = "user://user_preferences.json"
 const TREE_DEFAULT: Color = Color(0.7, 0.7, 0.7, 1)
 const TREE_HIGHLIGHTED: Color = Color(0.8, 0.4, 0, 1)
 
+@export var checked_color: Color = Color(0,1,0)
+@export var warning_color: Color = Color(1,0.5,0)
+
 const CURRENT_VERSION: String = "0.1.1"
 
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
-var error_texture: Texture2D = preload("res://resources/icons/cancel_64.png")
-var checked_texture: Texture2D = preload("res://resources/icons/checked_64.png")
+var empty_texture: Texture2D = preload("res://resources/icons/empty_16.png")
+var error_texture: Texture2D = preload("res://resources/icons/cancel_16.png")
+var checked_texture: Texture2D = preload("res://resources/icons/checked_16.png")
 
 @onready var tutorial = get_node("Tutorial")
 
@@ -403,13 +407,15 @@ func update_controls() -> void: # Updating form controls depending how much user
 	choose_folder_label.disable(info_locked)
 	choose_folder_result.text = user_preferences.default_path
 	choose_folder_result.tooltip_text = user_preferences.default_path
-	choose_folder_line.get_node("LineIcon").visible = customer_editable
+	choose_folder_line.get_node("LineIcon").texture = checked_texture if customer_editable else empty_texture
+	choose_folder_line.get_node("LineIcon").modulate = checked_color
 	
 	# Customer name
 	customer_label.disable(not customer_editable)
 	customer_option.disabled = not customer_editable
 	customer_edit.editable = customer_editable and customer_option.selected == 0
-	customer_line.get_node("LineIcon").visible = project_name_editable
+	customer_line.get_node("LineIcon").texture = checked_texture if project_name_editable else empty_texture
+	customer_line.get_node("LineIcon").modulate = checked_color
 	
 	# Project name
 	project_name_label.disable(not project_name_editable)
@@ -418,17 +424,19 @@ func update_controls() -> void: # Updating form controls depending how much user
 		if path_has_conflict():
 			project_name_edit.modulate = Color(1,0.5,0,1)
 			project_name_line.get_node("LineIcon").texture = error_texture
-			project_name_line.get_node("LineIcon").modulate = Color(0.8,0.4,0)
+			project_name_line.get_node("LineIcon").modulate = warning_color
 		else:
 			project_name_edit.modulate = Color(1,1,1,1)
 			project_name_line.get_node("LineIcon").texture = checked_texture
-			project_name_line.get_node("LineIcon").modulate = Color(0,0.5,0)
-	project_name_line.get_node("LineIcon").visible = production_type_editable
+			project_name_line.get_node("LineIcon").modulate = checked_color
+	if not production_type_editable:
+		project_name_line.get_node("LineIcon").texture = empty_texture
 	
 	# Production type
 	production_type_label.disable(not production_type_editable)
 	production_type_option.disabled = not production_type_editable
-	production_type_line.get_node("LineIcon").visible = secondary_options_editable
+	production_type_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
+	production_type_line.get_node("LineIcon").modulate = checked_color
 	
 	# Audio checkboxes
 	audio_label.disable(not secondary_options_editable)
