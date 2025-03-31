@@ -14,6 +14,9 @@ const CURRENT_VERSION: String = "0.1.1"
 
 var FolderLabel = preload("res://scenes/folder_label.tscn")
 
+var error_texture: Texture2D = preload("res://resources/icons/cancel_64.png")
+var checked_texture: Texture2D = preload("res://resources/icons/checked_64.png")
+
 @onready var tutorial = get_node("Tutorial")
 
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
@@ -414,8 +417,12 @@ func update_controls() -> void: # Updating form controls depending how much user
 	if project_name_editable and project_name != "":
 		if path_has_conflict():
 			project_name_edit.modulate = Color(1,0.5,0,1)
+			project_name_line.get_node("LineIcon").texture = error_texture
+			project_name_line.get_node("LineIcon").modulate = Color(0.8,0.4,0)
 		else:
 			project_name_edit.modulate = Color(1,1,1,1)
+			project_name_line.get_node("LineIcon").texture = checked_texture
+			project_name_line.get_node("LineIcon").modulate = Color(0,0.5,0)
 	project_name_line.get_node("LineIcon").visible = production_type_editable
 	
 	# Production type
