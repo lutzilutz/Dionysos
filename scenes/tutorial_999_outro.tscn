@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://djhsfawi8fbmt"]
+
+[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_4upqt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nnl2y"]
+
+[node name="Tutorial999_Outro" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_4upqt")
+text = "C'est parti !"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 74
+theme_override_styles/separator = SubResource("StyleBoxEmpty_nnl2y")
+
+[node name="BodyText" type="Label" parent="."]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+text = "Tu as fini le tutoriel.
+
+En cas de problème ou bug avec le logiciel, contacte Lutz !
+
+Bon travail :D"
+horizontal_alignment = 1
+autowrap_mode = 2

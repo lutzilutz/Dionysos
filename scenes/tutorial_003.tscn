@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfpu4utbaxbvj"]
+
+[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_oousi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lmuui"]
+
+[node name="Tutorial003" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_oousi")
+text = "FAQ"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 74
+theme_override_styles/separator = SubResource("StyleBoxEmpty_lmuui")
+
+[node name="BodyText" type="Label" parent="."]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+text = "[A venir]"
+horizontal_alignment = 1
+autowrap_mode = 2
