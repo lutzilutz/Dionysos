@@ -115,10 +115,11 @@ text = "Choose Folder"
 [node name="ChooseFolderResult" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "xasd"
+mouse_filter = 0
 theme_override_colors/font_color = Color(0.548963, 0.548963, 0.548963, 1)
 theme_override_font_sizes/font_size = 10
 clip_text = true
+text_overrun_behavior = 3
 
 [node name="CustomerLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
