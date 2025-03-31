@@ -17,6 +17,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h26jr")
+checked_color = Color(0, 0.66, 0, 1)
+warning_color = Color(0.88, 0.44, 0, 1)
 
 [node name="BackgroundLogoSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.061)
@@ -157,7 +159,7 @@ placeholder_text = "Entrer le nom du client ici ..."
 [node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
-texture = ExtResource("7_tipki")
+texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
 [node name="ProjectNameLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
@@ -228,6 +230,13 @@ max_value = 10.0
 value = 1.0
 allow_greater = true
 
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
 [node name="CameraCountLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
@@ -243,6 +252,13 @@ min_value = 1.0
 max_value = 26.0
 value = 1.0
 
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
 [node name="VFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
@@ -255,6 +271,13 @@ modulate = Color(2, 2, 2, 1)
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
 
 [node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
@@ -276,6 +299,13 @@ layout_mode = 2
 theme = ExtResource("3_4krfr")
 button_pressed = true
 
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
 [node name="MusicLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
@@ -289,6 +319,13 @@ layout_mode = 2
 theme = ExtResource("3_4krfr")
 button_pressed = true
 
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
 [node name="AudioSFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
@@ -301,6 +338,13 @@ modulate = Color(2, 2, 2, 1)
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
 
 [node name="HSeparator3" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2

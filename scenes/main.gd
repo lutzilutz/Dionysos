@@ -20,6 +20,7 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 var empty_texture: Texture2D = preload("res://resources/icons/empty_16.png")
 var error_texture: Texture2D = preload("res://resources/icons/cancel_16.png")
 var checked_texture: Texture2D = preload("res://resources/icons/checked_16.png")
+var information_texture: Texture2D = preload("res://resources/icons/information_16.png")
 
 @onready var tutorial = get_node("Tutorial")
 
@@ -660,8 +661,13 @@ func _on_help_menu_id_pressed(id: int) -> void:
 			user_preferences.save_to_file(USER_PREF_PATH)
 			update_tutorial_screen()
 
+func update_line_icon(line, value: bool) -> void:
+	line.get_node("LineIcon").texture = empty_texture if value else information_texture
+	line.get_node("LineIcon").tooltip_text = "" if value else "Cette valeur a été modifiée"
+
 func _on_production_audio_check_box_toggled(toggled_on: bool) -> void:
 	use_production_audio = toggled_on
+	update_line_icon(production_audio_line, toggled_on)
 	update_controls()
 	_on_production_audio_line_mouse_entered()
 
@@ -671,6 +677,7 @@ func _on_production_audio_line_mouse_entered() -> void:
 
 func _on_music_check_box_toggled(toggled_on: bool) -> void:
 	use_music = toggled_on
+	update_line_icon(music_line, toggled_on)
 	update_controls()
 	_on_music_line_mouse_entered()
 
@@ -680,6 +687,7 @@ func _on_music_line_mouse_entered() -> void:
 
 func _on_audio_sfx_check_box_toggled(toggled_on: bool) -> void:
 	use_audio_sfx = toggled_on
+	update_line_icon(audio_sfx_line, toggled_on)
 	update_controls()
 	_on_audio_sfx_line_mouse_entered()
 
@@ -689,6 +697,7 @@ func _on_audio_sfx_line_mouse_entered() -> void:
 
 func _on_day_count_spin_value_changed(value: float) -> void:
 	daycount = value
+	update_line_icon(daycount_line, value == 1)
 	update_controls()
 	_on_day_count_line_mouse_entered()
 
@@ -698,6 +707,7 @@ func _on_day_count_line_mouse_entered() -> void:
 
 func _on_camera_count_spin_value_changed(value: float) -> void:
 	cameracount = value
+	update_line_icon(cameracount_line, value == 1)
 	update_controls()
 	_on_camera_count_line_mouse_entered()
 
@@ -707,6 +717,7 @@ func _on_camera_count_line_mouse_entered() -> void:
 
 func _on_vfx_check_box_toggled(toggled_on: bool) -> void:
 	use_vfx = toggled_on
+	update_line_icon(vfx_line, toggled_on)
 	update_controls()
 	_on_vfx_line_mouse_entered()
 
