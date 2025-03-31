@@ -21,14 +21,18 @@ var FolderLabel = preload("res://scenes/folder_label.tscn")
 @onready var preferences_dialog = get_node("PreferencesDialog")
 
 @onready var form_vbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox")
+@onready var choose_folder_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine")
+@onready var choose_folder_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderLabel")
 @onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton")
 @onready var choose_folder_result = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderResult")
 @onready var customer_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine")
 @onready var customer_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerLabel")
 @onready var customer_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerOption")
 @onready var customer_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerEdit")
+@onready var project_name_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine")
 @onready var project_name_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameLabel")
 @onready var project_name_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit")
+@onready var production_type_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine")
 @onready var production_type_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeLabel")
 @onready var production_type_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption")
 
@@ -393,14 +397,16 @@ func update_controls() -> void: # Updating form controls depending how much user
 	
 	# Choose folder button
 	choose_folder_button.disabled = info_locked
+	choose_folder_label.disable(info_locked)
 	choose_folder_result.text = user_preferences.default_path
 	choose_folder_result.tooltip_text = user_preferences.default_path
+	choose_folder_line.get_node("LineIcon").visible = customer_editable
 	
 	# Customer name
 	customer_label.disable(not customer_editable)
 	customer_option.disabled = not customer_editable
-	customer_edit.editable = customer_editable
-	customer_edit.visible = customer_option.selected == 0
+	customer_edit.editable = customer_editable and customer_option.selected == 0
+	customer_line.get_node("LineIcon").visible = project_name_editable
 	
 	# Project name
 	project_name_label.disable(not project_name_editable)
@@ -410,10 +416,12 @@ func update_controls() -> void: # Updating form controls depending how much user
 			project_name_edit.modulate = Color(1,0.5,0,1)
 		else:
 			project_name_edit.modulate = Color(1,1,1,1)
+	project_name_line.get_node("LineIcon").visible = production_type_editable
 	
 	# Production type
 	production_type_label.disable(not production_type_editable)
 	production_type_option.disabled = not production_type_editable
+	production_type_line.get_node("LineIcon").visible = secondary_options_editable
 	
 	# Audio checkboxes
 	audio_label.disable(not secondary_options_editable)
@@ -531,10 +539,8 @@ func _on_generate_folder_button_pressed() -> void:
 
 func _on_customer_option_item_selected(index: int) -> void:
 	if index == 0:
-		customer_edit.visible = true
 		customer_name = customer_edit.text
 	else:
-		customer_edit.visible = false
 		customer_name = customer_option.get_item_text(index)
 	update_controls()
 	update_summary()

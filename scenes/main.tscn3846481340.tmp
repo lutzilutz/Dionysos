@@ -97,7 +97,6 @@ theme_override_constants/margin_bottom = 10
 [node name="FormVBox" type="VBoxContainer" parent="Window/WorkspaceHBox/FormContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 6
 
 [node name="GeneralTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
 layout_mode = 2
@@ -106,7 +105,7 @@ text = "Informations générales"
 [node name="ChooseFolderLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 
-[node name="ChooseFolderLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
+[node name="CustomerLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Dossier racine des projets"
 
