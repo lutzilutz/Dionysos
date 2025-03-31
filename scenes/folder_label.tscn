@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cmr2hrl5555gh"]
 
-[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="1_mb0pr"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="1_mb0pr"]
 [ext_resource type="Script" uid="uid://ygdlpeau836b" path="res://scenes/folder_label.gd" id="2_dc3cl"]
 
 [node name="Label" type="Label"]

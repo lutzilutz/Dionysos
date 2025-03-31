@@ -1,0 +1,21 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://dyrjygu16dfdq"]
+
+[ext_resource type="StyleBox" uid="uid://dgpe75fde3yuo" path="res://resources/themes/styleboxes/stylebox_empty.tres" id="1_6pn1i"]
+[ext_resource type="StyleBox" uid="uid://donpj1tb6rmvg" path="res://resources/themes/styleboxes/ui/default_stylebox_ui_hovered.tres" id="1_r5rtp"]
+[ext_resource type="StyleBox" uid="uid://dg2in2uye2y34" path="res://resources/themes/styleboxes/ui/default_stylebox_ui_normal.tres" id="2_03wx3"]
+[ext_resource type="StyleBox" uid="uid://cugp2we2yubvx" path="res://resources/themes/styleboxes/ui/default_stylebox_ui_pressed.tres" id="4_kr4kt"]
+
+[resource]
+Button/font_sizes/font_size = 12
+Button/styles/disabled = ExtResource("4_kr4kt")
+Button/styles/focus = ExtResource("1_6pn1i")
+Button/styles/hover = ExtResource("1_r5rtp")
+Button/styles/normal = ExtResource("2_03wx3")
+Button/styles/pressed = ExtResource("4_kr4kt")
+LineEdit/font_sizes/font_size = 12
+LineEdit/styles/focus = ExtResource("1_r5rtp")
+LineEdit/styles/normal = ExtResource("2_03wx3")
+LineEdit/styles/read_only = ExtResource("4_kr4kt")
+OptionButton/font_sizes/font_size = 12
+PopupMenu/font_sizes/font_size = 12
+PopupMenu/styles/panel = ExtResource("2_03wx3")

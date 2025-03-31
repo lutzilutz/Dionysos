@@ -171,7 +171,8 @@ func generate_folders_tree() -> void:
 	var tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
 	tree.clear()
 	var root = tree.create_item()
-	tree.hide_root = true
+	root.set_text(0, user_preferences.default_path + customer_name + "/" + project_name)
+	#tree.hide_root = true
 	
 	# Preproduction
 	var preprod_folder: TreeItem = tree.create_item(root)

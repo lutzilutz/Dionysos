@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bejqrbt876jdl"]
 
 [ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_lmuui"]
-[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_button.tres" id="2_7aklf"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_7aklf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lmuui"]
 

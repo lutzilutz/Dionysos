@@ -1,8 +1,4 @@
-[gd_resource type="Theme" load_steps=15 format=3 uid="uid://dltvaum6axc0k"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agf87"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d0fb5"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://dltvaum6axc0k"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mvy8b"]
 
@@ -29,14 +25,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ka0j"]
 
 [resource]
-Button/font_sizes/font_size = 14
-Button/styles/focus = SubResource("StyleBoxEmpty_agf87")
 Label/font_sizes/font_size = 10
-LineEdit/font_sizes/font_size = 10
-LineEdit/styles/focus = SubResource("StyleBoxEmpty_d0fb5")
-MenuBar/font_sizes/font_size = 12
-OptionButton/font_sizes/font_size = 10
-PopupMenu/font_sizes/font_size = 10
 Tree/font_sizes/font_size = 10
 Tree/styles/button_pressed = SubResource("StyleBoxEmpty_mvy8b")
 Tree/styles/cursor = SubResource("StyleBoxEmpty_gyv3l")
