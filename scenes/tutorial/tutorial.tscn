@@ -88,12 +88,14 @@ custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("8_ha56g")
+theme_override_font_sizes/font_size = 16
 text = "Précédent"
 
 [node name="NextButton" type="Button" parent="VBoxContainer/MarginContainer/CenterContainer/Buttons"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("8_ha56g")
+theme_override_font_sizes/font_size = 16
 text = "Suivant"
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/CenterContainer/Buttons/PreviousButton" to="." method="_on_previous_button_pressed"]
