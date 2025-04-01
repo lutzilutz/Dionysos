@@ -157,7 +157,7 @@ func generate_folders_tree() -> void:
 	var tree = folder_tree
 	tree.clear()
 	var root = tree.create_item()
-	root.set_text(0, user_preferences.default_path + customer_name + "/" + project_name)
+	root.set_text(0, user_preferences.default_path + "/" + customer_name + "/" + project_name)
 	
 	# Preproduction
 	var preprod_folder: TreeItem = tree.create_item(root)
@@ -601,7 +601,7 @@ func _on_generate_folder_button_pressed() -> void:
 
 func generate_system_folders() -> void:
 	var main_path: String = user_preferences.default_path
-	var customer_path: String = main_path + customer_name
+	var customer_path: String = main_path + "/" + customer_name
 	var project_path: String = customer_path + "/" + project_name
 	PrintUtility.print_info("Will generate folder here : " + project_path)
 	var customer_result = DirAccess.make_dir_absolute(customer_path)
