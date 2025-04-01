@@ -27,6 +27,9 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var preferences_dialog = get_node("PreferencesDialog")
 
 @onready var form_vbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox")
+
+@onready var general_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/GeneralTitleLabel")
+
 @onready var choose_folder_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine")
 @onready var choose_folder_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderLabel")
 @onready var choose_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton")
@@ -43,6 +46,7 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var production_type_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption")
 
 @onready var audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioTitleLabel")
+
 @onready var production_audio_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine")
 @onready var production_audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioLabel")
 @onready var production_audio_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox")
@@ -359,6 +363,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 	var secondary_options_editable = production_type_editable and production_type_option.selected != -1
 	
 	# Choose folder button
+	general_label.disable(info_locked)
 	choose_folder_button.disabled = info_locked
 	choose_folder_label.disable(info_locked)
 	choose_folder_result.text = user_preferences.default_path

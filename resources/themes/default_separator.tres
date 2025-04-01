@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://c8uwvslah7v4d"]
+
+[ext_resource type="StyleBox" uid="uid://c8i6n1s6tn3r6" path="res://resources/themes/styleboxes/display/default_hseparator_stylebox.tres" id="1_utbxn"]
+[ext_resource type="StyleBox" uid="uid://m3fgqyqknqxk" path="res://resources/themes/styleboxes/display/default_vseparator_stylebox.tres" id="2_b8h8t"]
+
+[resource]
+HSeparator/styles/separator = ExtResource("1_utbxn")
+VSeparator/styles/separator = ExtResource("2_b8h8t")

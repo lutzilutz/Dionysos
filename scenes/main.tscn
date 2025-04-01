@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=12 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dy0vbm26sh3nt" path="res://resources/icons/checked_16.png" id="6_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://chx2gfya25vkc" path="res://scenes/tutorial/tutorial.tscn" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="7_tipki"]
+[ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="8_choun"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85g3d"]
 
@@ -218,6 +219,7 @@ stretch_mode = 5
 
 [node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
+theme = ExtResource("8_choun")
 
 [node name="VideoTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
 layout_mode = 2
@@ -290,6 +292,7 @@ stretch_mode = 5
 
 [node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
+theme = ExtResource("8_choun")
 
 [node name="AudioTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
 layout_mode = 2
@@ -357,6 +360,7 @@ stretch_mode = 5
 
 [node name="HSeparator3" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
+theme = ExtResource("8_choun")
 
 [node name="PreGenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
@@ -377,6 +381,7 @@ theme = ExtResource("3_4krfr")
 
 [node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox"]
 layout_mode = 2
+theme = ExtResource("8_choun")
 
 [node name="SummaryContainer" type="MarginContainer" parent="Window/WorkspaceHBox"]
 layout_mode = 2
