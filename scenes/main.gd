@@ -577,14 +577,9 @@ func _on_pre_generate_folder_button_pressed() -> void:
 	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:
-	PrintUtility.print_WIP("Start generating folders ...")
-	#if user_preferences.editors.find(editor_name, 0) == -1:
-		#user_preferences.editors.append(editor_name)
-		#user_preferences.save_to_file(USER_PREF_PATH)
 	if user_preferences.customers.find(customer_name, 0) == -1:
 		user_preferences.customers.append(customer_name)
 		user_preferences.save_to_file(USER_PREF_PATH)
-	
 	if not user_preferences.editor_exists(editor_name):
 		user_preferences.add_editor(editor_name, editor_phone, editor_email)
 		user_preferences.save_to_file(USER_PREF_PATH)
@@ -593,14 +588,6 @@ func _on_generate_folder_button_pressed() -> void:
 		user_preferences.save_to_file(USER_PREF_PATH)
 	build_editor_options()
 	generate_system_folders()
-	#var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
-	#match result:
-		#0:
-			#PrintUtility.print_info("Success")
-		#32:
-			#PrintUtility.print_error("Folder already exists")
-		#_:
-			#PrintUtility.print_error("Unkown error : " + str(result))
 
 func generate_system_folders() -> void:
 	var main_path: String = user_preferences.default_path
@@ -630,7 +617,6 @@ func generate_system_folders() -> void:
 			generate_system_folders_project(project_path)
 
 func generate_system_folders_project(path: String) -> void:
-	PrintUtility.print_WIP("Here generating project folders in system")
 	PrintUtility.print_folders(folder_tree)
 	
 	var root: TreeItem = folder_tree.get_root()
@@ -678,14 +664,20 @@ func build_readme_file() -> String:
 Vous trouverez ci-dessous des indications sur la structure du projet et les emplacements intéressants.
 Pour toute question d'ordre technique, merci de bien vouloir écrire à : lutz@drykats.ch
 
-===== Équipe =====
+========== Équipe ==========
 
    ----- Montage -----
-	  Monteur : Lutz
-	  Contact : lutz@drykats.ch
+	  Monteur : " + editor_name + "
+	  Téléphone : " + editor_phone + "
+	  Email : " + editor_email + "
 
-===== Informations au client =====
+========== Informations au client ==========
 
+   ----- En résumé -----
+	  Vidéos temporaires : Working renders/Online drafts
+	  Vidéos finales : Final renders
+	  Pour nous transmettre vos logos : Assets/Drop-box
+ 
    ----- Logo et charte -----
 	  Vous pouvez déposer à tout moment vos logos et chartes graphiques à l'emplacement :
 	  06 Assets / 00 Drop-box
