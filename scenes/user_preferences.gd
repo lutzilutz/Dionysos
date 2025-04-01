@@ -1,12 +1,21 @@
 class_name UserPreferences extends Resource
 
-@export var default_path: String = ""
-@export var has_default_path: bool = false
+const DEFAULT_PATH: String = ""
+const HAS_DEFAULT_PATH: bool = false
+const EDITORS_INCODE: Array = []
+const EDITORS_INFILE: Dictionary = {}
+const CUSTOMERS: Array = []
+const HIDE_LOGO: bool = false
+const SHOW_HIGHLIGHTS: bool = false
+const HAS_SEEN_TUTORIAL: bool = false
+
+@export var default_path: String = DEFAULT_PATH
+@export var has_default_path: bool = HAS_DEFAULT_PATH
 @export var editors: Array = []
 @export var customers: Array = []
-@export var hide_logo: bool = false
-@export var show_highlights: bool = false
-@export var has_seen_tutorial: bool = false
+@export var hide_logo: bool = HIDE_LOGO
+@export var show_highlights: bool = SHOW_HIGHLIGHTS
+@export var has_seen_tutorial: bool = HAS_SEEN_TUTORIAL
 
 @export var achievements: Array = []
 
@@ -51,13 +60,13 @@ static func load_from_file(path: String) -> UserPreferences:
 		var new_json = {
 			"version": ProjectSettings.get_setting("application/config/version"),
 			"preferences": {
-				"default_path": "",
-				"has_default_path": false,
-				"editors": {},
-				"customers": [],
-				"hide_logo": false,
-				"show_highlights": false,
-				"has_seen_tutorial": false
+				"default_path": DEFAULT_PATH,
+				"has_default_path": HAS_DEFAULT_PATH,
+				"editors": EDITORS_INFILE,
+				"customers": CUSTOMERS,
+				"hide_logo": HIDE_LOGO,
+				"show_highlights": SHOW_HIGHLIGHTS,
+				"has_seen_tutorial": HAS_SEEN_TUTORIAL
 				},
 			"achievements": []
 		}
@@ -76,9 +85,9 @@ static func load_from_file(path: String) -> UserPreferences:
 	var json = JSON.parse_string(file) as Dictionary
 	var res = UserPreferences.new()
 	var json_pref = json.get("preferences", {})
-	res.default_path = json_pref.get("default_path", "")
-	res.has_default_path = json_pref.get("has_default_path", false)
-	var tmp_editors = json_pref.get("editors", {})
+	res.default_path = json_pref.get("default_path", DEFAULT_PATH)
+	res.has_default_path = json_pref.get("has_default_path", HAS_DEFAULT_PATH)
+	var tmp_editors = json_pref.get("editors", EDITORS_INCODE)
 	if tmp_editors != null :
 		for e_name in tmp_editors.keys():
 			var tmp_editor: Editor = Editor.new()
@@ -86,22 +95,21 @@ static func load_from_file(path: String) -> UserPreferences:
 			tmp_editor.phone = tmp_editors[e_name].get("phone", "")
 			tmp_editor.email = tmp_editors[e_name].get("email", "")
 			res.editors.append(tmp_editor)
-	res.customers = json_pref.get("customers", [])
-	res.hide_logo = json_pref.get("hide_logo", false)
-	res.show_highlights = json_pref.get("show_highlights", false)
-	res.has_seen_tutorial = json_pref.get("has_seen_tutorial", false)
+	res.customers = json_pref.get("customers", CUSTOMERS)
+	res.hide_logo = json_pref.get("hide_logo", HIDE_LOGO)
+	res.show_highlights = json_pref.get("show_highlights", SHOW_HIGHLIGHTS)
+	res.has_seen_tutorial = json_pref.get("has_seen_tutorial", HAS_SEEN_TUTORIAL)
 	if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
 		PrintUtility.print_info("Current preferences are version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
 		PrintUtility.print_TODO("Manage upgrade of preferences.json")
 	return res
 
 func reset_user_preferences(path: String) -> void:
-	default_path = ""
-	has_default_path = false
-	customers = []
-	hide_logo = false
-	show_highlights = false
-	has_seen_tutorial = false
+	default_path = DEFAULT_PATH
+	has_default_path = HAS_DEFAULT_PATH
+	hide_logo = HIDE_LOGO
+	show_highlights = SHOW_HIGHLIGHTS
+	has_seen_tutorial = HAS_SEEN_TUTORIAL
 	save_to_file(path)
 
 func editor_exists(new_name: String) -> bool:
@@ -117,6 +125,8 @@ func add_editor(name: String, phone: String, email: String) -> void:
 	editor.name = name
 	editor.phone = phone
 	editor.email = email
+	if editors.is_read_only():
+		PrintUtility.print_error("user_preferences.editors is in read-only state")
 	editors.append(editor)
 
 func change_editor(name: String, phone: String, email: String) -> void:

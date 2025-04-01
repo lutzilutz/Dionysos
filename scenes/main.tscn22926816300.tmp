@@ -1,0 +1,571 @@
+[gd_scene load_steps=13 format=3 uid="uid://rvfixiqdxhj5"]
+
+[ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
+[ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="3_4krfr"]
+[ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="4_tefeu"]
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="6_85g3d"]
+[ext_resource type="Texture2D" uid="uid://dy0vbm26sh3nt" path="res://resources/icons/checked_16.png" id="6_o6xl0"]
+[ext_resource type="PackedScene" uid="uid://chx2gfya25vkc" path="res://scenes/tutorial/tutorial.tscn" id="6_tefeu"]
+[ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="7_tipki"]
+[ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="8_choun"]
+[ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="10_ya4ey"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85g3d"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h26jr")
+checked_color = Color(0, 0.66, 0, 1)
+warning_color = Color(0.88, 0.44, 0, 1)
+
+[node name="BackgroundLogoSprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.061)
+position = Vector2(640, 360)
+scale = Vector2(1.14, 1.14)
+texture = ExtResource("2_tefeu")
+metadata/_edit_lock_ = true
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Ouvrir un dossier"
+initial_position = 2
+size = Vector2i(617, 375)
+content_scale_factor = 0.75
+ok_button_text = "Select Current Folder"
+mode_overrides_title = false
+file_mode = 2
+access = 2
+
+[node name="Window" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuBar" type="MenuBar" parent="Window"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+
+[node name="FileMenu" type="PopupMenu" parent="Window/MenuBar"]
+title = "Fichier"
+size = Vector2i(111, 100)
+item_count = 2
+item_0/text = "Nouveau projet"
+item_0/id = 1
+item_1/text = "Quitter"
+item_1/id = 0
+
+[node name="EditMenu" type="PopupMenu" parent="Window/MenuBar"]
+auto_translate_mode = 1
+title = "Préférences"
+size = Vector2i(254, 174)
+item_count = 7
+item_0/text = "Cacher logo"
+item_0/checkable = 1
+item_0/id = 1
+item_1/text = "Afficher le surlignage"
+item_1/checkable = 1
+item_1/id = 2
+item_2/id = 3
+item_2/separator = true
+item_3/text = "Afficher les préférences"
+item_3/id = 4
+item_4/text = "Purger les monteurs"
+item_4/id = 5
+item_5/text = "Purger les clients"
+item_5/id = 6
+item_6/text = "Réinitialiser les préférences"
+item_6/id = 0
+
+[node name="HelpMenu" type="PopupMenu" parent="Window/MenuBar"]
+auto_translate_mode = 1
+title = "Aide"
+size = Vector2i(117, 100)
+item_count = 2
+item_0/text = "Revoir le tutoriel"
+item_0/id = 1
+item_1/text = "Aidez-moi !"
+item_1/id = 0
+
+[node name="WorkspaceHBox" type="HBoxContainer" parent="Window"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FormContainer" type="MarginContainer" parent="Window/WorkspaceHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="FormVBox" type="VBoxContainer" parent="Window/WorkspaceHBox/FormContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="GeneralTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
+layout_mode = 2
+text = "Informations générales"
+
+[node name="ChooseFolderLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ChooseFolderLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Dossier racine des projets"
+
+[node name="ChooseFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine"]
+custom_minimum_size = Vector2(179.835, 0)
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+text = "Sélectionner un dossier"
+
+[node name="ChooseFolderResult" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+theme_override_colors/font_color = Color(0.548963, 0.548963, 0.548963, 1)
+theme_override_font_sizes/font_size = 10
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="CustomerLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="CustomerLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Nom du client"
+
+[node name="CustomerOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+selected = 0
+item_count = 1
+popup/item_0/text = "<Nouveau client>"
+popup/item_0/id = 0
+
+[node name="CustomerEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer le nom du client ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="ProjectNameLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ProjectNameLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Nom du projet"
+
+[node name="ProjectNameEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer le nom du projet ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="ProductionTypeLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ProductionTypeLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Type de production"
+
+[node name="ProductionTypeOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+item_count = 2
+popup/item_0/text = "Client externe"
+popup/item_0/id = 0
+popup/item_1/text = "Projet interne"
+popup/item_1/id = 1
+
+[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="EditorLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="EditorLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Nom du monteur"
+
+[node name="EditorOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+selected = 0
+item_count = 1
+popup/item_0/text = "<Nouveau monteur>"
+popup/item_0/id = 0
+
+[node name="EditorEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer le nom du monteur ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="IncludeContactLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="IncludeContactLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Inclure les données de contact"
+
+[node name="IncludeContactCheckbox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+button_pressed = true
+
+[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="PhoneLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="PhoneLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Numéro de téléphone"
+
+[node name="PhoneEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer le numéro de téléphone ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="EmailLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="EmailLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "E-mail"
+
+[node name="EmailEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer l'e-mail de téléphone ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+layout_mode = 2
+theme = ExtResource("8_choun")
+
+[node name="VideoTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
+layout_mode = 2
+text = "Vidéo"
+
+[node name="DayCountLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="DayCountLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Jours de tournage"
+
+[node name="DayCountSpin" type="SpinBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+allow_greater = true
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
+[node name="CameraCountLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="CameraCountLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Nombre de caméra"
+
+[node name="CameraCountSpin" type="SpinBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+min_value = 1.0
+max_value = 26.0
+value = 1.0
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
+[node name="VFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="VFXLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Effets visuels VFX"
+
+[node name="VFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
+[node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+layout_mode = 2
+theme = ExtResource("8_choun")
+
+[node name="AudioTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
+layout_mode = 2
+text = "Audio et musique"
+
+[node name="ProductionAudioLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ProductionAudioLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Tournage avec audio"
+
+[node name="ProductionAudioCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
+[node name="MusicLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="MusicLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Utilisation de musique"
+
+[node name="MusicCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
+[node name="AudioSFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="AudioSFXLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Bruitages audio SFX"
+
+[node name="AudioSFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("7_tipki")
+stretch_mode = 5
+
+[node name="HSeparator3" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+layout_mode = 2
+theme = ExtResource("8_choun")
+
+[node name="PreGenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+text = "Verrouiller et prévisualiser"
+
+[node name="GenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+text = "Générer la structure"
+
+[node name="Label" type="Label" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+visible = false
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+
+[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox"]
+layout_mode = 2
+theme = ExtResource("8_choun")
+
+[node name="SummaryContainer" type="MarginContainer" parent="Window/WorkspaceHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Summary" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SummaryTitleLabel" type="Label" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
+layout_mode = 2
+theme = ExtResource("10_ya4ey")
+text = "Prévisualisation des dossiers"
+
+[node name="SummaryBodyLabel" type="Label" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+text = "La structure ci-dessous sera créée à l'emplacement choisi"
+
+[node name="Tree" type="Tree" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_4krfr")
+select_mode = 2
+
+[node name="Tutorial" parent="." instance=ExtResource("6_tefeu")]
+visible = false
+layout_mode = 1
+
+[node name="VersionLabel" type="Label" parent="."]
+modulate = Color(0.458405, 0.458405, 0.458405, 1)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -14.0
+offset_right = 62.0
+grow_vertical = 0
+theme = ExtResource("3_4krfr")
+text = "Version x.x.x"
+
+[node name="PreferencesDialog" type="AcceptDialog" parent="."]
+title = "Résumé des préférences"
+initial_position = 2
+size = Vector2i(530, 345)
+ok_button_text = "Fermer"
+
+[node name="PreferencesLabel" type="Label" parent="PreferencesDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 522.0
+offset_bottom = 296.0
+
+[connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="id_pressed" from="Window/MenuBar/FileMenu" to="." method="_on_file_menu_id_pressed"]
+[connection signal="id_pressed" from="Window/MenuBar/EditMenu" to="." method="_on_edit_menu_id_pressed"]
+[connection signal="id_pressed" from="Window/MenuBar/HelpMenu" to="." method="_on_help_menu_id_pressed"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
+[connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
+[connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption" to="." method="_on_editor_option_item_selected"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit" to="." method="_on_editor_edit_text_changed"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox" to="." method="_on_include_contact_option_toggled"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine/PhoneEdit" to="." method="_on_phone_edit_text_changed"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine/EmailEdit" to="." method="_on_email_edit_text_changed"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" to="." method="_on_day_count_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_line_mouse_entered"]
+[connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_spin_value_changed"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine" to="." method="_on_camera_count_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_line_mouse_entered"]
+[connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_spin_value_changed"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" to="." method="_on_vfx_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_line_mouse_entered"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_check_box_toggled"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine" to="." method="_on_production_audio_line_mouse_entered"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox" to="." method="_on_production_audio_check_box_toggled"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine" to="." method="_on_music_line_mouse_entered"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicCheckBox" to="." method="_on_music_check_box_toggled"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine" to="." method="_on_audio_sfx_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_line_mouse_entered"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
