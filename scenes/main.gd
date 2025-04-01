@@ -674,7 +674,7 @@ func generate_folder_at(path: String) -> void:
 
 func build_readme_file() -> String:
 	var s: String = ""
-	s = "Bienvenue dans le dossier du projet \"Maquette 2024\" de Sarah Matousek.
+	s = "Bienvenue dans le dossier du projet \"" + project_name + "\" de " + customer_name + ".
 Vous trouverez ci-dessous des indications sur la structure du projet et les emplacements intéressants.
 Pour toute question d'ordre technique, merci de bien vouloir écrire à : lutz@drykats.ch
 
