@@ -65,8 +65,8 @@ item_1/id = 0
 [node name="EditMenu" type="PopupMenu" parent="Window/MenuBar"]
 auto_translate_mode = 1
 title = "Préférences"
-size = Vector2i(254, 100)
-item_count = 5
+size = Vector2i(254, 174)
+item_count = 7
 item_0/text = "Cacher logo"
 item_0/checkable = 1
 item_0/id = 1
@@ -77,8 +77,12 @@ item_2/id = 3
 item_2/separator = true
 item_3/text = "Afficher les préférences"
 item_3/id = 4
-item_4/text = "Réinitialiser les préférences"
-item_4/id = 0
+item_4/text = "Purger les monteurs"
+item_4/id = 5
+item_5/text = "Purger les clients"
+item_5/id = 6
+item_6/text = "Réinitialiser les préférences"
+item_6/id = 0
 
 [node name="HelpMenu" type="PopupMenu" parent="Window/MenuBar"]
 auto_translate_mode = 1
@@ -468,7 +472,6 @@ text = "Version x.x.x"
 title = "Résumé des préférences"
 initial_position = 2
 size = Vector2i(530, 345)
-visible = true
 ok_button_text = "Fermer"
 
 [node name="PreferencesLabel" type="Label" parent="PreferencesDialog"]

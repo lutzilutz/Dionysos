@@ -516,6 +516,12 @@ func _on_pre_generate_folder_button_pressed() -> void:
 
 func _on_generate_folder_button_pressed() -> void:
 	PrintUtility.print_WIP("Start generating folders ...")
+	if user_preferences.editors.find(editor_name, 0) == -1:
+		user_preferences.editors.append(editor_name)
+		user_preferences.save_to_file(USER_PREF_PATH)
+	if user_preferences.customers.find(customer_name, 0) == -1:
+		user_preferences.customers.append(customer_name)
+		user_preferences.save_to_file(USER_PREF_PATH)
 	#var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
 	#match result:
 		#0:
@@ -633,6 +639,12 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 		4: # Show preferences summary
 			update_preferences_dialog()
 			preferences_dialog.visible = true
+		5: # Purge editors
+			user_preferences.editors = []
+			user_preferences.save_to_file(USER_PREF_PATH)
+		6: # Purge customers
+			user_preferences.customers = []
+			user_preferences.save_to_file(USER_PREF_PATH)
 		_:
 			PrintUtility.print_info("Unkown edition menu option")
 
