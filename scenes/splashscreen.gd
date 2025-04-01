@@ -9,7 +9,7 @@ func _ready() -> void:
 	
 	if OS.has_feature("editor"):
 		visible = false
-	elif OS.has_feature("release"):
+	elif OS.has_feature("release") or OS.has_feature("debug"):
 		visible = true
 		tween = get_tree().create_tween()
 		tween.finished.connect(_on_tween_finished)

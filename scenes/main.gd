@@ -118,6 +118,8 @@ func check_if_release() -> void:
 		PrintUtility.print_info("Running from editor")
 	elif OS.has_feature("release"):
 		PrintUtility.print_info("Running from release build")
+	elif OS.has_feature("debug"):
+		PrintUtility.print_info("Running from debug build")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
