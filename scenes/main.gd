@@ -112,12 +112,16 @@ var use_audio_sfx: bool = true
 var has_previewed: bool = false
 var info_locked: bool = false
 
+var readme: ReadMe
+
 var control_hovered
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	version_label.set_text("Version " + ProjectSettings.get_setting("application/config/version"))
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
+	readme = ReadMe.new()
+	readme.main_scene = self
 	tutorial.tutorial_ended.connect(_on_tutorial_ended)
 	update_tutorial_screen()
 	update_edit_hide_logo()
@@ -214,6 +218,13 @@ func generate_folders_tree() -> void:
 	var assets_folder: TreeItem = tree.create_item(root)
 	var assets_string: String = "0" + str(folder_id) + " Assets"
 	assets_folder.set_text(0, assets_string)
+	var sub_assets_folder: TreeItem = tree.create_item(assets_folder)
+	sub_assets_folder.set_text(0, "00 Drop-box")
+	sub_assets_folder = tree.create_item(assets_folder)
+	sub_assets_folder.set_text(0, "01 Logo and branding")
+	sub_assets_folder = tree.create_item(assets_folder)
+	sub_assets_folder.set_text(0, "02 Branding guidelines")
+	readme.drop_box = assets_string + "/00 Drop-box"
 	folder_id += 1
 	
 	# Working renders
@@ -226,9 +237,11 @@ func generate_folders_tree() -> void:
 		sub_w_renders_folder.set_text(0, "Offline drafts")
 		sub_w_renders_folder = tree.create_item(w_renders_folder)
 		sub_w_renders_folder.set_text(0, "Online drafts")
+		readme.working_renders = w_renders_string + "/Online drafts"
 	elif production_type == ProductionType.INTERNAL:
 		sub_w_renders_folder = tree.create_item(w_renders_folder)
 		sub_w_renders_folder.set_text(0, "Drafts")
+		readme.working_renders = w_renders_string + "/Drafts"
 	else:
 		PrintUtility.print_error("Unknown production type : " + str(production_type))
 	
@@ -242,6 +255,7 @@ func generate_folders_tree() -> void:
 	var f_renders_folder: TreeItem = tree.create_item(root)
 	var f_renders_string: String = "0" + str(folder_id) + " Final renders"
 	f_renders_folder.set_text(0, f_renders_string)
+	readme.final_renders = f_renders_string
 	folder_id += 1
 	
 	# Working edit files
@@ -268,6 +282,7 @@ func generate_folders_tree() -> void:
 	sub_notes_folder.set_text(0, "Production notes")
 	sub_notes_folder = tree.create_item(notes_folder)
 	sub_notes_folder.set_text(0, "PV and transcriptions")
+	readme.notes = notes_string
 	folder_id += 1
 	
 	# Read-me
@@ -642,7 +657,7 @@ func generate_folder_at(path: String) -> void:
 	if path.contains("."):
 		if path.ends_with(".txt"):
 			var file = FileAccess.open(path, FileAccess.WRITE)
-			file.store_string(build_readme_file())
+			file.store_string(readme.generate_readme_content())
 		else:
 			PrintUtility.print_gen("Unkown file extension in generate_folder_at(" + path + ")")
 			PrintUtility.print_error("Can't create file " + path)
@@ -657,45 +672,6 @@ func generate_folder_at(path: String) -> void:
 			_:
 				PrintUtility.print_gen("Unkown error in generate_folder_at(" + path + ") : " + str(result))
 				PrintUtility.print_error("Can't create folder " + path)
-
-func build_readme_file() -> String:
-	var s: String = ""
-	s = "Bienvenue dans le dossier du projet \"" + project_name + "\" de " + customer_name + ".
-Vous trouverez ci-dessous des indications sur la structure du projet et les emplacements intéressants.
-Pour toute question d'ordre technique, merci de bien vouloir écrire à : lutz@drykats.ch
-
-========== Équipe ==========
-
-   ----- Montage -----
-	  Monteur : " + editor_name + "
-	  Téléphone : " + editor_phone + "
-	  Email : " + editor_email + "
-
-========== Informations au client ==========
-
-   ----- En résumé -----
-	  Vidéos temporaires : Working renders/Online drafts
-	  Vidéos finales : Final renders
-	  Pour nous transmettre vos logos : Assets/Drop-box
- 
-   ----- Logo et charte -----
-	  Vous pouvez déposer à tout moment vos logos et chartes graphiques à l'emplacement :
-	  06 Assets / 00 Drop-box
-	  Formats idéaux : PNG, PDF, PS, BMP
-	  Formats à éviter : JPG/JPEG, GIF
-
-   ----- Rendus -----
-	  Nous utilisons une numérotation séquentielle pour les versions : v01, v02, v03, ...
-	  Cette numérotation est présente dans les noms de fichier ainsi que dans les vidéos.
-
-	  Vous trouverez les rendus temporaires qui vous sont destinés dans :
-	  07 Working renders/Online drafts
-
-	  Vous trouverez la version finale du projet dans :
-	  08 Final renders
-
-	  Le dossier \"11 Notes\" peut contenir vos notes, retours, indications, ou PV de réunion."
-	return s
 
 # MenuBar signals =================================================================================
 
