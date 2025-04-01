@@ -89,7 +89,7 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var summary_label = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryLabel")
 @onready var summary_folders_vbox = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryFoldersVBox")
 
-@onready var folder_tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
+@onready var folder_tree: Tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
 
 @onready var version_label = get_node("VersionLabel")
 
@@ -592,6 +592,7 @@ func _on_generate_folder_button_pressed() -> void:
 		user_preferences.change_editor(editor_name, editor_phone, editor_email)
 		user_preferences.save_to_file(USER_PREF_PATH)
 	build_editor_options()
+	generate_system_folders()
 	#var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
 	#match result:
 		#0:
@@ -600,6 +601,71 @@ func _on_generate_folder_button_pressed() -> void:
 			#PrintUtility.print_error("Folder already exists")
 		#_:
 			#PrintUtility.print_error("Unkown error : " + str(result))
+
+func generate_system_folders() -> void:
+	var main_path: String = user_preferences.default_path
+	var customer_path: String = main_path + customer_name
+	var project_path: String = customer_path + "/" + project_name
+	PrintUtility.print_info("Will generate folder here : " + project_path)
+	var customer_result = DirAccess.make_dir_absolute(customer_path)
+	match customer_result:
+		0:
+			PrintUtility.print_gen("New customer folder created at " + customer_path)
+		32:
+			PrintUtility.print_gen("Customer folder already exists " + customer_path)
+		_:
+			PrintUtility.print_gen("Unkown error : " + str(customer_result))
+	
+	if customer_result == 0 or customer_result == 32:
+		var project_result = DirAccess.make_dir_absolute(project_path)
+		match project_result:
+			0:
+				PrintUtility.print_gen("New project folder created at " + project_path)
+			32:
+				PrintUtility.print_gen("Project folder already exists " + project_path)
+				PrintUtility.print_error("Can't create folder !")
+			_:
+				PrintUtility.print_gen("Unkown error : " + str(project_result))
+		if project_result == 0:
+			generate_system_folders_project(project_path)
+
+func generate_system_folders_project(path: String) -> void:
+	PrintUtility.print_WIP("Here generating project folders in system")
+	PrintUtility.print_folders(folder_tree)
+	
+	var root: TreeItem = folder_tree.get_root()
+	if root.get_child_count() > 0:
+		for f in root.get_children():
+			generate_folder_at(path + "/" + f.get_text(0))
+			if f.get_child_count() > 0:
+				for sf in f.get_children():
+					generate_folder_at(path + "/" + f.get_text(0) + "/" + sf.get_text(0))
+					if sf.get_child_count() > 0:
+						for ssf in sf.get_children():
+							generate_folder_at(path + "/" + f.get_text(0) + "/" + sf.get_text(0) + "/" + ssf.get_text(0))
+							if ssf.get_child_count() > 0:
+								for sssf in ssf.get_children():
+									generate_folder_at(path + "/" + f.get_text(0) + "/" + sf.get_text(0) + "/" + ssf.get_text(0) + "/" + sssf.get_text(0))
+									if sssf.get_child_count() > 0:
+										PrintUtility.print_error("generate_system_folders_project() didn't go deep enough in subfolders !")
+	else:
+		PrintUtility.print_error("Root of folder tree doesn't have any child ! ")
+
+func generate_folder_at(path: String) -> void:
+	PrintUtility.print_gen("Computing " + path)
+	if path.ends_with(".txt") :
+		PrintUtility.print_gen("Skipping text files for now")
+	else:
+		var result = DirAccess.make_dir_absolute(path)
+		match result:
+			0:
+				PrintUtility.print_gen("New folder created at " + path)
+			32:
+				PrintUtility.print_gen("Folder already exists " + path)
+				PrintUtility.print_error("Can't create folder " + path)
+			_:
+				PrintUtility.print_gen("Unkown error in generate_folder_at(" + path + ") : " + str(result))
+				PrintUtility.print_error("Can't create folder " + path)
 
 # MenuBar signals =================================================================================
 
@@ -827,3 +893,7 @@ func daycount_int_to_string(value: int) -> String:
 		tmp_string += "0"
 	tmp_string += str(value)
 	return tmp_string
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("PrintFolders"):
+		PrintUtility.print_folders(folder_tree)
