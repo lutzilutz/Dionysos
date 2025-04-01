@@ -13,8 +13,6 @@ const TREE_HIGHLIGHTED: Color = Color(0.8, 0.4, 0, 1)
 @export var checked_color: Color = Color(0,1,0)
 @export var warning_color: Color = Color(1,0.5,0)
 
-#const CURRENT_VERSION: String = "0.1.1"
-
 var empty_texture: Texture2D = preload("res://resources/icons/empty_16.png")
 var error_texture: Texture2D = preload("res://resources/icons/cancel_16.png")
 var checked_texture: Texture2D = preload("res://resources/icons/checked_16.png")
@@ -735,6 +733,7 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			preferences_dialog.visible = true
 		5: # Purge editors
 			user_preferences.editors = []
+			user_preferences.purge_editors()
 			user_preferences.save_to_file(USER_PREF_PATH)
 		6: # Purge customers
 			user_preferences.customers = []

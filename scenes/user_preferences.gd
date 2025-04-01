@@ -9,6 +9,16 @@ const HIDE_LOGO: bool = false
 const SHOW_HIGHLIGHTS: bool = false
 const HAS_SEEN_TUTORIAL: bool = false
 
+const LUTZ_NAME: String = "Lutzi Lutz"
+const LUTZ_PHONE: String = "079 152 04 95"
+const LUTZ_EMAIL: String = "lutz@drykats.ch"
+const YANN_NAME: String = "Yann Matousek"
+const YANN_PHONE: String = "076 370 23 08"
+const YANN_EMAIL: String = "yann.matousek@drykats.ch"
+const KAREL_NAME: String = "Karel Matousek"
+const KAREL_PHONE: String = "076 370 22 69"
+const KAREL_EMAIL: String = "karel.matousek@drykats.ch"
+
 @export var default_path: String = DEFAULT_PATH
 @export var has_default_path: bool = HAS_DEFAULT_PATH
 @export var editors: Array = []
@@ -51,6 +61,28 @@ func save_to_file(path:String) -> Error:
 	else:
 		return ERR_FILE_CANT_WRITE
 
+func purge_editors() -> void:
+	editors.clear()
+	add_editor(KAREL_NAME, KAREL_PHONE, KAREL_EMAIL)
+	add_editor(LUTZ_NAME, LUTZ_PHONE, LUTZ_EMAIL)
+	add_editor(YANN_NAME, YANN_PHONE, YANN_EMAIL)
+
+static func generate_drykats_team() -> Dictionary:
+	var d: Dictionary
+	d[LUTZ_NAME] = {
+		"phone": LUTZ_PHONE,
+		"email": LUTZ_EMAIL
+	}
+	d[YANN_NAME] = {
+		"phone": YANN_PHONE,
+		"email": YANN_EMAIL
+	}
+	d[KAREL_NAME] = {
+		"phone": KAREL_PHONE,
+		"email": KAREL_EMAIL
+	}
+	return d
+
 static func load_from_file(path: String) -> UserPreferences:
 	# Check if a user preferences file already exists (not first time)
 	# If not, creates a default JSON file to be used
@@ -62,7 +94,7 @@ static func load_from_file(path: String) -> UserPreferences:
 			"preferences": {
 				"default_path": DEFAULT_PATH,
 				"has_default_path": HAS_DEFAULT_PATH,
-				"editors": EDITORS_INFILE,
+				"editors": generate_drykats_team(),
 				"customers": CUSTOMERS,
 				"hide_logo": HIDE_LOGO,
 				"show_highlights": SHOW_HIGHLIGHTS,
