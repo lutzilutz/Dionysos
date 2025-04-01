@@ -2,6 +2,7 @@ class_name UserPreferences extends Resource
 
 @export var default_path: String = ""
 @export var has_default_path: bool = false
+@export var editors: Array = []
 @export var customers: Array = []
 @export var hide_logo: bool = false
 @export var show_highlights: bool = true
@@ -15,6 +16,7 @@ func save_to_file(path:String) -> Error:
 		"preferences": {
 			"default_path": default_path,
 			"has_default_path": has_default_path,
+			"editors": editors,
 			"customers": customers,
 			"hide_logo": hide_logo,
 			"show_highlights": show_highlights,
@@ -43,6 +45,7 @@ static func load_from_file(path: String) -> UserPreferences:
 			"preferences": {
 				"default_path": "",
 				"has_default_path": false,
+				"editors": [],
 				"customers": [],
 				"hide_logo": false,
 				"show_highlights": true,
@@ -67,6 +70,7 @@ static func load_from_file(path: String) -> UserPreferences:
 	var json_pref = json.get("preferences", {})
 	res.default_path = json_pref.get("default_path", "")
 	res.has_default_path = json_pref.get("has_default_path", false)
+	res.editors = json_pref.get("editors", [])
 	res.customers = json_pref.get("customers", [])
 	res.hide_logo = json_pref.get("hide_logo", false)
 	res.show_highlights = json_pref.get("show_highlights", true)

@@ -217,6 +217,34 @@ layout_mode = 2
 texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
+[node name="EditorLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="EditorLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Nom du client"
+
+[node name="EditorOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+selected = 0
+item_count = 1
+popup/item_0/text = "<Nouveau monteur>"
+popup/item_0/id = 0
+
+[node name="EditorEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer le nom du monteur ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
 [node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 layout_mode = 2
 theme = ExtResource("8_choun")
@@ -440,6 +468,7 @@ text = "Version x.x.x"
 title = "Résumé des préférences"
 initial_position = 2
 size = Vector2i(530, 345)
+visible = true
 ok_button_text = "Fermer"
 
 [node name="PreferencesLabel" type="Label" parent="PreferencesDialog"]
@@ -458,6 +487,8 @@ offset_bottom = 296.0
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption" to="." method="_on_editor_option_item_selected"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit" to="." method="_on_editor_edit_text_changed"]
 [connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" to="." method="_on_day_count_line_mouse_entered"]
 [connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_line_mouse_entered"]
 [connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_spin_value_changed"]

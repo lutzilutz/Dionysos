@@ -44,6 +44,10 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var production_type_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine")
 @onready var production_type_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeLabel")
 @onready var production_type_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption")
+@onready var editor_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine")
+@onready var editor_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorLabel")
+@onready var editor_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption")
+@onready var editor_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit")
 
 @onready var audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioTitleLabel")
 
@@ -84,6 +88,7 @@ var user_preferences: UserPreferences
 var customer_name: String = ""
 var project_name: String = ""
 var production_type: ProductionType
+var editor_name: String = ""
 
 var daycount: int = 1
 var cameracount: int = 1
@@ -115,6 +120,7 @@ func update_preferences_dialog() -> void:
 	var label = get_node("PreferencesDialog/PreferencesLabel")
 	label.text = "Chemin du dossier : " + user_preferences.default_path
 	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
+	label.text += "\nMonteurs : " + str(user_preferences.editors)
 	label.text += "\nClients : " + str(user_preferences.customers)
 	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
 	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
@@ -359,7 +365,8 @@ func update_controls() -> void: # Updating form controls depending how much user
 	var customer_editable = user_preferences.has_default_path and not info_locked
 	var project_name_editable = customer_editable and customer_name != ""
 	var production_type_editable = project_name_editable and project_name != ""
-	var secondary_options_editable = production_type_editable and production_type_option.selected != -1
+	var editor_editable = production_type_editable and production_type_option.selected != -1
+	var secondary_options_editable = editor_editable and editor_name != ""
 	
 	# Choose folder button
 	general_label.disable(info_locked)
@@ -395,8 +402,15 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Production type
 	production_type_label.disable(not production_type_editable)
 	production_type_option.disabled = not production_type_editable
-	production_type_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
+	production_type_line.get_node("LineIcon").texture = checked_texture if editor_editable else empty_texture
 	production_type_line.get_node("LineIcon").modulate = checked_color
+	
+	# Editor name
+	editor_label.disable(not editor_editable)
+	editor_option.disabled = not editor_editable
+	editor_edit.editable = editor_editable and editor_option.selected == 0
+	editor_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
+	editor_line.get_node("LineIcon").modulate = checked_color
 	
 	# Audio checkboxes
 	audio_label.disable(not secondary_options_editable)
@@ -417,8 +431,8 @@ func update_controls() -> void: # Updating form controls depending how much user
 	vfx_checkbox.disabled = not secondary_options_editable
 	
 	# Buttons
-	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and not path_has_conflict())
-	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and info_locked)
+	preview_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and editor_name != "" and not path_has_conflict())
+	generate_folder_button.disabled = not (user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and editor_name != "" and info_locked)
 	
 	# Tree
 	if customer_name != "" and project_name != "":
@@ -511,7 +525,6 @@ func _on_generate_folder_button_pressed() -> void:
 		#_:
 			#PrintUtility.print_error("Unkown error : " + str(result))
 
-
 func _on_customer_option_item_selected(index: int) -> void:
 	if index == 0:
 		customer_name = customer_edit.text
@@ -536,6 +549,19 @@ func _on_production_type_option_item_selected(index: int) -> void:
 			production_type = ProductionType.EXTERNAL
 		1:
 			production_type = ProductionType.INTERNAL
+	update_controls()
+	update_summary()
+
+func _on_editor_option_item_selected(index: int) -> void:
+	if index == 0:
+		editor_name = editor_edit.text
+	else:
+		editor_name = editor_option.get_item_text(index)
+	update_controls()
+	update_summary()
+
+func _on_editor_edit_text_changed(new_text: String) -> void:
+	editor_name = new_text
 	update_controls()
 	update_summary()
 
