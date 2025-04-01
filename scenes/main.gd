@@ -85,11 +85,9 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var preview_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton")
 @onready var generate_folder_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton")
 
-@onready var summary_vbox = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox")
-@onready var summary_label = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryLabel")
-@onready var summary_folders_vbox = get_node("Window/WorkspaceHBox/SummaryContainer/SummaryVBox/SummaryFoldersVBox")
-
-@onready var folder_tree: Tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
+@onready var summary_title = get_node("Window/WorkspaceHBox/SummaryContainer/Summary/SummaryTitleLabel")
+@onready var summary_body = get_node("Window/WorkspaceHBox/SummaryContainer/Summary/SummaryBodyLabel")
+@onready var folder_tree: Tree = get_node("Window/WorkspaceHBox/SummaryContainer/Summary/Tree")
 
 @onready var version_label = get_node("VersionLabel")
 
@@ -156,11 +154,10 @@ func update_tutorial_screen() -> void:
 
 func generate_folders_tree() -> void:
 	var folder_id: int = 1
-	var tree = get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree")
+	var tree = folder_tree
 	tree.clear()
 	var root = tree.create_item()
 	root.set_text(0, user_preferences.default_path + customer_name + "/" + project_name)
-	#tree.hide_root = true
 	
 	# Preproduction
 	var preprod_folder: TreeItem = tree.create_item(root)
@@ -356,19 +353,17 @@ func update_hovering() -> void:
 func reset_tree_highlights() -> void:
 	if folder_tree.get_root() != null:
 		if folder_tree.get_root().get_child_count() > 0:
-			#var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
-			if folder_tree.get_root().get_child_count() > 0:
-				for c in folder_tree.get_root().get_children():
-					c.set_custom_color(0, TREE_DEFAULT)
-					if c.get_child_count() > 0:
-						for cc in c.get_children():
-							cc.set_custom_color(0, TREE_DEFAULT)
-							if cc.get_child_count() > 0:
-								for ccc in cc.get_children():
-									ccc.set_custom_color(0, TREE_DEFAULT)
-									if ccc.get_child_count() > 0:
-										for cccc in ccc.get_children():
-											cccc.set_custom_color(0, TREE_DEFAULT)
+			for c in folder_tree.get_root().get_children():
+				c.set_custom_color(0, TREE_DEFAULT)
+				if c.get_child_count() > 0:
+					for cc in c.get_children():
+						cc.set_custom_color(0, TREE_DEFAULT)
+						if cc.get_child_count() > 0:
+							for ccc in cc.get_children():
+								ccc.set_custom_color(0, TREE_DEFAULT)
+								if ccc.get_child_count() > 0:
+									for cccc in ccc.get_children():
+										cccc.set_custom_color(0, TREE_DEFAULT)
 
 func check_tree_item_for_daycount(tree_item: TreeItem) -> void:
 	if tree_item.get_text(0).find("Footage") != -1:
@@ -509,8 +504,12 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Tree
 	if customer_name != "" and project_name != "":
 		generate_folders_tree()
+		summary_title.visible = true
+		summary_body.visible = true
 	else:
-		get_node("Window/WorkspaceHBox/SummaryContainer/Test/Tree").clear()
+		folder_tree.clear()
+		summary_title.visible = false
+		summary_body.visible = false
 
 func path_has_conflict() -> bool:
 	return DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name + "/" + project_name)
@@ -554,30 +553,6 @@ func update_editor_fields() -> void:
 			editor_email = ""
 			email_edit.text = ""
 
-func update_summary() -> void:
-	summary_label.text = "Customer name : " + customer_name
-	if DirAccess.dir_exists_absolute(user_preferences.default_path + "/" + customer_name):
-		if DirAccess.get_directories_at(user_preferences.default_path + "/" + customer_name).size() == 0:
-			#print("No project")
-			pass
-		else:
-			form_vbox.get_node("Label").text = ""
-			for d in DirAccess.get_directories_at(user_preferences.default_path + "/" + customer_name):
-				form_vbox.get_node("Label").text += "\n" + d
-	
-	summary_label.text += "\n" + "Project name : " + project_name
-	
-	if customer_name != "" and project_name != "":
-		summary_label.text += "\n" + "Chemin du projet : " + user_preferences.default_path + "/" + customer_name + "/" + project_name
-	
-	if production_type_option.selected > -1:
-		if production_type == ProductionType.EXTERNAL:
-			summary_label.text += "\n" + "Client externe"
-		else:
-			summary_label.text += "\n" + "Projet interne"
-	
-	summary_label.text += "\n"
-
 func _on_choose_folder_button_pressed() -> void:
 	PrintUtility.print_info("User trying to choose folder ...")
 	get_node("FileDialog").set_current_dir(user_preferences.default_path)
@@ -605,17 +580,9 @@ func _on_pre_generate_folder_button_pressed() -> void:
 	else: PrintUtility.print_info("Cancelled previewing folders")
 	
 	if info_locked:
-		# Compute delay per element to last in total 2 seconds
-		for i in range(summary_folders_vbox.get_child_count()):
-			summary_folders_vbox.get_child(i).delay = i * (2.0 / summary_folders_vbox.get_child_count())
-		# Activate all elements
-		for e in summary_folders_vbox.get_children():
-			e.activate()
 		has_previewed = true
 		preview_folder_button.text = "Annuler"
 	else:
-		for c in summary_folders_vbox.get_children():
-			c.desactivate()
 		preview_folder_button.text = "Verrouiller et prévisualiser"
 	update_controls()
 
@@ -740,11 +707,8 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			use_audio_sfx = true
 			audio_sfx_checkbox.button_pressed = true
 			info_locked = false
-			for c in summary_folders_vbox.get_children():
-				c.desactivate()
 			preview_folder_button.text = "Verrouiller et prévisualiser"
 			update_controls()
-			update_summary()
 		_:
 			PrintUtility.print_info("Unkown file menu option")
 
@@ -758,7 +722,6 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			update_edit_hide_logo()
 			update_edit_show_highlights()
 			update_controls()
-			update_summary()
 		1: # Hide logo
 			user_preferences.hide_logo = not user_preferences.hide_logo
 			user_preferences.save_to_file(USER_PREF_PATH)
@@ -809,17 +772,14 @@ func _on_customer_option_item_selected(index: int) -> void:
 	else:
 		customer_name = customer_option.get_item_text(index)
 	update_controls()
-	update_summary()
 
 func _on_customer_edit_text_changed(new_text: String) -> void:
 	customer_name = new_text
 	update_controls()
-	update_summary()
 
 func _on_project_name_edit_text_changed(new_text: String) -> void:
 	project_name = new_text
 	update_controls()
-	update_summary()
 
 func _on_production_type_option_item_selected(index: int) -> void:
 	match index:
@@ -828,7 +788,6 @@ func _on_production_type_option_item_selected(index: int) -> void:
 		1:
 			production_type = ProductionType.INTERNAL
 	update_controls()
-	update_summary()
 
 func _on_editor_option_item_selected(index: int) -> void:
 	if index == 0:
@@ -837,13 +796,11 @@ func _on_editor_option_item_selected(index: int) -> void:
 		editor_name = editor_option.get_item_text(index)
 	update_editor_fields()
 	update_controls()
-	update_summary()
 
 func _on_editor_edit_text_changed(new_text: String) -> void:
 	editor_name = new_text
 	update_editor_fields()
 	update_controls()
-	update_summary()
 
 func _on_include_contact_option_toggled(toggled_on: bool) -> void:
 	use_contact = toggled_on

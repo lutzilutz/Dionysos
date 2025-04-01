@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=13 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://chx2gfya25vkc" path="res://scenes/tutorial/tutorial.tscn" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="7_tipki"]
 [ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="8_choun"]
+[ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="10_ya4ey"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85g3d"]
 
@@ -459,16 +460,16 @@ layout_mode = 2
 theme = ExtResource("8_choun")
 
 [node name="PreGenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 text = "Verrouiller et prévisualiser"
 
 [node name="GenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme = ExtResource("6_85g3d")
-text = "!!! Générer les dossiers !!!"
+text = "Générer la structure"
 
 [node name="Label" type="Label" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
 visible = false
@@ -487,30 +488,21 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="SummaryVBox" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryContainer"]
-visible = false
+[node name="Summary" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SummaryLabel" type="Label" parent="Window/WorkspaceHBox/SummaryContainer/SummaryVBox"]
+[node name="SummaryTitleLabel" type="Label" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme = ExtResource("3_4krfr")
-
-[node name="SummaryFoldersVBox" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryContainer/SummaryVBox"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Test" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SummaryLabel" parent="Window/WorkspaceHBox/SummaryContainer/Test" instance=ExtResource("4_tefeu")]
-layout_mode = 2
+theme = ExtResource("10_ya4ey")
 text = "Prévisualisation des dossiers"
 
-[node name="Tree" type="Tree" parent="Window/WorkspaceHBox/SummaryContainer/Test"]
+[node name="SummaryBodyLabel" type="Label" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
+layout_mode = 2
+theme = ExtResource("3_4krfr")
+text = "La structure ci-dessous sera créée à l'emplacement choisi"
+
+[node name="Tree" type="Tree" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_4krfr")

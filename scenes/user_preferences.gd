@@ -5,7 +5,7 @@ class_name UserPreferences extends Resource
 @export var editors: Array = []
 @export var customers: Array = []
 @export var hide_logo: bool = false
-@export var show_highlights: bool = true
+@export var show_highlights: bool = false
 @export var has_seen_tutorial: bool = false
 
 @export var achievements: Array = []
@@ -56,7 +56,7 @@ static func load_from_file(path: String) -> UserPreferences:
 				"editors": {},
 				"customers": [],
 				"hide_logo": false,
-				"show_highlights": true,
+				"show_highlights": false,
 				"has_seen_tutorial": false
 				},
 			"achievements": []
@@ -78,7 +78,6 @@ static func load_from_file(path: String) -> UserPreferences:
 	var json_pref = json.get("preferences", {})
 	res.default_path = json_pref.get("default_path", "")
 	res.has_default_path = json_pref.get("has_default_path", false)
-	#res.editors = json_pref.get("editors", {})
 	var tmp_editors = json_pref.get("editors", {})
 	if tmp_editors != null :
 		for e_name in tmp_editors.keys():
@@ -87,10 +86,9 @@ static func load_from_file(path: String) -> UserPreferences:
 			tmp_editor.phone = tmp_editors[e_name].get("phone", "")
 			tmp_editor.email = tmp_editors[e_name].get("email", "")
 			res.editors.append(tmp_editor)
-		#print("Found editors container ", json_pref.get("editors", {}).size())
 	res.customers = json_pref.get("customers", [])
 	res.hide_logo = json_pref.get("hide_logo", false)
-	res.show_highlights = json_pref.get("show_highlights", true)
+	res.show_highlights = json_pref.get("show_highlights", false)
 	res.has_seen_tutorial = json_pref.get("has_seen_tutorial", false)
 	if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
 		PrintUtility.print_info("Current preferences are version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
@@ -102,7 +100,7 @@ func reset_user_preferences(path: String) -> void:
 	has_default_path = false
 	customers = []
 	hide_logo = false
-	show_highlights = true
+	show_highlights = false
 	has_seen_tutorial = false
 	save_to_file(path)
 
