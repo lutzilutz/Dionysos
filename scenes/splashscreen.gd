@@ -8,9 +8,9 @@ func _ready() -> void:
 		tween.kill()
 	
 	if OS.has_feature("editor"):
-		visible = false
+		enable(false)
 	elif OS.has_feature("release") or OS.has_feature("debug"):
-		visible = true
+		enable(true)
 		tween = get_tree().create_tween()
 		tween.finished.connect(_on_tween_finished)
 		tween.tween_interval(3)
@@ -29,7 +29,7 @@ func _on_tween_finished() -> void:
 func enable(value: bool) -> void:
 	if value:
 		modulate = Color(1,1,1,1)
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mouse_filter = Control.MOUSE_FILTER_STOP
 		visible = true
 	else:
 		modulate = Color(1,1,1,0)
