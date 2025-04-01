@@ -116,7 +116,7 @@ func update_preferences_dialog() -> void:
 	label.text = "Chemin du dossier : " + user_preferences.default_path
 	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
 	label.text += "\nClients : " + str(user_preferences.customers)
-	label.text += "\nCacher logo : " + str(user_preferences.hide_dry_kats_logo)
+	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
 	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
 	label.text += "\nA vu le tutoriel : " + str(user_preferences.has_seen_tutorial)
 
@@ -578,8 +578,8 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			PrintUtility.print_info("Unkown file menu option")
 
 func update_edit_hide_logo() -> void:
-	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_dry_kats_logo)
-	background_logo_sprite.visible = not user_preferences.hide_dry_kats_logo
+	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_logo)
+	background_logo_sprite.visible = not user_preferences.hide_logo
 
 func update_edit_show_highlights() -> void:
 	edit_menu.set_item_checked(edit_menu.get_item_index(2), user_preferences.show_highlights)
@@ -598,7 +598,7 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			update_controls()
 			update_summary()
 		1: # Hide logo
-			user_preferences.hide_dry_kats_logo = not user_preferences.hide_dry_kats_logo
+			user_preferences.hide_logo = not user_preferences.hide_logo
 			user_preferences.save_to_file(USER_PREF_PATH)
 			update_edit_hide_logo()
 		2: # Show highlight
