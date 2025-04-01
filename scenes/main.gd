@@ -585,6 +585,7 @@ func _on_generate_folder_button_pressed() -> void:
 	else:
 		user_preferences.change_editor(editor_name, editor_phone, editor_email)
 		user_preferences.save_to_file(USER_PREF_PATH)
+	build_editor_options()
 	#var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
 	#match result:
 		#0:

@@ -122,11 +122,16 @@ func add_editor(name: String, phone: String, email: String) -> void:
 	editors.append(editor)
 
 func change_editor(name: String, phone: String, email: String) -> void:
+	var new_editor: Editor = Editor.new()
+	new_editor.name = name
+	new_editor.phone = phone
+	new_editor.email = email
 	for e in editors:
-		PrintUtility.print_info("User changing editor infos, from, to :")
-		PrintUtility.print_info(e.name + " - " + e.phone + " - " + e.email)
-		PrintUtility.print_info(name + " - " + phone + " - " + email)
 		if e.name.capitalize() == name.capitalize():
+			if new_editor.name != e.name or new_editor.phone != e.phone or new_editor.email != e.email:
+				PrintUtility.print_info("User changing editor infos, from, to :")
+				PrintUtility.print_info(e.name + " - " + e.phone + " - " + e.email)
+				PrintUtility.print_info(name + " - " + phone + " - " + email)
 			e.name = name
 			e.phone = phone
 			e.email = email
