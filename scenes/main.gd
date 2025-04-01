@@ -200,7 +200,6 @@ func generate_folders_tree() -> void:
 	var w_renders_string: String = "0" + str(folder_id) + " Working renders"
 	w_renders_folder.set_text(0, w_renders_string)
 	var sub_w_renders_folder: TreeItem# = tree.create_item(w_renders_folder)
-	var sub_w_renders_string: String# = "Offline drafts"
 	if production_type == ProductionType.EXTERNAL:
 		sub_w_renders_folder = tree.create_item(w_renders_folder)
 		sub_w_renders_folder.set_text(0, "Offline drafts")
@@ -293,7 +292,7 @@ func update_hovering() -> void:
 func reset_tree_highlights() -> void:
 	if folder_tree.get_root() != null:
 		if folder_tree.get_root().get_child_count() > 0:
-			var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
+			#var tmp_tree_item: TreeItem = folder_tree.get_root().get_first_child()
 			if folder_tree.get_root().get_child_count() > 0:
 				for c in folder_tree.get_root().get_children():
 					c.set_custom_color(0, TREE_DEFAULT)
@@ -654,7 +653,7 @@ func _on_audio_sfx_line_mouse_entered() -> void:
 	control_hovered = audio_sfx_line
 	update_hovering()
 
-func _on_day_count_spin_value_changed(value: float) -> void:
+func _on_day_count_spin_value_changed(value: int) -> void:
 	daycount = value
 	update_line_icon(daycount_line, value == 1)
 	update_controls()
@@ -664,7 +663,7 @@ func _on_day_count_line_mouse_entered() -> void:
 	control_hovered = daycount_line
 	update_hovering()
 
-func _on_camera_count_spin_value_changed(value: float) -> void:
+func _on_camera_count_spin_value_changed(value: int) -> void:
 	cameracount = value
 	update_line_icon(cameracount_line, value == 1)
 	update_controls()

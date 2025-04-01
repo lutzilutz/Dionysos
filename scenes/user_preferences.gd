@@ -56,7 +56,7 @@ static func load_from_file(path: String) -> UserPreferences:
 			PrintUtility.print_info("Successful creation of user_preferences.json")
 		else:
 			PrintUtility.print_error("Can't write a new file user_preferences.json")
-			PrintUtility.print_error(str(new_file.get_open_error()))
+			PrintUtility.print_error(str(FileAccess.get_open_error()))
 	else:
 		PrintUtility.print_info("user_preferences.json found")
 	
