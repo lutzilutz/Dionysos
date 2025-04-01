@@ -48,6 +48,15 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var editor_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorLabel")
 @onready var editor_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption")
 @onready var editor_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit")
+@onready var include_contact_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine")
+@onready var include_contact_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactLabel")
+@onready var include_contact_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox")
+@onready var phone_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine")
+@onready var phone_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine/PhoneLabel")
+@onready var phone_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine/PhoneEdit")
+@onready var email_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine")
+@onready var email_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine/EmailLabel")
+@onready var email_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine/EmailEdit")
 
 @onready var audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioTitleLabel")
 
@@ -89,6 +98,9 @@ var customer_name: String = ""
 var project_name: String = ""
 var production_type: ProductionType
 var editor_name: String = ""
+var use_contact: bool = true
+var editor_phone: String = ""
+var editor_email: String = ""
 
 var daycount: int = 1
 var cameracount: int = 1
@@ -112,6 +124,7 @@ func _ready() -> void:
 	update_edit_show_highlights()
 	if user_preferences.has_default_path:
 		build_customer_options()
+	build_editor_options()
 	update_controls()
 	update_preferences_dialog()
 	get_node("FileDialog").ok_button_text = "Sélectionner le dossier"
@@ -412,6 +425,14 @@ func update_controls() -> void: # Updating form controls depending how much user
 	editor_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
 	editor_line.get_node("LineIcon").modulate = checked_color
 	
+	# Editor contact
+	include_contact_label.disable(not secondary_options_editable)
+	include_contact_checkbox.disabled = not secondary_options_editable
+	phone_label.disable(not secondary_options_editable or not include_contact_checkbox.button_pressed)
+	phone_edit.editable = secondary_options_editable and include_contact_checkbox.button_pressed
+	email_label.disable(not secondary_options_editable or not include_contact_checkbox.button_pressed)
+	email_edit.editable = secondary_options_editable and include_contact_checkbox.button_pressed
+	
 	# Audio checkboxes
 	audio_label.disable(not secondary_options_editable)
 	production_audio_label.disable(not secondary_options_editable)
@@ -448,6 +469,12 @@ func build_customer_options() -> void:
 	customer_option.add_item("<Nouveau client>")
 	for d in DirAccess.get_directories_at(user_preferences.default_path):
 		customer_option.add_item(d)
+
+func build_editor_options() -> void:
+	editor_option.clear()
+	editor_option.add_item("<Nouveau monteur>")
+	for e in user_preferences.editors:
+		editor_option.add_item(e)
 
 func update_summary() -> void:
 	summary_label.text = "Customer name : " + customer_name
@@ -570,6 +597,18 @@ func _on_editor_edit_text_changed(new_text: String) -> void:
 	editor_name = new_text
 	update_controls()
 	update_summary()
+
+func _on_include_contact_option_toggled(toggled_on: bool) -> void:
+	use_contact = toggled_on
+	update_controls()
+
+func _on_phone_edit_text_changed(new_text: String) -> void:
+	editor_phone = new_text
+	update_controls()
+
+func _on_email_edit_text_changed(new_text: String) -> void:
+	editor_email = new_text
+	update_controls()
 
 # MenuBar signals =================================================================================
 

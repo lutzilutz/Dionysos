@@ -227,7 +227,7 @@ layout_mode = 2
 
 [node name="EditorLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
-text = "Nom du client"
+text = "Nom du monteur"
 
 [node name="EditorOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
 layout_mode = 2
@@ -244,6 +244,70 @@ theme = ExtResource("6_85g3d")
 placeholder_text = "Entrer le nom du monteur ici ..."
 
 [node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="IncludeContactLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="IncludeContactLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Inclure les données de contact"
+
+[node name="IncludeContactCheckbox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+button_pressed = true
+
+[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="PhoneLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="PhoneLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "Numéro de téléphone"
+
+[node name="PhoneEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer le numéro de téléphone ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("6_o6xl0")
+stretch_mode = 5
+
+[node name="EmailLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="EmailLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine" instance=ExtResource("4_tbgi4")]
+layout_mode = 2
+text = "E-mail"
+
+[node name="EmailEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_85g3d")
+placeholder_text = "Entrer l'e-mail de téléphone ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
@@ -492,6 +556,9 @@ offset_bottom = 296.0
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption" to="." method="_on_editor_option_item_selected"]
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit" to="." method="_on_editor_edit_text_changed"]
+[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox" to="." method="_on_include_contact_option_toggled"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine/PhoneEdit" to="." method="_on_phone_edit_text_changed"]
+[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine/EmailEdit" to="." method="_on_email_edit_text_changed"]
 [connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" to="." method="_on_day_count_line_mouse_entered"]
 [connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_line_mouse_entered"]
 [connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_spin_value_changed"]
