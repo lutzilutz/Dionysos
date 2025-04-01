@@ -653,8 +653,13 @@ func generate_system_folders_project(path: String) -> void:
 
 func generate_folder_at(path: String) -> void:
 	PrintUtility.print_gen("Computing " + path)
-	if path.ends_with(".txt") :
-		PrintUtility.print_gen("Skipping text files for now")
+	if path.contains("."):
+		if path.ends_with(".txt"):
+			var file = FileAccess.open(path, FileAccess.WRITE)
+			file.store_string(build_readme_file())
+		else:
+			PrintUtility.print_gen("Unkown file extension in generate_folder_at(" + path + ")")
+			PrintUtility.print_error("Can't create file " + path)
 	else:
 		var result = DirAccess.make_dir_absolute(path)
 		match result:
@@ -666,6 +671,39 @@ func generate_folder_at(path: String) -> void:
 			_:
 				PrintUtility.print_gen("Unkown error in generate_folder_at(" + path + ") : " + str(result))
 				PrintUtility.print_error("Can't create folder " + path)
+
+func build_readme_file() -> String:
+	var s: String = ""
+	s = "Bienvenue dans le dossier du projet \"Maquette 2024\" de Sarah Matousek.
+Vous trouverez ci-dessous des indications sur la structure du projet et les emplacements intéressants.
+Pour toute question d'ordre technique, merci de bien vouloir écrire à : lutz@drykats.ch
+
+===== Équipe =====
+
+   ----- Montage -----
+	  Monteur : Lutz
+	  Contact : lutz@drykats.ch
+
+===== Informations au client =====
+
+   ----- Logo et charte -----
+	  Vous pouvez déposer à tout moment vos logos et chartes graphiques à l'emplacement :
+	  06 Assets / 00 Drop-box
+	  Formats idéaux : PNG, PDF, PS, BMP
+	  Formats à éviter : JPG/JPEG, GIF
+
+   ----- Rendus -----
+	  Nous utilisons une numérotation séquentielle pour les versions : v01, v02, v03, ...
+	  Cette numérotation est présente dans les noms de fichier ainsi que dans les vidéos.
+
+	  Vous trouverez les rendus temporaires qui vous sont destinés dans :
+	  07 Working renders/Online drafts
+
+	  Vous trouverez la version finale du projet dans :
+	  08 Final renders
+
+	  Le dossier \"11 Notes\" peut contenir vos notes, retours, indications, ou PV de réunion."
+	return s
 
 # MenuBar signals =================================================================================
 
