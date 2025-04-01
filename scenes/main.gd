@@ -434,6 +434,12 @@ func update_controls() -> void: # Updating form controls depending how much user
 	phone_edit.editable = secondary_options_editable and include_contact_checkbox.button_pressed
 	email_label.disable(not secondary_options_editable or not include_contact_checkbox.button_pressed)
 	email_edit.editable = secondary_options_editable and include_contact_checkbox.button_pressed
+	include_contact_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
+	include_contact_line.get_node("LineIcon").modulate = checked_color
+	phone_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
+	phone_line.get_node("LineIcon").modulate = checked_color
+	email_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
+	email_line.get_node("LineIcon").modulate = checked_color
 	
 	# Audio checkboxes
 	audio_label.disable(not secondary_options_editable)
