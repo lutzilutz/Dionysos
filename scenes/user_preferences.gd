@@ -11,12 +11,21 @@ class_name UserPreferences extends Resource
 @export var achievements: Array = []
 
 func save_to_file(path:String) -> Error:
+	var json_editors:Dictionary = {}
+	# Build Editor resources
+	for e: Editor in editors:
+		var json_infos: Dictionary = {
+			"phone": e.phone,
+			"email": e.email
+		}
+		json_editors[e.name] = json_infos
+	# Build main resources
 	var json = {
 		"version": ProjectSettings.get_setting("application/config/version"),
 		"preferences": {
 			"default_path": default_path,
 			"has_default_path": has_default_path,
-			"editors": editors,
+			"editors": json_editors,
 			"customers": customers,
 			"hide_logo": hide_logo,
 			"show_highlights": show_highlights,
@@ -34,7 +43,6 @@ func save_to_file(path:String) -> Error:
 		return ERR_FILE_CANT_WRITE
 
 static func load_from_file(path: String) -> UserPreferences:
-	
 	# Check if a user preferences file already exists (not first time)
 	# If not, creates a default JSON file to be used
 	if not FileAccess.file_exists(path):
@@ -45,7 +53,7 @@ static func load_from_file(path: String) -> UserPreferences:
 			"preferences": {
 				"default_path": "",
 				"has_default_path": false,
-				"editors": [],
+				"editors": {},
 				"customers": [],
 				"hide_logo": false,
 				"show_highlights": true,
@@ -54,7 +62,7 @@ static func load_from_file(path: String) -> UserPreferences:
 			"achievements": []
 		}
 		if new_file:
-			new_file.store_string(JSON.stringify(new_json))
+			new_file.store_string(JSON.stringify(new_json, "\t"))
 			new_file.flush()
 			PrintUtility.print_info("Successful creation of user_preferences.json")
 		else:
@@ -70,7 +78,16 @@ static func load_from_file(path: String) -> UserPreferences:
 	var json_pref = json.get("preferences", {})
 	res.default_path = json_pref.get("default_path", "")
 	res.has_default_path = json_pref.get("has_default_path", false)
-	res.editors = json_pref.get("editors", [])
+	#res.editors = json_pref.get("editors", {})
+	var tmp_editors = json_pref.get("editors", {})
+	if tmp_editors != null :
+		for e_name in tmp_editors.keys():
+			var tmp_editor: Editor = Editor.new()
+			tmp_editor.name = e_name
+			tmp_editor.phone = tmp_editors[e_name].get("phone", "")
+			tmp_editor.email = tmp_editors[e_name].get("email", "")
+			res.editors.append(tmp_editor)
+		#print("Found editors container ", json_pref.get("editors", {}).size())
 	res.customers = json_pref.get("customers", [])
 	res.hide_logo = json_pref.get("hide_logo", false)
 	res.show_highlights = json_pref.get("show_highlights", true)
@@ -88,3 +105,28 @@ func reset_user_preferences(path: String) -> void:
 	show_highlights = true
 	has_seen_tutorial = false
 	save_to_file(path)
+
+func editor_exists(new_name: String) -> bool:
+	var editor_found: bool = false
+	for e in editors:
+		if e.name.capitalize() == new_name.capitalize():
+			editor_found = true
+			break
+	return editor_found
+
+func add_editor(name: String, phone: String, email: String) -> void:
+	var editor: Editor = Editor.new()
+	editor.name = name
+	editor.phone = phone
+	editor.email = email
+	editors.append(editor)
+
+func change_editor(name: String, phone: String, email: String) -> void:
+	for e in editors:
+		PrintUtility.print_info("User changing editor infos, from, to :")
+		PrintUtility.print_info(e.name + " - " + e.phone + " - " + e.email)
+		PrintUtility.print_info(name + " - " + phone + " - " + email)
+		if e.name.capitalize() == name.capitalize():
+			e.name = name
+			e.phone = phone
+			e.email = email

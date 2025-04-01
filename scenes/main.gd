@@ -133,7 +133,9 @@ func update_preferences_dialog() -> void:
 	var label = get_node("PreferencesDialog/PreferencesLabel")
 	label.text = "Chemin du dossier : " + user_preferences.default_path
 	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
-	label.text += "\nMonteurs : " + str(user_preferences.editors)
+	label.text += "\nMonteurs : "
+	for e in user_preferences.editors:
+		label.text += "\n   " + e.name + " - " + e.phone + " - " + e.email
 	label.text += "\nClients : " + str(user_preferences.customers)
 	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
 	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
@@ -474,7 +476,34 @@ func build_editor_options() -> void:
 	editor_option.clear()
 	editor_option.add_item("<Nouveau monteur>")
 	for e in user_preferences.editors:
-		editor_option.add_item(e)
+		editor_option.add_item(e.name)
+
+func update_editor_fields() -> void:
+	var found_editor: bool = false
+	if editor_option.selected != 0:
+		for e in user_preferences.editors:
+			if e.name.capitalize() == editor_name.capitalize():
+				editor_phone = e.phone
+				phone_edit.text = e.phone
+				editor_email = e.email
+				email_edit.text = e.email
+				found_editor = true
+		if not found_editor: PrintUtility.print_error("Didn't find editor in user_preferences from Main.update_editor_fields() with editor_option != 0")
+	else:
+		if editor_name != "":
+			for e in user_preferences.editors:
+				if e.name.capitalize() == editor_name.capitalize():
+					editor_phone = e.phone
+					phone_edit.text = e.phone
+					editor_email = e.email
+					email_edit.text = e.email
+					found_editor = true
+			if found_editor: PrintUtility.print_info("Found matching editor in user_preferences from Main.update_editor_fields()")
+		if not found_editor or editor_name == "":
+			editor_phone = ""
+			phone_edit.text = ""
+			editor_email = ""
+			email_edit.text = ""
 
 func update_summary() -> void:
 	summary_label.text = "Customer name : " + customer_name
@@ -543,11 +572,18 @@ func _on_pre_generate_folder_button_pressed() -> void:
 
 func _on_generate_folder_button_pressed() -> void:
 	PrintUtility.print_WIP("Start generating folders ...")
-	if user_preferences.editors.find(editor_name, 0) == -1:
-		user_preferences.editors.append(editor_name)
-		user_preferences.save_to_file(USER_PREF_PATH)
+	#if user_preferences.editors.find(editor_name, 0) == -1:
+		#user_preferences.editors.append(editor_name)
+		#user_preferences.save_to_file(USER_PREF_PATH)
 	if user_preferences.customers.find(customer_name, 0) == -1:
 		user_preferences.customers.append(customer_name)
+		user_preferences.save_to_file(USER_PREF_PATH)
+	
+	if not user_preferences.editor_exists(editor_name):
+		user_preferences.add_editor(editor_name, editor_phone, editor_email)
+		user_preferences.save_to_file(USER_PREF_PATH)
+	else:
+		user_preferences.change_editor(editor_name, editor_phone, editor_email)
 		user_preferences.save_to_file(USER_PREF_PATH)
 	#var result = DirAccess.make_dir_absolute(user_preferences.default_path + "/" + project_name)
 	#match result:
@@ -557,58 +593,6 @@ func _on_generate_folder_button_pressed() -> void:
 			#PrintUtility.print_error("Folder already exists")
 		#_:
 			#PrintUtility.print_error("Unkown error : " + str(result))
-
-func _on_customer_option_item_selected(index: int) -> void:
-	if index == 0:
-		customer_name = customer_edit.text
-	else:
-		customer_name = customer_option.get_item_text(index)
-	update_controls()
-	update_summary()
-
-func _on_customer_edit_text_changed(new_text: String) -> void:
-	customer_name = new_text
-	update_controls()
-	update_summary()
-
-func _on_project_name_edit_text_changed(new_text: String) -> void:
-	project_name = new_text
-	update_controls()
-	update_summary()
-
-func _on_production_type_option_item_selected(index: int) -> void:
-	match index:
-		0:
-			production_type = ProductionType.EXTERNAL
-		1:
-			production_type = ProductionType.INTERNAL
-	update_controls()
-	update_summary()
-
-func _on_editor_option_item_selected(index: int) -> void:
-	if index == 0:
-		editor_name = editor_edit.text
-	else:
-		editor_name = editor_option.get_item_text(index)
-	update_controls()
-	update_summary()
-
-func _on_editor_edit_text_changed(new_text: String) -> void:
-	editor_name = new_text
-	update_controls()
-	update_summary()
-
-func _on_include_contact_option_toggled(toggled_on: bool) -> void:
-	use_contact = toggled_on
-	update_controls()
-
-func _on_phone_edit_text_changed(new_text: String) -> void:
-	editor_phone = new_text
-	update_controls()
-
-func _on_email_edit_text_changed(new_text: String) -> void:
-	editor_email = new_text
-	update_controls()
 
 # MenuBar signals =================================================================================
 
@@ -622,10 +606,20 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			customer_name = ""
 			customer_option.selected = 0
 			customer_edit.text = ""
+			
 			project_name = ""
 			project_name_edit.text = ""
 			project_name_edit.modulate = Color(1,1,1,1)
 			production_type_option.selected = -1
+			
+			editor_name = ""
+			editor_option.selected = 0
+			editor_edit.text = ""
+			editor_phone = ""
+			phone_edit.text = ""
+			editor_email = ""
+			email_edit.text = ""
+			
 			daycount = 1
 			daycount_spin.value = 1
 			cameracount = 1
@@ -646,15 +640,6 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			update_summary()
 		_:
 			PrintUtility.print_info("Unkown file menu option")
-
-func update_edit_hide_logo() -> void:
-	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_logo)
-	background_logo_sprite.visible = not user_preferences.hide_logo
-
-func update_edit_show_highlights() -> void:
-	edit_menu.set_item_checked(edit_menu.get_item_index(2), user_preferences.show_highlights)
-	if not user_preferences.show_highlights:
-		reset_tree_highlights()
 
 func _on_edit_menu_id_pressed(id: int) -> void:
 	match id:
@@ -696,9 +681,74 @@ func _on_help_menu_id_pressed(id: int) -> void:
 			user_preferences.save_to_file(USER_PREF_PATH)
 			update_tutorial_screen()
 
+func update_edit_hide_logo() -> void:
+	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_logo)
+	background_logo_sprite.visible = not user_preferences.hide_logo
+
+func update_edit_show_highlights() -> void:
+	edit_menu.set_item_checked(edit_menu.get_item_index(2), user_preferences.show_highlights)
+	if not user_preferences.show_highlights:
+		reset_tree_highlights()
+
 func update_line_icon(line, value: bool) -> void:
 	line.get_node("LineIcon").texture = empty_texture if value else information_texture
 	line.get_node("LineIcon").tooltip_text = "" if value else "Cette valeur a été modifiée"
+
+# Form signals ====================================================================================
+
+func _on_customer_option_item_selected(index: int) -> void:
+	if index == 0:
+		customer_name = customer_edit.text
+	else:
+		customer_name = customer_option.get_item_text(index)
+	update_controls()
+	update_summary()
+
+func _on_customer_edit_text_changed(new_text: String) -> void:
+	customer_name = new_text
+	update_controls()
+	update_summary()
+
+func _on_project_name_edit_text_changed(new_text: String) -> void:
+	project_name = new_text
+	update_controls()
+	update_summary()
+
+func _on_production_type_option_item_selected(index: int) -> void:
+	match index:
+		0:
+			production_type = ProductionType.EXTERNAL
+		1:
+			production_type = ProductionType.INTERNAL
+	update_controls()
+	update_summary()
+
+func _on_editor_option_item_selected(index: int) -> void:
+	if index == 0:
+		editor_name = editor_edit.text
+	else:
+		editor_name = editor_option.get_item_text(index)
+	update_editor_fields()
+	update_controls()
+	update_summary()
+
+func _on_editor_edit_text_changed(new_text: String) -> void:
+	editor_name = new_text
+	update_editor_fields()
+	update_controls()
+	update_summary()
+
+func _on_include_contact_option_toggled(toggled_on: bool) -> void:
+	use_contact = toggled_on
+	update_controls()
+
+func _on_phone_edit_text_changed(new_text: String) -> void:
+	editor_phone = new_text
+	update_controls()
+
+func _on_email_edit_text_changed(new_text: String) -> void:
+	editor_email = new_text
+	update_controls()
 
 func _on_production_audio_check_box_toggled(toggled_on: bool) -> void:
 	use_production_audio = toggled_on
