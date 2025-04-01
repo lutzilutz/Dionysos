@@ -166,45 +166,54 @@ func generate_folders_tree() -> void:
 	var preprod_folder: TreeItem = tree.create_item(root)
 	var preprod_string: String = "0" + str(folder_id) + " Preproduction"
 	preprod_folder.set_text(0, preprod_string)
-	preprod_folder.set_tooltip_text(0, "Dossier préproduction : recherche, direction artistique, budget, casting, ...")
+	preprod_folder.set_tooltip_text(0, "Contient tous les documents liés à la préproduction : dossiers, direction artistique, casting, lieux de tournage, storyboard ...")
 	folder_id += 1
 	
 	# Production
 	var prod_folder: TreeItem = tree.create_item(root)
 	var prod_string: String = "0" + str(folder_id) + " Production"
 	prod_folder.set_text(0, prod_string)
-	prod_folder.set_tooltip_text(0, "Dossier production : script, plan de tournage, débouillement, horaires, ...")
+	prod_folder.set_tooltip_text(0, "Contient tous les documents liés à la production : script, shotlist, plan de tournage, ...")
 	folder_id += 1
 	
 	# Audio
 	var audio_folder: TreeItem = tree.create_item(root)
 	var audio_string: String = "0" + str(folder_id) + " Audio"
 	audio_folder.set_text(0, audio_string)
+	audio_folder.set_tooltip_text(0, "Contient l'ensemble des fichiers audio utilisés dans le projet")
 	if use_production_audio:
 		var prod_audio_f: TreeItem = tree.create_item(audio_folder)
 		prod_audio_f.set_text(0, "Production audio")
+		prod_audio_f.set_tooltip_text(0, "Contient tous les fichiers audio produits lors de la production")
 	if use_music:
 		var music_f: TreeItem = tree.create_item(audio_folder)
 		music_f.set_text(0, "Sound track")
+		music_f.set_tooltip_text(0, "Contient les musiques.")
 		var sub_music_f: TreeItem = tree.create_item(music_f)
 		sub_music_f.set_text(0, "01 Sound track temp")
+		sub_music_f.set_tooltip_text(0, "Contient les musiques temporaires/de travail")
 		sub_music_f = tree.create_item(music_f)
 		sub_music_f.set_text(0, "02 Final licensed tracks")
+		sub_music_f.set_tooltip_text(0, "Contient les musiques finales, avec license en ordre ou libre de droit")
 		sub_music_f = tree.create_item(music_f)
 		sub_music_f.set_text(0, "03 License agreements and contracts")
+		sub_music_f.set_tooltip_text(0, "Pour les musiques sous license, contient les différents documents attestants de nos droits")
 	if use_audio_sfx:
 		var audio_sfx_f: TreeItem = tree.create_item(audio_folder)
 		audio_sfx_f.set_text(0, "SFX")
+		audio_sfx_f.set_tooltip_text(0, "Contient les effets audio")
 	folder_id += 1
 	
 	# Footage
 	var foot_folder: TreeItem = tree.create_item(root)
 	var foot_string: String = "0" + str(folder_id) + " Footage"
 	foot_folder.set_text(0, foot_string)
+	foot_folder.set_tooltip_text(0, "Contient les vidéos et photos produites à la production")
 	for c in range(cameracount):
 		for d in range(daycount):
 			var tmp_f: TreeItem = tree.create_item(foot_folder)
 			tmp_f.set_text(0, char(c + 65) + daycount_int_to_string(d + 1))
+			tmp_f.set_tooltip_text(0, "Caméra " + char(c + 65) + ", jour " + str(d + 1))
 	folder_id += 1
 	
 	# VFX
@@ -212,18 +221,23 @@ func generate_folders_tree() -> void:
 		var vfx_folder: TreeItem = tree.create_item(root)
 		var vfx_string: String = "0" + str(folder_id) + " VFX"
 		vfx_folder.set_text(0, vfx_string)
+		vfx_folder.set_tooltip_text(0, "Contient tous les VFXs")
 		folder_id += 1
 	
 	# Assets
 	var assets_folder: TreeItem = tree.create_item(root)
 	var assets_string: String = "0" + str(folder_id) + " Assets"
 	assets_folder.set_text(0, assets_string)
+	assets_folder.set_tooltip_text(0, "Les différents assets graphiques")
 	var sub_assets_folder: TreeItem = tree.create_item(assets_folder)
 	sub_assets_folder.set_text(0, "00 Drop-box")
+	sub_assets_folder.set_tooltip_text(0, "Boîte de dépôt")
 	sub_assets_folder = tree.create_item(assets_folder)
 	sub_assets_folder.set_text(0, "01 Logo and branding")
+	sub_assets_folder.set_tooltip_text(0, "Logos, polices d'écritures, ...")
 	sub_assets_folder = tree.create_item(assets_folder)
 	sub_assets_folder.set_text(0, "02 Branding guidelines")
+	sub_assets_folder.set_tooltip_text(0, "Chartes graphiques")
 	readme.drop_box = assets_string + "/00 Drop-box"
 	folder_id += 1
 	
@@ -231,30 +245,37 @@ func generate_folders_tree() -> void:
 	var w_renders_folder: TreeItem = tree.create_item(root)
 	var w_renders_string: String = "0" + str(folder_id) + " Working renders"
 	w_renders_folder.set_text(0, w_renders_string)
+	w_renders_folder.set_tooltip_text(0, "Rendus temporaires, de travail")
 	var sub_w_renders_folder: TreeItem# = tree.create_item(w_renders_folder)
 	if production_type == ProductionType.EXTERNAL:
 		sub_w_renders_folder = tree.create_item(w_renders_folder)
 		sub_w_renders_folder.set_text(0, "Offline drafts")
+		sub_w_renders_folder.set_tooltip_text(0, "Drafts pour l'équipe de réalisation, en interne")
 		sub_w_renders_folder = tree.create_item(w_renders_folder)
 		sub_w_renders_folder.set_text(0, "Online drafts")
+		sub_w_renders_folder.set_tooltip_text(0, "Drafts pour le client")
 		readme.working_renders = w_renders_string + "/Online drafts"
 	elif production_type == ProductionType.INTERNAL:
 		sub_w_renders_folder = tree.create_item(w_renders_folder)
 		sub_w_renders_folder.set_text(0, "Drafts")
+		sub_w_renders_folder.set_tooltip_text(0, "Drafts pour révision")
 		readme.working_renders = w_renders_string + "/Drafts"
 	else:
 		PrintUtility.print_error("Unknown production type : " + str(production_type))
 	
 	sub_w_renders_folder = tree.create_item(w_renders_folder)
 	sub_w_renders_folder.set_text(0, "Process renders")
+	sub_w_renders_folder.set_tooltip_text(0, "Rendus pour le montage ou les VFXs")
 	sub_w_renders_folder = tree.create_item(w_renders_folder)
 	sub_w_renders_folder.set_text(0, "Screenshots")
+	sub_w_renders_folder.set_tooltip_text(0, "Captures d'écran")
 	folder_id += 1
 	
 	# Final renders
 	var f_renders_folder: TreeItem = tree.create_item(root)
 	var f_renders_string: String = "0" + str(folder_id) + " Final renders"
 	f_renders_folder.set_text(0, f_renders_string)
+	f_renders_folder.set_tooltip_text(0, "Rendus finaux")
 	readme.final_renders = f_renders_string
 	folder_id += 1
 	
@@ -262,26 +283,33 @@ func generate_folders_tree() -> void:
 	var w_edit_folder: TreeItem = tree.create_item(root)
 	var w_edit_string: String = "0" + str(folder_id) + " Working edit files"
 	w_edit_folder.set_text(0, w_edit_string)
+	w_edit_folder.set_tooltip_text(0, "Fichiers temporaires du montage")
 	folder_id += 1
 	
 	# DaVinci project archive
 	var dv_archive_folder: TreeItem = tree.create_item(root)
 	var dv_archive_string: String = "0" + str(folder_id) + " DaVinci project archive" if folder_id < 10 else str(folder_id) + " DaVinci project archive"
 	dv_archive_folder.set_text(0, dv_archive_string)
+	dv_archive_folder.set_tooltip_text(0, "Archive du projet DaVinci, une fois que le projet est terminé")
 	folder_id += 1
 	
 	# Notes
 	var notes_folder: TreeItem = tree.create_item(root)
 	var notes_string: String = "0" + str(folder_id) + " Notes" if folder_id < 10 else str(folder_id) + " Notes"
 	notes_folder.set_text(0, notes_string)
+	notes_folder.set_tooltip_text(0, "Notes et PVs")
 	var sub_notes_folder: TreeItem = tree.create_item(notes_folder)
 	sub_notes_folder.set_text(0, "Director notes")
+	sub_notes_folder.set_tooltip_text(0, "Notes du réalisateur·trice")
 	sub_notes_folder = tree.create_item(notes_folder)
 	sub_notes_folder.set_text(0, "Editor notes")
+	sub_notes_folder.set_tooltip_text(0, "Notes du monteur·se")
 	sub_notes_folder = tree.create_item(notes_folder)
 	sub_notes_folder.set_text(0, "Production notes")
+	sub_notes_folder.set_tooltip_text(0, "Notes de la production")
 	sub_notes_folder = tree.create_item(notes_folder)
 	sub_notes_folder.set_text(0, "PV and transcriptions")
+	sub_notes_folder.set_tooltip_text(0, "PVs de réunions")
 	readme.notes = notes_string
 	folder_id += 1
 	
