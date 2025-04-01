@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=14 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="7_tipki"]
 [ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="8_choun"]
 [ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="10_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://c7wy6a71iomhv" path="res://scenes/splashscreen.tscn" id="12_eb6dy"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85g3d"]
 
@@ -88,12 +89,14 @@ item_6/id = 0
 [node name="HelpMenu" type="PopupMenu" parent="Window/MenuBar"]
 auto_translate_mode = 1
 title = "Aide"
-size = Vector2i(117, 100)
-item_count = 2
-item_0/text = "Revoir le tutoriel"
-item_0/id = 1
-item_1/text = "Aidez-moi !"
-item_1/id = 0
+size = Vector2i(149, 100)
+item_count = 3
+item_0/text = "Écran d'accueil"
+item_0/id = 2
+item_1/text = "Revoir le tutoriel"
+item_1/id = 1
+item_2/text = "Aidez-moi !"
+item_2/id = 0
 
 [node name="WorkspaceHBox" type="HBoxContainer" parent="Window"]
 layout_mode = 2
@@ -535,6 +538,10 @@ offset_left = 8.0
 offset_top = 8.0
 offset_right = 522.0
 offset_bottom = 296.0
+
+[node name="Splashscreen" parent="." instance=ExtResource("12_eb6dy")]
+visible = false
+layout_mode = 1
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]

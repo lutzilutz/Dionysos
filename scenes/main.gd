@@ -19,6 +19,7 @@ var checked_texture: Texture2D = preload("res://resources/icons/checked_16.png")
 var information_texture: Texture2D = preload("res://resources/icons/information_16.png")
 
 @onready var tutorial = get_node("Tutorial")
+@onready var splashscreen = get_node("Splashscreen")
 
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
@@ -112,8 +113,15 @@ var readme: ReadMe
 
 var control_hovered
 
+func check_if_release() -> void:
+	if OS.has_feature("editor"):
+		PrintUtility.print_info("Running from editor")
+	elif OS.has_feature("release"):
+		PrintUtility.print_info("Running from release build")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	check_if_release()
 	version_label.set_text("Version " + ProjectSettings.get_setting("application/config/version"))
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
 	readme = ReadMe.new()
@@ -749,6 +757,10 @@ func _on_help_menu_id_pressed(id: int) -> void:
 			user_preferences.has_seen_tutorial = false
 			user_preferences.save_to_file(USER_PREF_PATH)
 			update_tutorial_screen()
+		2: # Splashscreen
+			splashscreen.enable(true)
+		_: #
+			PrintUtility.print_info("Unkown help menu option")
 
 func update_edit_hide_logo() -> void:
 	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_logo)
