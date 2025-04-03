@@ -17,3 +17,8 @@ This software doesn't need to be installed. There is only a *.exe* file. You'll 
 ## Minimal requirements
 
 - Windows 10 or 11
+
+## Incoming features
+
+- No features are planned for now
+- Feel free to suggest features that would be useful or would save time. You can open new issues under the *Issues* tab, or contact Lutz directly.
