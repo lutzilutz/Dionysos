@@ -5,6 +5,7 @@ const HAS_DEFAULT_PATH: bool = false
 const EDITORS_INCODE: Array = []
 const EDITORS_INFILE: Dictionary = {}
 const CUSTOMERS: Array = []
+const FOLDER_FOLLOW_CONVENTIONS: bool = true
 const HIDE_LOGO: bool = false
 const SHOW_HIGHLIGHTS: bool = false
 const HAS_SEEN_TUTORIAL: bool = false
@@ -23,6 +24,7 @@ const KAREL_EMAIL: String = "vlcpw.xlezfdpv@ocjvled.ns"
 @export var has_default_path: bool = HAS_DEFAULT_PATH
 @export var editors: Array = []
 @export var customers: Array = []
+@export var folder_follow_conventions: bool = FOLDER_FOLLOW_CONVENTIONS
 @export var hide_logo: bool = HIDE_LOGO
 @export var show_highlights: bool = SHOW_HIGHLIGHTS
 @export var has_seen_tutorial: bool = HAS_SEEN_TUTORIAL
@@ -46,6 +48,7 @@ func save_to_file(path:String) -> Error:
 			"has_default_path": has_default_path,
 			"editors": json_editors,
 			"customers": customers,
+			"folder_follow_conventions": folder_follow_conventions,
 			"hide_logo": hide_logo,
 			"show_highlights": show_highlights,
 			"has_seen_tutorial": has_seen_tutorial
@@ -96,6 +99,7 @@ static func load_from_file(path: String) -> UserPreferences:
 				"has_default_path": HAS_DEFAULT_PATH,
 				"editors": generate_drykats_team(),
 				"customers": CUSTOMERS,
+				"folder_follow_conventions": FOLDER_FOLLOW_CONVENTIONS,
 				"hide_logo": HIDE_LOGO,
 				"show_highlights": SHOW_HIGHLIGHTS,
 				"has_seen_tutorial": HAS_SEEN_TUTORIAL
@@ -128,6 +132,7 @@ static func load_from_file(path: String) -> UserPreferences:
 			tmp_editor.email = tmp_editors[e_name].get("email", "")
 			res.editors.append(tmp_editor)
 	res.customers = json_pref.get("customers", CUSTOMERS)
+	res.folder_follow_conventions = json_pref.get("folder_follow_conventions", FOLDER_FOLLOW_CONVENTIONS)
 	res.hide_logo = json_pref.get("hide_logo", HIDE_LOGO)
 	res.show_highlights = json_pref.get("show_highlights", SHOW_HIGHLIGHTS)
 	res.has_seen_tutorial = json_pref.get("has_seen_tutorial", HAS_SEEN_TUTORIAL)

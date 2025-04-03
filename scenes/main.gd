@@ -127,6 +127,7 @@ func _ready() -> void:
 	readme.main_scene = self
 	tutorial.tutorial_ended.connect(_on_tutorial_ended)
 	update_tutorial_screen()
+	update_edit_folder_follow_conventions()
 	update_edit_hide_logo()
 	update_edit_show_highlights()
 	if user_preferences.has_default_path:
@@ -144,6 +145,7 @@ func update_preferences_dialog() -> void:
 	for e in user_preferences.editors:
 		label.text += "\n   " + e.name + " - " + e.phone + " - " + e.email
 	label.text += "\nClients : " + str(user_preferences.customers)
+	label.text += "\nDossier suit conventions : " + str(user_preferences.folder_follow_conventions)
 	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
 	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
 	label.text += "\nA vu le tutoriel : " + str(user_preferences.has_seen_tutorial)
@@ -515,8 +517,15 @@ func path_has_conflict() -> bool:
 func build_customer_options() -> void:
 	customer_option.clear()
 	customer_option.add_item("<Nouveau client>")
-	for d in DirAccess.get_directories_at(user_preferences.default_path):
-		customer_option.add_item(d)
+	var new_customers: Array = []
+	if user_preferences.folder_follow_conventions:
+		for d in DirAccess.get_directories_at(user_preferences.default_path):
+			new_customers.append(d)
+	for i in range(user_preferences.customers.size()):
+		new_customers.append(user_preferences.customers[i])
+	new_customers.sort()
+	for i in range(new_customers.size()):
+		customer_option.add_item(new_customers[i])
 
 func build_editor_options() -> void:
 	editor_option.clear()
@@ -644,10 +653,10 @@ func generate_folder_at(path: String) -> void:
 
 func _on_file_menu_id_pressed(id: int) -> void:
 	match id:
-		0:
+		0: # Quit
 			PrintUtility.print_info("Quitting the software ...")
 			get_tree().quit()
-		1:
+		1: # Start new project
 			PrintUtility.print_info("Starting new project ...")
 			customer_name = ""
 			customer_option.selected = 0
@@ -677,6 +686,8 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			info_locked = false
 			preview_folder_button.text = "Verrouiller et prévisualiser"
 			update_controls()
+		2: # Open user manager
+			user_manager.visible = true
 		_:
 			PrintUtility.print_info("Unkown file menu option")
 
@@ -687,6 +698,7 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			user_preferences.reset_user_preferences(USER_PREF_PATH)
 			project_name = ""
 			customer_name = ""
+			update_edit_folder_follow_conventions()
 			update_edit_hide_logo()
 			update_edit_show_highlights()
 			update_controls()
@@ -710,6 +722,10 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 		6: # Purge customers
 			user_preferences.customers = []
 			user_preferences.save_to_file(USER_PREF_PATH)
+		7: # Folder only contains customers
+			user_preferences.folder_follow_conventions = not user_preferences.folder_follow_conventions
+			user_preferences.save_to_file(USER_PREF_PATH)
+			update_edit_folder_follow_conventions()
 		_:
 			PrintUtility.print_info("Unkown edition menu option")
 
@@ -725,6 +741,14 @@ func _on_help_menu_id_pressed(id: int) -> void:
 			splashscreen.enable(true)
 		_: #
 			PrintUtility.print_info("Unkown help menu option")
+
+
+func update_edit_folder_follow_conventions() -> void:
+	edit_menu.set_item_checked(edit_menu.get_item_index(7), user_preferences.folder_follow_conventions)
+	PrintUtility.print_TODO("Update according to folder_follow_conventions")
+	build_customer_options()
+	customer_name = ""
+	update_controls()
 
 func update_edit_hide_logo() -> void:
 	edit_menu.set_item_checked(edit_menu.get_item_index(1), user_preferences.hide_logo)
