@@ -52,12 +52,6 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var include_contact_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine")
 @onready var include_contact_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactLabel")
 @onready var include_contact_checkbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox")
-#@onready var phone_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine")
-#@onready var phone_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine/PhoneLabel")
-#@onready var phone_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine/PhoneEdit")
-#@onready var email_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine")
-#@onready var email_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine/EmailLabel")
-#@onready var email_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EmailLine/EmailEdit")
 
 @onready var audio_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/AudioTitleLabel")
 
@@ -480,16 +474,8 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Editor contact
 	include_contact_label.disable(not secondary_options_editable)
 	include_contact_checkbox.disabled = not secondary_options_editable
-	#phone_label.disable(not secondary_options_editable or not include_contact_checkbox.button_pressed)
-	#phone_edit.editable = secondary_options_editable and include_contact_checkbox.button_pressed
-	#email_label.disable(not secondary_options_editable or not include_contact_checkbox.button_pressed)
-	#email_edit.editable = secondary_options_editable and include_contact_checkbox.button_pressed
 	include_contact_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
 	include_contact_line.get_node("LineIcon").modulate = checked_color
-	#phone_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
-	#phone_line.get_node("LineIcon").modulate = checked_color
-	#email_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
-	#email_line.get_node("LineIcon").modulate = checked_color
 	
 	# Audio checkboxes
 	audio_label.disable(not secondary_options_editable)
@@ -538,33 +524,6 @@ func build_editor_options() -> void:
 	for e in user_preferences.editors:
 		editor_option.add_item(e.name)
 	editor_option.selected = -1
-
-#func update_editor_fields() -> void:
-	#var found_editor: bool = false
-	#if editor_option.selected != 0:
-		#for e in user_preferences.editors:
-			#if e.name.capitalize() == editor_name.capitalize():
-				#editor_phone = e.phone
-				#phone_edit.text = e.phone
-				#editor_email = e.email
-				#email_edit.text = e.email
-				#found_editor = true
-		#if not found_editor: PrintUtility.print_error("Didn't find editor in user_preferences from Main.update_editor_fields() with editor_option != 0")
-	#else:
-		#if editor_name != "":
-			#for e in user_preferences.editors:
-				#if e.name.capitalize() == editor_name.capitalize():
-					#editor_phone = e.phone
-					#phone_edit.text = e.phone
-					#editor_email = e.email
-					#email_edit.text = e.email
-					#found_editor = true
-			#if found_editor: PrintUtility.print_info("Found matching editor in user_preferences from Main.update_editor_fields()")
-		#if not found_editor or editor_name == "":
-			#editor_phone = ""
-			#phone_edit.text = ""
-			#editor_email = ""
-			#email_edit.text = ""
 
 func _on_choose_folder_button_pressed() -> void:
 	PrintUtility.print_info("User trying to choose folder ...")
@@ -811,9 +770,6 @@ func _on_production_type_option_item_selected(index: int) -> void:
 func _on_editor_option_item_selected(index: int) -> void:
 	if index != -1:
 		editor_name = editor_option.get_item_text(index)
-	#else:
-		#editor_name = editor_option.get_item_text(index)
-	#update_editor_fields()
 	update_controls()
 
 func _on_editor_button_pressed() -> void:
@@ -821,7 +777,6 @@ func _on_editor_button_pressed() -> void:
 
 func _on_editor_edit_text_changed(new_text: String) -> void:
 	editor_name = new_text
-	#update_editor_fields()
 	update_controls()
 
 func _on_include_contact_option_toggled(toggled_on: bool) -> void:

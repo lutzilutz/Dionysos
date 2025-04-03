@@ -126,9 +126,47 @@ text = "L'utilisateur \"XXX\" sera définitivement supprimé, non-reversible.
 Voulez-vous le supprimer ?"
 horizontal_alignment = 1
 
+[node name="AcceptDialog2" type="AcceptDialog" parent="."]
+title = "Erreur"
+initial_position = 2
+size = Vector2i(249, 100)
+dialog_text = "Le nom ne peut pas être vide !"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+title = "Attention !"
+initial_position = 2
+size = Vector2i(652, 186)
+unresizable = true
+ok_button_text = "Oui, le modifier"
+cancel_button_text = "Annuler"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConfirmationDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 644.0
+offset_bottom = 137.0
+
+[node name="Label" type="Label" parent="ConfirmationDialog/VBoxContainer"]
+layout_mode = 2
+text = "L'utilisateur \"XXX\" est déjà présent. Les modifications suivantes seront apportées :"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="ConfirmationDialog/VBoxContainer"]
+layout_mode = 2
+text = "Nom -> Nom
+Phone -> Phone
+Email -> Email"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="ConfirmationDialog/VBoxContainer"]
+layout_mode = 2
+text = "Souhaitez-vous le modifier ?"
+
 [connection signal="pressed" from="VBoxContainer/UsersScroll/UsersVBox/NewButton" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ModifyPanel/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/CloseContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
 [connection signal="confirmed" from="AcceptDialog" to="." method="_on_accept_dialog_confirmed"]
+[connection signal="canceled" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_canceled"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]
