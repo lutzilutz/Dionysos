@@ -25,6 +25,7 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
 @onready var preferences_dialog = get_node("PreferencesDialog")
+@onready var generation_completed_dialog = get_node("GenerationCompletedDialog")
 
 @onready var form_vbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox")
 
@@ -87,25 +88,27 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var version_label = get_node("VersionLabel")
 
 var user_preferences: UserPreferences
+
+# Project informations
 var customer_name: String = ""
 var project_name: String = ""
 var production_type: ProductionType
 var editor_name: String = ""
 var use_contact: bool = true
-
 var daycount: int = 1
 var cameracount: int = 1
 var use_vfx: bool = true
-
 var use_production_audio: bool = true
 var use_music: bool = true
 var use_audio_sfx: bool = true
 var has_previewed: bool = false
 var info_locked: bool = false
 
+# Other
 var readme: ReadMe
-
 var control_hovered
+var generation_has_issue: int = 0
+var generation_issues: String = ""
 
 func check_if_release() -> void:
 	if OS.has_feature("editor"):
@@ -585,9 +588,21 @@ func _on_generate_folder_button_pressed() -> void:
 		PrintUtility.print_gen("Using existing editor, will not be saved")
 		#user_preferences.change_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
 		#user_preferences.save_to_file(USER_PREF_PATH)
-	build_customer_options()
-	build_editor_options()
+	
+	generation_has_issue = 0
+	generation_issues = ""
 	generate_system_folders()
+	
+	update_generation_completed_dialog()
+	generation_completed_dialog.visible = true
+
+func update_generation_completed_dialog() -> void:
+	generation_completed_dialog.get_node("Label").text = "La génération du dossier :\n" + user_preferences.default_path + "/" + customer_name + "/" + project_name
+	if generation_has_issue > 0:
+		generation_completed_dialog.get_node("Label").text += "\nNe s'est pas bien déroulée :(\n\n"
+		generation_completed_dialog.get_node("Label").text += str(generation_has_issue) + " erreurs détectées ! Liste des erreurs :" + generation_issues
+	else:
+		generation_completed_dialog.get_node("Label").text += "\nS'est terminée avec succès. Le contenu a bien été généré."
 
 func generate_system_folders() -> void:
 	var main_path: String = user_preferences.default_path
@@ -601,7 +616,9 @@ func generate_system_folders() -> void:
 		32:
 			PrintUtility.print_gen("Customer folder already exists " + customer_path)
 		_:
-			PrintUtility.print_gen("Unkown error : " + str(customer_result))
+			PrintUtility.print_gen("Unknown error : " + str(customer_result))
+			generation_issues += "\nUnknown error (" + str(customer_result) + ") from main.generate_system_folders() with path " + customer_path
+			generation_has_issue += 1
 	
 	if customer_result == 0 or customer_result == 32:
 		var project_result = DirAccess.make_dir_absolute(project_path)
@@ -611,8 +628,12 @@ func generate_system_folders() -> void:
 			32:
 				PrintUtility.print_gen("Project folder already exists " + project_path)
 				PrintUtility.print_error("Can't create folder !")
+				generation_issues += "\nError 32 from main.generate_system_folders() with path " + project_path
+				generation_has_issue += 1
 			_:
 				PrintUtility.print_gen("Unkown error : " + str(project_result))
+				generation_issues += "\nUnknown error (" + str(project_result) + ") from main.generate_system_folders() with path " + project_path
+				generation_has_issue += 1
 		if project_result == 0:
 			generate_system_folders_project(project_path)
 
@@ -633,9 +654,13 @@ func generate_system_folders_project(path: String) -> void:
 								for sssf in ssf.get_children():
 									generate_folder_at(path + "/" + f.get_text(0) + "/" + sf.get_text(0) + "/" + ssf.get_text(0) + "/" + sssf.get_text(0))
 									if sssf.get_child_count() > 0:
-										PrintUtility.print_error("generate_system_folders_project() didn't go deep enough in subfolders !")
+										PrintUtility.print_error("")
+										generation_issues += "\nmain.generate_system_folders_project(" + path + ") didn't go deep enough in subfolders !"
+										generation_has_issue += 1
 	else:
 		PrintUtility.print_error("Root of folder tree doesn't have any child ! ")
+		generation_issues += "\nRoot of folder tree doesn't have any child in main.generate_system_folders_project(" + path + ")"
+		generation_has_issue += 1
 
 func generate_folder_at(path: String) -> void:
 	PrintUtility.print_gen("Computing " + path)
@@ -646,6 +671,8 @@ func generate_folder_at(path: String) -> void:
 		else:
 			PrintUtility.print_gen("Unkown file extension in generate_folder_at(" + path + ")")
 			PrintUtility.print_error("Can't create file " + path)
+			generation_issues += "\nUnkown file extension in main.generate_folder_at(" + path + ")"
+			generation_has_issue += 1
 	else:
 		var result = DirAccess.make_dir_absolute(path)
 		match result:
@@ -654,9 +681,13 @@ func generate_folder_at(path: String) -> void:
 			32:
 				PrintUtility.print_gen("Folder already exists " + path)
 				PrintUtility.print_error("Can't create folder " + path)
+				generation_issues += "\nError 32, folder already exists : " + path
+				generation_has_issue += 1
 			_:
 				PrintUtility.print_gen("Unkown error in generate_folder_at(" + path + ") : " + str(result))
 				PrintUtility.print_error("Can't create folder " + path)
+				generation_issues += "\nUnknown error (" + str(result) + ") from main.generate_folder_at(" + path + ")"
+				generation_has_issue += 1
 
 # MenuBar signals =================================================================================
 
@@ -666,39 +697,42 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			PrintUtility.print_info("Quitting the software ...")
 			get_tree().quit()
 		1: # Start new project
-			PrintUtility.print_info("Starting new project ...")
-			customer_name = ""
-			customer_option.selected = 0
-			customer_edit.text = ""
-			
-			project_name = ""
-			project_name_edit.text = ""
-			project_name_edit.modulate = Color(1,1,1,1)
-			production_type_option.selected = -1
-			
-			editor_name = ""
-			editor_option.selected = -1
-			editor_edit.text = ""
-			
-			daycount = 1
-			daycount_spin.value = 1
-			cameracount = 1
-			cameracount_spin.value = 1
-			use_vfx = true
-			vfx_checkbox.button_pressed = true
-			use_production_audio = true
-			production_audio_checkbox.button_pressed = true
-			use_music = true
-			music_checkbox.button_pressed = true
-			use_audio_sfx = true
-			audio_sfx_checkbox.button_pressed = true
-			info_locked = false
-			preview_folder_button.text = "Verrouiller et prévisualiser"
-			update_controls()
+			reset_project()
 		2: # Open user manager
 			user_manager.visible = true
 		_:
 			PrintUtility.print_info("Unkown file menu option")
+
+func reset_project() -> void:
+	PrintUtility.print_info("Starting new project ...")
+	customer_name = ""
+	customer_option.selected = 0
+	customer_edit.text = ""
+	
+	project_name = ""
+	project_name_edit.text = ""
+	project_name_edit.modulate = Color(1,1,1,1)
+	production_type_option.selected = -1
+	
+	editor_name = ""
+	editor_option.selected = -1
+	editor_edit.text = ""
+	
+	daycount = 1
+	daycount_spin.value = 1
+	cameracount = 1
+	cameracount_spin.value = 1
+	use_vfx = true
+	vfx_checkbox.button_pressed = true
+	use_production_audio = true
+	production_audio_checkbox.button_pressed = true
+	use_music = true
+	music_checkbox.button_pressed = true
+	use_audio_sfx = true
+	audio_sfx_checkbox.button_pressed = true
+	info_locked = false
+	preview_folder_button.text = "Verrouiller et prévisualiser"
+	update_controls()
 
 func _on_edit_menu_id_pressed(id: int) -> void:
 	match id:
@@ -892,3 +926,18 @@ func daycount_int_to_string(value: int) -> String:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("PrintFolders"):
 		PrintUtility.print_folders(folder_tree)
+
+func _on_generation_completed_dialog_confirmed() -> void:
+	if generation_has_issue > 0:
+		generation_has_issue = 0
+		generation_issues = ""
+		info_locked = false
+		update_controls()
+		PrintUtility.print_info("Automatic cancelled previewing folders")
+		preview_folder_button.text = "Verrouiller et prévisualiser"
+	else:
+		generation_has_issue = 0
+		generation_issues = ""
+		build_customer_options()
+		build_editor_options()
+		reset_project()

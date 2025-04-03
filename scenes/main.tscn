@@ -518,6 +518,21 @@ offset_top = 8.0
 offset_right = 522.0
 offset_bottom = 296.0
 
+[node name="GenerationCompletedDialog" type="AcceptDialog" parent="."]
+title = "Génération terminée"
+initial_position = 2
+size = Vector2i(458, 158)
+
+[node name="Label" type="Label" parent="GenerationCompletedDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 450.0
+offset_bottom = 109.0
+text = "La génération du dossier :
+S'est terminée avec succès. Le contenu a bien été généré.
+
+Aucune erreur à signaler."
+
 [node name="Splashscreen" parent="." instance=ExtResource("12_eb6dy")]
 visible = false
 layout_mode = 1
@@ -554,3 +569,5 @@ layout_mode = 1
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
 [connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
+[connection signal="canceled" from="GenerationCompletedDialog" to="." method="_on_generation_completed_dialog_confirmed"]
+[connection signal="confirmed" from="GenerationCompletedDialog" to="." method="_on_generation_completed_dialog_confirmed"]
