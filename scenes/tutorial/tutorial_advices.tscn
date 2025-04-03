@@ -35,5 +35,5 @@ theme = ExtResource("2_7aklf")
 [node name="BodyText2" type="Label" parent="."]
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
-text = "> C'est pas obligatoire, mais ça garantira une utilisation optimale du logiciel. La même structure sera utilisée lors de la création d'un nouveau projet."
+text = "> Si le dossier choisi ne respecte pas cette convention, merci de bien vouloir désactiver l'option correspondante dans les préférences."
 autowrap_mode = 2

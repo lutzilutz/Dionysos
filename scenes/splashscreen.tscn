@@ -53,3 +53,8 @@ stretch_mode = 5
 layout_mode = 2
 text = "Powered by Dry Kats Pictures"
 horizontal_alignment = 1
+
+[node name="DryKatsLabel2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Coded by Lutzi Lutz"
+horizontal_alignment = 1
