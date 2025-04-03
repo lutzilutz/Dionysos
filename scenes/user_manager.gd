@@ -31,6 +31,7 @@ func _on_close_button_pressed() -> void:
 	main_scene.editor_name = ""
 	main_scene.update_controls()
 	self.visible = false
+	get_node("VBoxContainer/ModifyPanel").visible = false
 
 func _on_user_item_ask_edition(index: int) -> void:
 	modified_user = index

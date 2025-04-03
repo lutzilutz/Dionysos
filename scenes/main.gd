@@ -468,7 +468,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Editor name
 	editor_label.disable(not editor_editable)
 	editor_option.disabled = not editor_editable
-	#editor_button.disabled = not editor_editable
+	editor_button.disabled = not editor_editable
 	editor_edit.editable = editor_editable and editor_option.selected == 0
 	editor_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
 	editor_line.get_node("LineIcon").modulate = checked_color
@@ -518,11 +518,13 @@ func build_customer_options() -> void:
 	customer_option.clear()
 	customer_option.add_item("<Nouveau client>")
 	var new_customers: Array = []
-	if user_preferences.folder_follow_conventions:
-		for d in DirAccess.get_directories_at(user_preferences.default_path):
-			new_customers.append(d)
 	for i in range(user_preferences.customers.size()):
 		new_customers.append(user_preferences.customers[i])
+	if user_preferences.folder_follow_conventions:
+		for d in DirAccess.get_directories_at(user_preferences.default_path):
+			if not user_preferences.customer_exists(d):
+				new_customers.append(d)
+	
 	new_customers.sort()
 	for i in range(new_customers.size()):
 		customer_option.add_item(new_customers[i])
@@ -569,14 +571,21 @@ func _on_pre_generate_folder_button_pressed() -> void:
 
 func _on_generate_folder_button_pressed() -> void:
 	if user_preferences.customers.find(customer_name, 0) == -1:
+		PrintUtility.print_gen("Saving new customer " + customer_name + " to preferences")
 		user_preferences.customers.append(customer_name)
 		user_preferences.save_to_file(USER_PREF_PATH)
-	if not user_preferences.editor_exists(editor_name):
-		user_preferences.add_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
-		user_preferences.save_to_file(USER_PREF_PATH)
 	else:
-		user_preferences.change_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
-		user_preferences.save_to_file(USER_PREF_PATH)
+		PrintUtility.print_gen("Customer " + customer_name + " already present in user_preferences.customers, will not be saved")
+	if not user_preferences.editor_exists(editor_name):
+		PrintUtility.print_gen("Using editor " + editor_name + " that doesn't exist in preferences")
+		PrintUtility.print_error("Can't save editor through main workspace")
+		#user_preferences.add_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
+		#user_preferences.save_to_file(USER_PREF_PATH)
+	else:
+		PrintUtility.print_gen("Using existing editor, will not be saved")
+		#user_preferences.change_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
+		#user_preferences.save_to_file(USER_PREF_PATH)
+	build_customer_options()
 	build_editor_options()
 	generate_system_folders()
 
@@ -721,7 +730,9 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			build_editor_options()
 		6: # Purge customers
 			user_preferences.customers = []
+			user_preferences.purge_customers()
 			user_preferences.save_to_file(USER_PREF_PATH)
+			build_customer_options()
 		7: # Folder only contains customers
 			user_preferences.folder_follow_conventions = not user_preferences.folder_follow_conventions
 			user_preferences.save_to_file(USER_PREF_PATH)

@@ -70,6 +70,9 @@ func purge_editors() -> void:
 	add_editor(decrypt_string(LUTZ_NAME), decrypt_string(LUTZ_PHONE), decrypt_string(LUTZ_EMAIL))
 	add_editor(decrypt_string(YANN_NAME), decrypt_string(YANN_PHONE), decrypt_string(YANN_EMAIL))
 
+func purge_customers() -> void:
+	customers.clear()
+
 static func generate_drykats_team() -> Dictionary:
 	var d: Dictionary
 	d[LUTZ_NAME] = {
@@ -144,6 +147,7 @@ static func load_from_file(path: String) -> UserPreferences:
 func reset_user_preferences(path: String) -> void:
 	default_path = DEFAULT_PATH
 	has_default_path = HAS_DEFAULT_PATH
+	folder_follow_conventions = FOLDER_FOLLOW_CONVENTIONS
 	hide_logo = HIDE_LOGO
 	show_highlights = SHOW_HIGHLIGHTS
 	has_seen_tutorial = HAS_SEEN_TUTORIAL
@@ -156,6 +160,14 @@ func editor_exists(new_name: String) -> bool:
 			editor_found = true
 			break
 	return editor_found
+
+func customer_exists(new_name: String) -> bool:
+	var customer_found: bool = false
+	for c in customers:
+		if c.capitalize() == new_name.capitalize():
+			customer_found = true
+			break
+	return customer_found
 
 func add_editor(name: String, phone: String, email: String) -> void:
 	var editor: Editor = Editor.new()
