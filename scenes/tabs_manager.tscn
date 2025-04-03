@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://gmay6upcni02"]
+
+[ext_resource type="Script" uid="uid://b71ad5n2v4dkh" path="res://scenes/tabs_manager.gd" id="1_c1w77"]
+[ext_resource type="PackedScene" uid="uid://b0li7wiywth1k" path="res://scenes/tab_button.tscn" id="1_ibk5x"]
+
+[node name="TabsManager" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_c1w77")
+
+[node name="TabButton" parent="." instance=ExtResource("1_ibk5x")]
+modulate = Color(0.396078, 0.498039, 0.576471, 1)
+layout_mode = 2
+
+[node name="TabButton2" parent="." instance=ExtResource("1_ibk5x")]
+modulate = Color(0.395597, 0.496232, 0.577199, 1)
+layout_mode = 2
+tab_type = 1

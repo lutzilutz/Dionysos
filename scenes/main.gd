@@ -20,14 +20,16 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 
 @onready var tutorial = get_node("Tutorial")
 @onready var splashscreen = get_node("Splashscreen")
-@onready var user_manager = get_node("UserManager")
 
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
 @onready var preferences_dialog = get_node("PreferencesDialog")
 @onready var generation_completed_dialog = get_node("GenerationCompletedDialog")
+@onready var tabs_manager = get_node("Window/Workspace/TabsManager")
+@onready var folder_manager = get_node("Window/Workspace/FolderManager")
+@onready var user_manager = get_node("Window/Workspace/UserManager")
 
-@onready var form_vbox = get_node("Window/WorkspaceHBox/FormContainer/FormVBox")
+@onready var form_vbox = get_node("Window/Workspace/FolderManager/FormContainer/FormVBox")
 
 @onready var general_label = form_vbox.get_node("GeneralTitleLabel")
 
@@ -81,9 +83,9 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var preview_folder_button = form_vbox.get_node("PreGenerateFolderButton")
 @onready var generate_folder_button = form_vbox.get_node("GenerateFolderButton")
 
-@onready var summary_title = get_node("Window/WorkspaceHBox/SummaryContainer/Summary/SummaryTitleLabel")
-@onready var summary_body = get_node("Window/WorkspaceHBox/SummaryContainer/Summary/SummaryBodyLabel")
-@onready var folder_tree: Tree = get_node("Window/WorkspaceHBox/SummaryContainer/Summary/Tree")
+@onready var summary_title = get_node("Window/Workspace/FolderManager/SummaryContainer/Summary/SummaryTitleLabel")
+@onready var summary_body = get_node("Window/Workspace/FolderManager/SummaryContainer/Summary/SummaryBodyLabel")
+@onready var folder_tree: Tree = get_node("Window/Workspace/FolderManager/SummaryContainer/Summary/Tree")
 
 @onready var version_label = get_node("VersionLabel")
 
@@ -138,7 +140,16 @@ func _ready() -> void:
 	build_editor_options()
 	update_controls()
 	update_preferences_dialog()
+	tabs_manager.ask_tab_change.connect(_on_tabs_manager_change)
 	#get_node("FileDialog").ok_button_text = "Sélectionner le dossier"
+
+func _on_tabs_manager_change(type) -> void:
+	if type == TabButton.TabType.FOLDER_MANAGER:
+		folder_manager.visible = true
+		user_manager.visible = false
+	elif type == TabButton.TabType.USER_MANAGER:
+		folder_manager.visible = false
+		user_manager.visible = true
 
 func update_preferences_dialog() -> void:
 	var label = get_node("PreferencesDialog/PreferencesLabel")
@@ -829,6 +840,8 @@ func update_line_icon(line, value: bool) -> void:
 
 func _on_user_manager_users_changed() -> void:
 	build_editor_options()
+	editor_name = ""
+	update_controls()
 
 # Form signals ====================================================================================
 

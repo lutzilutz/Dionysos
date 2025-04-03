@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=16 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="3_4krfr"]
+[ext_resource type="PackedScene" uid="uid://gmay6upcni02" path="res://scenes/tabs_manager.tscn" id="4_a8y0u"]
 [ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="4_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="4_tefeu"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="6_85g3d"]
@@ -105,11 +106,19 @@ item_1/id = 1
 item_2/text = "Aidez-moi !"
 item_2/id = 0
 
-[node name="WorkspaceHBox" type="HBoxContainer" parent="Window"]
+[node name="Workspace" type="HBoxContainer" parent="Window"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="FormContainer" type="MarginContainer" parent="Window/WorkspaceHBox"]
+[node name="TabsManager" parent="Window/Workspace" instance=ExtResource("4_a8y0u")]
+layout_mode = 2
+
+[node name="FolderManager" type="HBoxContainer" parent="Window/Workspace"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FormContainer" type="MarginContainer" parent="Window/Workspace/FolderManager"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.4
@@ -118,30 +127,30 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="FormVBox" type="VBoxContainer" parent="Window/WorkspaceHBox/FormContainer"]
+[node name="FormVBox" type="VBoxContainer" parent="Window/Workspace/FolderManager/FormContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="GeneralTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
+[node name="GeneralTitleLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
 layout_mode = 2
 text = "Informations générales"
 
-[node name="ChooseFolderLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="ChooseFolderLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="ChooseFolderLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
+[node name="ChooseFolderLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Dossier racine des projets"
 
-[node name="ChooseFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine"]
+[node name="ChooseFolderButton" type="Button" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ChooseFolderLine"]
 custom_minimum_size = Vector2(179.835, 0)
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 text = "Sélectionner un dossier"
 
-[node name="ChooseFolderResult" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
+[node name="ChooseFolderResult" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 0
@@ -150,21 +159,21 @@ theme_override_font_sizes/font_size = 10
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ChooseFolderLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
-[node name="CustomerLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="CustomerLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="CustomerLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine" instance=ExtResource("4_tbgi4")]
+[node name="CustomerLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/CustomerLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Nom du client"
 
-[node name="CustomerOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
+[node name="CustomerOption" type="OptionButton" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/CustomerLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 selected = 0
@@ -172,47 +181,47 @@ item_count = 1
 popup/item_0/text = "<Nouveau client>"
 popup/item_0/id = 0
 
-[node name="CustomerEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
+[node name="CustomerEdit" type="LineEdit" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/CustomerLine"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("6_85g3d")
 placeholder_text = "Entrer le nom du client ici ..."
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/CustomerLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
-[node name="ProjectNameLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="ProjectNameLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="ProjectNameLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine" instance=ExtResource("4_tbgi4")]
+[node name="ProjectNameLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProjectNameLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Nom du projet"
 
-[node name="ProjectNameEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine"]
+[node name="ProjectNameEdit" type="LineEdit" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProjectNameLine"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("6_85g3d")
 placeholder_text = "Entrer le nom du projet ici ..."
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProjectNameLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
-[node name="ProductionTypeLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="ProductionTypeLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="ProductionTypeLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine" instance=ExtResource("4_tbgi4")]
+[node name="ProductionTypeLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionTypeLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Type de production"
 
-[node name="ProductionTypeOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine"]
+[node name="ProductionTypeOption" type="OptionButton" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionTypeLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 item_count = 2
@@ -221,94 +230,95 @@ popup/item_0/id = 0
 popup/item_1/text = "Projet interne"
 popup/item_1/id = 1
 
-[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine"]
+[node name="VSeparator" type="VSeparator" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionTypeLine"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionTypeLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
-[node name="EditorLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="EditorLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="EditorLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine" instance=ExtResource("4_tbgi4")]
+[node name="EditorLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Nom du monteur"
 
-[node name="EditorOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+[node name="EditorOption" type="OptionButton" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 
-[node name="EditorButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+[node name="EditorButton" type="Button" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine"]
+visible = false
 custom_minimum_size = Vector2(250.115, 0)
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 text = "Ouvrir gestionnaire des utilisateurs"
 
-[node name="EditorEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+[node name="EditorEdit" type="LineEdit" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("6_85g3d")
 placeholder_text = "Entrer le nom du monteur ici ..."
 
-[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+[node name="VSeparator" type="VSeparator" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
-[node name="IncludeContactLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="IncludeContactLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="IncludeContactLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine" instance=ExtResource("4_tbgi4")]
+[node name="IncludeContactLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/IncludeContactLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Inclure les données de contact (téléphone + e-mail)"
 
-[node name="IncludeContactCheckbox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+[node name="IncludeContactCheckbox" type="CheckBox" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/IncludeContactLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 button_pressed = true
 
-[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+[node name="VSeparator" type="VSeparator" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/IncludeContactLine"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/IncludeContactLine"]
 modulate = Color(0, 0.521569, 0, 1)
 layout_mode = 2
 texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
-[node name="HSeparator" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="HSeparator" type="HSeparator" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 layout_mode = 2
 theme = ExtResource("8_choun")
 
-[node name="VideoTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
+[node name="VideoTitleLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
 layout_mode = 2
 text = "Vidéo"
 
-[node name="DayCountLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="DayCountLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="DayCountLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" instance=ExtResource("4_tbgi4")]
+[node name="DayCountLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/DayCountLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Jours de tournage"
 
-[node name="DayCountSpin" type="SpinBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine"]
+[node name="DayCountSpin" type="SpinBox" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/DayCountLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 min_value = 1.0
@@ -316,149 +326,149 @@ max_value = 10.0
 value = 1.0
 allow_greater = true
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/DayCountLine"]
 modulate = Color(0.396889, 0.396889, 0.396889, 1)
 layout_mode = 2
 tooltip_text = "Cette valeur a été modifiée"
 texture = ExtResource("7_tipki")
 stretch_mode = 5
 
-[node name="CameraCountLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="CameraCountLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="CameraCountLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine" instance=ExtResource("4_tbgi4")]
+[node name="CameraCountLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/CameraCountLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Nombre de caméra"
 
-[node name="CameraCountSpin" type="SpinBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine"]
+[node name="CameraCountSpin" type="SpinBox" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/CameraCountLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 min_value = 1.0
 max_value = 26.0
 value = 1.0
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/CameraCountLine"]
 modulate = Color(0.396889, 0.396889, 0.396889, 1)
 layout_mode = 2
 tooltip_text = "Cette valeur a été modifiée"
 texture = ExtResource("7_tipki")
 stretch_mode = 5
 
-[node name="VFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="VFXLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="VFXLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" instance=ExtResource("4_tbgi4")]
+[node name="VFXLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/VFXLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Effets visuels VFX"
 
-[node name="VFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
+[node name="VFXCheckBox" type="CheckBox" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/VFXLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 button_pressed = true
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/VFXLine"]
 modulate = Color(0.396889, 0.396889, 0.396889, 1)
 layout_mode = 2
 tooltip_text = "Cette valeur a été modifiée"
 texture = ExtResource("7_tipki")
 stretch_mode = 5
 
-[node name="HSeparator2" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="HSeparator2" type="HSeparator" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 layout_mode = 2
 theme = ExtResource("8_choun")
 
-[node name="AudioTitleLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
+[node name="AudioTitleLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox" instance=ExtResource("4_tefeu")]
 layout_mode = 2
 text = "Audio et musique"
 
-[node name="ProductionAudioLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="ProductionAudioLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="ProductionAudioLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine" instance=ExtResource("4_tbgi4")]
+[node name="ProductionAudioLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionAudioLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Tournage avec audio"
 
-[node name="ProductionAudioCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine"]
+[node name="ProductionAudioCheckBox" type="CheckBox" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionAudioLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 button_pressed = true
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionAudioLine"]
 modulate = Color(0.396889, 0.396889, 0.396889, 1)
 layout_mode = 2
 tooltip_text = "Cette valeur a été modifiée"
 texture = ExtResource("7_tipki")
 stretch_mode = 5
 
-[node name="MusicLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="MusicLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="MusicLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine" instance=ExtResource("4_tbgi4")]
+[node name="MusicLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/MusicLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Utilisation de musique"
 
-[node name="MusicCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine"]
+[node name="MusicCheckBox" type="CheckBox" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/MusicLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 button_pressed = true
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/MusicLine"]
 modulate = Color(0.396889, 0.396889, 0.396889, 1)
 layout_mode = 2
 tooltip_text = "Cette valeur a été modifiée"
 texture = ExtResource("7_tipki")
 stretch_mode = 5
 
-[node name="AudioSFXLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="AudioSFXLine" type="HBoxContainer" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="AudioSFXLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine" instance=ExtResource("4_tbgi4")]
+[node name="AudioSFXLabel" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/AudioSFXLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
 text = "Bruitages audio SFX"
 
-[node name="AudioSFXCheckBox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine"]
+[node name="AudioSFXCheckBox" type="CheckBox" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/AudioSFXLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 button_pressed = true
 
-[node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine"]
+[node name="LineIcon" type="TextureRect" parent="Window/Workspace/FolderManager/FormContainer/FormVBox/AudioSFXLine"]
 modulate = Color(0.396889, 0.396889, 0.396889, 1)
 layout_mode = 2
 tooltip_text = "Cette valeur a été modifiée"
 texture = ExtResource("7_tipki")
 stretch_mode = 5
 
-[node name="HSeparator3" type="HSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="HSeparator3" type="HSeparator" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 layout_mode = 2
 theme = ExtResource("8_choun")
 
-[node name="PreGenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="PreGenerateFolderButton" type="Button" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 text = "Verrouiller et prévisualiser"
 
-[node name="GenerateFolderButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="GenerateFolderButton" type="Button" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme = ExtResource("6_85g3d")
 text = "Générer la structure"
 
-[node name="Label" type="Label" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+[node name="Label" type="Label" parent="Window/Workspace/FolderManager/FormContainer/FormVBox"]
 visible = false
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 
-[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox"]
+[node name="VSeparator" type="VSeparator" parent="Window/Workspace/FolderManager"]
 layout_mode = 2
 theme = ExtResource("8_choun")
 
-[node name="SummaryContainer" type="MarginContainer" parent="Window/WorkspaceHBox"]
+[node name="SummaryContainer" type="MarginContainer" parent="Window/Workspace/FolderManager"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
@@ -466,25 +476,29 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Summary" type="VBoxContainer" parent="Window/WorkspaceHBox/SummaryContainer"]
+[node name="Summary" type="VBoxContainer" parent="Window/Workspace/FolderManager/SummaryContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SummaryTitleLabel" type="Label" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
+[node name="SummaryTitleLabel" type="Label" parent="Window/Workspace/FolderManager/SummaryContainer/Summary"]
 layout_mode = 2
 theme = ExtResource("10_ya4ey")
 text = "Prévisualisation des dossiers"
 
-[node name="SummaryBodyLabel" type="Label" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
+[node name="SummaryBodyLabel" type="Label" parent="Window/Workspace/FolderManager/SummaryContainer/Summary"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 text = "La structure ci-dessous sera créée à l'emplacement choisi"
 
-[node name="Tree" type="Tree" parent="Window/WorkspaceHBox/SummaryContainer/Summary"]
+[node name="Tree" type="Tree" parent="Window/Workspace/FolderManager/SummaryContainer/Summary"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_4krfr")
 select_mode = 2
+
+[node name="UserManager" parent="Window/Workspace" instance=ExtResource("11_trceg")]
+visible = false
+layout_mode = 2
 
 [node name="UserManager" parent="." instance=ExtResource("11_trceg")]
 visible = false
@@ -545,32 +559,32 @@ layout_mode = 1
 [connection signal="id_pressed" from="Window/MenuBar/FileMenu" to="." method="_on_file_menu_id_pressed"]
 [connection signal="id_pressed" from="Window/MenuBar/EditMenu" to="." method="_on_edit_menu_id_pressed"]
 [connection signal="id_pressed" from="Window/MenuBar/HelpMenu" to="." method="_on_help_menu_id_pressed"]
-[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
-[connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
-[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
-[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
-[connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
-[connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption" to="." method="_on_editor_option_item_selected"]
-[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorButton" to="." method="_on_editor_button_pressed"]
-[connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit" to="." method="_on_editor_edit_text_changed"]
-[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox" to="." method="_on_include_contact_option_toggled"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine" to="." method="_on_day_count_line_mouse_entered"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_line_mouse_entered"]
-[connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_spin_value_changed"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine" to="." method="_on_camera_count_line_mouse_entered"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_line_mouse_entered"]
-[connection signal="value_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_spin_value_changed"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine" to="." method="_on_vfx_line_mouse_entered"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_line_mouse_entered"]
-[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_check_box_toggled"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine" to="." method="_on_production_audio_line_mouse_entered"]
-[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox" to="." method="_on_production_audio_check_box_toggled"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine" to="." method="_on_music_line_mouse_entered"]
-[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/MusicLine/MusicCheckBox" to="." method="_on_music_check_box_toggled"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine" to="." method="_on_audio_sfx_line_mouse_entered"]
-[connection signal="mouse_entered" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_line_mouse_entered"]
-[connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
-[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
-[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
+[connection signal="pressed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
+[connection signal="item_selected" from="Window/Workspace/FolderManager/FormContainer/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
+[connection signal="text_changed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
+[connection signal="text_changed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
+[connection signal="item_selected" from="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="item_selected" from="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine/EditorOption" to="." method="_on_editor_option_item_selected"]
+[connection signal="pressed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine/EditorButton" to="." method="_on_editor_button_pressed"]
+[connection signal="text_changed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/EditorLine/EditorEdit" to="." method="_on_editor_edit_text_changed"]
+[connection signal="toggled" from="Window/Workspace/FolderManager/FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox" to="." method="_on_include_contact_option_toggled"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/DayCountLine" to="." method="_on_day_count_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_line_mouse_entered"]
+[connection signal="value_changed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_spin_value_changed"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/CameraCountLine" to="." method="_on_camera_count_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_line_mouse_entered"]
+[connection signal="value_changed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_spin_value_changed"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/VFXLine" to="." method="_on_vfx_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_line_mouse_entered"]
+[connection signal="toggled" from="Window/Workspace/FolderManager/FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_check_box_toggled"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionAudioLine" to="." method="_on_production_audio_line_mouse_entered"]
+[connection signal="toggled" from="Window/Workspace/FolderManager/FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox" to="." method="_on_production_audio_check_box_toggled"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/MusicLine" to="." method="_on_music_line_mouse_entered"]
+[connection signal="toggled" from="Window/Workspace/FolderManager/FormContainer/FormVBox/MusicLine/MusicCheckBox" to="." method="_on_music_check_box_toggled"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/AudioSFXLine" to="." method="_on_audio_sfx_line_mouse_entered"]
+[connection signal="mouse_entered" from="Window/Workspace/FolderManager/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_line_mouse_entered"]
+[connection signal="toggled" from="Window/Workspace/FolderManager/FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
+[connection signal="pressed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
+[connection signal="pressed" from="Window/Workspace/FolderManager/FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
 [connection signal="canceled" from="GenerationCompletedDialog" to="." method="_on_generation_completed_dialog_confirmed"]
 [connection signal="confirmed" from="GenerationCompletedDialog" to="." method="_on_generation_completed_dialog_confirmed"]

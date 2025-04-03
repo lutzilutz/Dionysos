@@ -11,6 +11,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_yuxgv")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -46,69 +48,70 @@ size_flags_horizontal = 4
 theme = ExtResource("3_m8pq0")
 text = "Nouvel utilisateur"
 
-[node name="ModifyPanel" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer"]
 visible = false
-custom_minimum_size = Vector2(0, 122.11)
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="VBoxContainer/ModifyPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="ModifyPanel" type="HBoxContainer" parent="VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 layout_mode = 2
 theme = ExtResource("2_cw3ii")
 text = "Nom"
 
-[node name="NameEdit" type="LineEdit" parent="VBoxContainer/ModifyPanel"]
+[node name="NameEdit" type="LineEdit" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("3_m8pq0")
 
-[node name="PhoneLabel" type="Label" parent="VBoxContainer/ModifyPanel"]
+[node name="PhoneLabel" type="Label" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 layout_mode = 2
 theme = ExtResource("2_cw3ii")
 text = "Téléphone"
 
-[node name="PhoneEdit" type="LineEdit" parent="VBoxContainer/ModifyPanel"]
+[node name="PhoneEdit" type="LineEdit" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("3_m8pq0")
 
-[node name="EmailLabel" type="Label" parent="VBoxContainer/ModifyPanel"]
+[node name="EmailLabel" type="Label" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 layout_mode = 2
 theme = ExtResource("2_cw3ii")
 text = "E-mail"
 
-[node name="EmailEdit" type="LineEdit" parent="VBoxContainer/ModifyPanel"]
+[node name="EmailEdit" type="LineEdit" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("3_m8pq0")
 
-[node name="SaveButton" type="Button" parent="VBoxContainer/ModifyPanel"]
+[node name="SaveButton" type="Button" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 custom_minimum_size = Vector2(100, 35)
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("3_m8pq0")
 text = "Enregistrer"
 
-[node name="CancelButton" type="Button" parent="VBoxContainer/ModifyPanel"]
+[node name="CancelButton" type="Button" parent="VBoxContainer/Panel/MarginContainer/ModifyPanel"]
 custom_minimum_size = Vector2(100, 35)
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("3_m8pq0")
 text = "Annuler"
-
-[node name="CloseContainer" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="CloseButton" type="Button" parent="VBoxContainer/CloseContainer"]
-custom_minimum_size = Vector2(139.47, 55)
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("3_m8pq0")
-text = "Fermer"
 
 [node name="AcceptDialog" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
@@ -164,9 +167,8 @@ layout_mode = 2
 text = "Souhaitez-vous le modifier ?"
 
 [connection signal="pressed" from="VBoxContainer/UsersScroll/UsersVBox/NewButton" to="." method="_on_new_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ModifyPanel/CancelButton" to="." method="_on_cancel_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/CloseContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
 [connection signal="confirmed" from="AcceptDialog" to="." method="_on_accept_dialog_confirmed"]
 [connection signal="canceled" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_canceled"]
