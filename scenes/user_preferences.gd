@@ -9,15 +9,15 @@ const HIDE_LOGO: bool = false
 const SHOW_HIGHLIGHTS: bool = false
 const HAS_SEEN_TUTORIAL: bool = false
 
-const LUTZ_NAME: String = "Lutzi Lutz"
-const LUTZ_PHONE: String = "079 152 04 95"
-const LUTZ_EMAIL: String = "lutz@drykats.ch"
-const YANN_NAME: String = "Yann Matousek"
-const YANN_PHONE: String = "076 370 23 08"
-const YANN_EMAIL: String = "yann.matousek@drykats.ch"
-const KAREL_NAME: String = "Karel Matousek"
-const KAREL_PHONE: String = "076 370 22 69"
-const KAREL_EMAIL: String = "karel.matousek@drykats.ch"
+const LUTZ_NAME: String = "Wfekt Wfek"
+const LUTZ_PHONE: String = "180 263 15 06"
+const LUTZ_EMAIL: String = "wfek@ocjvled.ns"
+const YANN_NAME: String = "Jlyy Xlezfdpv"
+const YANN_PHONE: String = "187 481 34 19"
+const YANN_EMAIL: String = "jlyy.xlezfdpv@ocjvled.ns"
+const KAREL_NAME: String = "Vlcpw Xlezfdpv"
+const KAREL_PHONE: String = "187 481 33 70"
+const KAREL_EMAIL: String = "vlcpw.xlezfdpv@ocjvled.ns"
 
 @export var default_path: String = DEFAULT_PATH
 @export var has_default_path: bool = HAS_DEFAULT_PATH
@@ -63,9 +63,9 @@ func save_to_file(path:String) -> Error:
 
 func purge_editors() -> void:
 	editors.clear()
-	add_editor(KAREL_NAME, KAREL_PHONE, KAREL_EMAIL)
-	add_editor(LUTZ_NAME, LUTZ_PHONE, LUTZ_EMAIL)
-	add_editor(YANN_NAME, YANN_PHONE, YANN_EMAIL)
+	add_editor(decrypt_string(KAREL_NAME), decrypt_string(KAREL_PHONE), decrypt_string(KAREL_EMAIL))
+	add_editor(decrypt_string(LUTZ_NAME), decrypt_string(LUTZ_PHONE), decrypt_string(LUTZ_EMAIL))
+	add_editor(decrypt_string(YANN_NAME), decrypt_string(YANN_PHONE), decrypt_string(YANN_EMAIL))
 
 static func generate_drykats_team() -> Dictionary:
 	var d: Dictionary
@@ -175,3 +175,29 @@ func change_editor(name: String, phone: String, email: String) -> void:
 			e.name = name
 			e.phone = phone
 			e.email = email
+
+func encrypt_string(text: String) -> String:
+	var new_text: String = ""
+	for i in range(text.length()):
+		if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:
+			new_text += String.chr(((text.unicode_at(i)-65 + 11) % 26) + 65)
+		elif text.unicode_at(i) >= 97 and text.unicode_at(i) <= 122:
+			new_text += String.chr(((text.unicode_at(i)-97 + 11) % 26) + 97)
+		elif text.unicode_at(i) >= 48 and text.unicode_at(i) <= 57:
+			new_text += String.chr(((text.unicode_at(i)-48 + 11) % 10) + 48)
+		else:
+			new_text += text[i]
+	return new_text
+
+func decrypt_string(text: String) -> String:
+	var new_text: String = ""
+	for i in range(text.length()):
+		if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:
+			new_text += String.chr(((text.unicode_at(i)-65 + 15) % 26) + 65)
+		elif text.unicode_at(i) >= 97 and text.unicode_at(i) <= 122:
+			new_text += String.chr(((text.unicode_at(i)-97 + 15) % 26) + 97)
+		elif text.unicode_at(i) >= 48 and text.unicode_at(i) <= 57:
+			new_text += String.chr(((text.unicode_at(i)-48 + 9) % 10) + 48)
+		else:
+			new_text += text[i]
+	return new_text
