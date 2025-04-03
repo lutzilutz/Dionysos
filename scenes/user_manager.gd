@@ -35,11 +35,12 @@ func _on_close_button_pressed() -> void:
 
 func _on_user_item_ask_edition(index: int) -> void:
 	modified_user = index
-	get_node("VBoxContainer/ModifyPanel/NameEdit").text = main_scene.user_preferences.editors[modified_user].name
-	get_node("VBoxContainer/ModifyPanel/NameEdit").editable = false
-	get_node("VBoxContainer/ModifyPanel/PhoneEdit").text = main_scene.user_preferences.editors[modified_user].phone
-	get_node("VBoxContainer/ModifyPanel/EmailEdit").text = main_scene.user_preferences.editors[modified_user].email
-	get_node("VBoxContainer/ModifyPanel").visible = true
+	var modify_panel = get_node("VBoxContainer/ModifyPanel")
+	modify_panel.get_node("NameEdit").text = main_scene.user_preferences.editors[modified_user].name
+	modify_panel.get_node("NameEdit").editable = false
+	modify_panel.get_node("PhoneEdit").text = main_scene.user_preferences.editors[modified_user].phone
+	modify_panel.get_node("EmailEdit").text = main_scene.user_preferences.editors[modified_user].email
+	modify_panel.visible = true
 
 func _on_user_item_ask_deletion(index: int) -> void:
 	modified_user = index

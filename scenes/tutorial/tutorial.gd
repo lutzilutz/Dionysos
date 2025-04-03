@@ -3,11 +3,11 @@ extends Control
 signal tutorial_ended
 
 @onready var tutorial_container = get_node("VBoxContainer/TutorialContainer")
-@onready var tutorial_intro = get_node("VBoxContainer/TutorialContainer/TutorialIntro")
-@onready var tutorial_presentation = get_node("VBoxContainer/TutorialContainer/TutorialPresentation")
-@onready var tutorial_advices = get_node("VBoxContainer/TutorialContainer/TutorialAdvices")
-@onready var tutorial_faq = get_node("VBoxContainer/TutorialContainer/TutorialFAQ")
-@onready var tutorial_outro = get_node("VBoxContainer/TutorialContainer/TutorialOutro")
+@onready var tutorial_intro = tutorial_container.get_node("TutorialIntro")
+@onready var tutorial_presentation = tutorial_container.get_node("TutorialPresentation")
+@onready var tutorial_advices = tutorial_container.get_node("TutorialAdvices")
+@onready var tutorial_faq = tutorial_container.get_node("TutorialFAQ")
+@onready var tutorial_outro = tutorial_container.get_node("TutorialOutro")
 
 @onready var page_label = get_node("VBoxContainer/PageLabel")
 
