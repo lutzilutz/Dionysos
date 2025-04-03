@@ -1,13 +1,15 @@
 class_name UserItem extends Control
 
-signal ask_edition
-signal ask_deletion(full_name)
+signal ask_edition(index)
+signal ask_deletion(index)
 
+var pref_index: int = -1
 var full_name: String = ""
 var phone: String = ""
 var email: String = ""
 
-func change_user(new_name: String, new_phone: String, new_email: String) -> void:
+func change_user(index: int, new_name: String, new_phone: String, new_email: String) -> void:
+	pref_index = index
 	full_name = new_name
 	phone = new_phone
 	email = new_email
@@ -17,7 +19,7 @@ func change_user(new_name: String, new_phone: String, new_email: String) -> void
 	get_node("MarginContainer/UserContainer/UserEmailLabel").text = email
 
 func _on_user_edit_button_pressed() -> void:
-	pass # Replace with function body.
+	ask_edition.emit(pref_index)
 
 func _on_user_delete_button_pressed() -> void:
-	ask_deletion.emit(full_name)
+	ask_deletion.emit(pref_index)

@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4218x6ymovkk"]
+[gd_scene load_steps=4 format=3 uid="uid://c4218x6ymovkk"]
 
 [ext_resource type="Script" uid="uid://dk60bft2ddtod" path="res://scenes/user_manager.gd" id="1_yuxgv"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_cw3ii"]
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="3_m8pq0"]
 
 [node name="UserManager" type="Control"]
 layout_mode = 3
@@ -37,6 +39,65 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="NewButton" type="Button" parent="VBoxContainer/UsersScroll/UsersVBox"]
+custom_minimum_size = Vector2(162.265, 38.985)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_m8pq0")
+text = "Nouvel utilisateur"
+
+[node name="ModifyPanel" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 122.11)
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/ModifyPanel"]
+layout_mode = 2
+theme = ExtResource("2_cw3ii")
+text = "Nom"
+
+[node name="NameEdit" type="LineEdit" parent="VBoxContainer/ModifyPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("3_m8pq0")
+
+[node name="PhoneLabel" type="Label" parent="VBoxContainer/ModifyPanel"]
+layout_mode = 2
+theme = ExtResource("2_cw3ii")
+text = "Téléphone"
+
+[node name="PhoneEdit" type="LineEdit" parent="VBoxContainer/ModifyPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("3_m8pq0")
+
+[node name="EmailLabel" type="Label" parent="VBoxContainer/ModifyPanel"]
+layout_mode = 2
+theme = ExtResource("2_cw3ii")
+text = "E-mail"
+
+[node name="EmailEdit" type="LineEdit" parent="VBoxContainer/ModifyPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("3_m8pq0")
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/ModifyPanel"]
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("3_m8pq0")
+text = "Enregistrer"
+
+[node name="CancelButton" type="Button" parent="VBoxContainer/ModifyPanel"]
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("3_m8pq0")
+text = "Annuler"
+
 [node name="CloseContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 20
@@ -65,6 +126,9 @@ text = "L'utilisateur \"XXX\" sera définitivement supprimé, non-reversible.
 Voulez-vous le supprimer ?"
 horizontal_alignment = 1
 
+[connection signal="pressed" from="VBoxContainer/UsersScroll/UsersVBox/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ModifyPanel/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/CloseContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
 [connection signal="confirmed" from="AcceptDialog" to="." method="_on_accept_dialog_confirmed"]

@@ -176,6 +176,16 @@ func change_editor(name: String, phone: String, email: String) -> void:
 			e.phone = phone
 			e.email = email
 
+func get_editor_from_name(name: String) -> Editor:
+	var tmp_editor: Editor
+	for e in editors:
+		if e.name.capitalize() == name.capitalize():
+			return e
+	return tmp_editor
+
+func remove_editor(index: int) -> void:
+	editors.remove_at(index)
+
 func encrypt_string(text: String) -> String:
 	var new_text: String = ""
 	for i in range(text.length()):
