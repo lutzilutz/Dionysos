@@ -6,7 +6,8 @@ In-home software for Dry Kats Pictures projects.
 
 - Generates folder structure for a new project
 - Options to customize the structure
-- No other features, for now
+
+No other features, for now ...
 
 ## Installation
 
@@ -17,6 +18,8 @@ This software doesn't need to be installed. There is only a *.exe* file. You'll 
 ## Minimal requirements
 
 - Windows 10 or 11
+- No internet connection needed
+- Should run on minimal hardwares
 
 ## Incoming features
 
