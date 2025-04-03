@@ -194,7 +194,7 @@ func change_editor(name: String, phone: String, email: String) -> void:
 			e.email = email
 
 func get_editor_from_name(name: String) -> Editor:
-	var tmp_editor: Editor
+	var tmp_editor: Editor = null
 	for e in editors:
 		if e.name.capitalize() == name.capitalize():
 			return e

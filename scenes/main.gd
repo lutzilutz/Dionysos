@@ -597,12 +597,12 @@ func _on_generate_folder_button_pressed() -> void:
 	generation_completed_dialog.visible = true
 
 func update_generation_completed_dialog() -> void:
-	generation_completed_dialog.get_node("Label").text = "La génération du dossier :\n" + user_preferences.default_path + "/" + customer_name + "/" + project_name
+	generation_completed_dialog.get_node("ScrollContainer/Label").text = "La génération du dossier :\n" + user_preferences.default_path + "/" + customer_name + "/" + project_name
 	if generation_has_issue > 0:
-		generation_completed_dialog.get_node("Label").text += "\nNe s'est pas bien déroulée :(\n\n"
-		generation_completed_dialog.get_node("Label").text += str(generation_has_issue) + " erreurs détectées ! Liste des erreurs :" + generation_issues
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += "\nNe s'est pas bien déroulée :(\n\n"
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += str(generation_has_issue) + " erreurs détectées ! Liste des erreurs :" + generation_issues
 	else:
-		generation_completed_dialog.get_node("Label").text += "\nS'est terminée avec succès. Le contenu a bien été généré."
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += "\nS'est terminée avec succès. Le contenu a bien été généré."
 
 func generate_system_folders() -> void:
 	var main_path: String = user_preferences.default_path
@@ -666,8 +666,27 @@ func generate_folder_at(path: String) -> void:
 	PrintUtility.print_gen("Computing " + path)
 	if path.contains("."):
 		if path.ends_with(".txt"):
-			var file = FileAccess.open(path, FileAccess.WRITE)
-			file.store_string(readme.generate_readme_content())
+			var file_exist = FileAccess.file_exists(path)
+			if file_exist:
+				PrintUtility.print_gen("Readme file already exists " + path)
+				PrintUtility.print_error("Can't create readme file")
+				generation_issues += "\nReadme file already exists " + path
+				generation_has_issue += 1
+			else:
+				var file = FileAccess.open(path, FileAccess.WRITE)
+				match FileAccess.get_open_error():
+					0:
+						file.store_string(readme.generate_readme_content())
+						PrintUtility.print_gen("Readme created at " + path)
+					32:
+						PrintUtility.print_gen("Readme file already exists " + path)
+						PrintUtility.print_error("Can't create readme file")
+						generation_issues += "\nError 32 from main.generate_folder_at() with path " + path
+						generation_has_issue += 1
+					_:
+						PrintUtility.print_gen("Unknown error : " + str(FileAccess.get_open_error()))
+						generation_issues += "\nUnknown error (" + str(FileAccess.get_open_error()) + ") from main.generate_system_folders() with path " + path
+						generation_has_issue += 1
 		else:
 			PrintUtility.print_gen("Unkown file extension in generate_folder_at(" + path + ")")
 			PrintUtility.print_error("Can't create file " + path)

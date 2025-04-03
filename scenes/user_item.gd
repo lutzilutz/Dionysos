@@ -1,4 +1,4 @@
-class_name UserItem extends Control
+extends Control
 
 signal ask_edition(index)
 signal ask_deletion(index)
