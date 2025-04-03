@@ -1,0 +1,59 @@
+[gd_scene load_steps=3 format=3 uid="uid://m566vcl3obw5"]
+
+[ext_resource type="Script" uid="uid://dkmkr7aoa80d2" path="res://scenes/user_item.gd" id="1_c2kut"]
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_d8b10"]
+
+[node name="UserItem" type="Control"]
+custom_minimum_size = Vector2(0, 52.6)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("1_c2kut")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="UserContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="UserNameLabel" type="Label" parent="MarginContainer/UserContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "[Nom de l'utilisateur]"
+
+[node name="UserPhoneLabel" type="Label" parent="MarginContainer/UserContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "[Téléphone]"
+
+[node name="UserEmailLabel" type="Label" parent="MarginContainer/UserContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "[E-mail]"
+
+[node name="UserEditButton" type="Button" parent="MarginContainer/UserContainer"]
+custom_minimum_size = Vector2(97.71, 27.815)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("1_d8b10")
+text = "Modifier"
+
+[node name="UserDeleteButton" type="Button" parent="MarginContainer/UserContainer"]
+custom_minimum_size = Vector2(97.71, 27.815)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("1_d8b10")
+text = "Supprimer"
+
+[connection signal="pressed" from="MarginContainer/UserContainer/UserEditButton" to="." method="_on_user_edit_button_pressed"]
+[connection signal="pressed" from="MarginContainer/UserContainer/UserDeleteButton" to="." method="_on_user_delete_button_pressed"]

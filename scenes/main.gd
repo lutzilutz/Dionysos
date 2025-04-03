@@ -20,6 +20,7 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 
 @onready var tutorial = get_node("Tutorial")
 @onready var splashscreen = get_node("Splashscreen")
+@onready var user_manager = get_node("UserManager")
 
 @onready var edit_menu = get_node("Window/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
@@ -46,6 +47,7 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var editor_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine")
 @onready var editor_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorLabel")
 @onready var editor_option = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption")
+@onready var editor_button = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorButton")
 @onready var editor_edit = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit")
 @onready var include_contact_line = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine")
 @onready var include_contact_label = get_node("Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactLabel")
@@ -126,6 +128,9 @@ func _ready() -> void:
 	check_if_release()
 	version_label.set_text("Version " + ProjectSettings.get_setting("application/config/version"))
 	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
+	user_manager.main_scene = self
+	user_manager.build_users()
+	user_manager.users_changed.connect(_on_user_manager_users_changed)
 	readme = ReadMe.new()
 	readme.main_scene = self
 	tutorial.tutorial_ended.connect(_on_tutorial_ended)
@@ -137,7 +142,7 @@ func _ready() -> void:
 	build_editor_options()
 	update_controls()
 	update_preferences_dialog()
-	get_node("FileDialog").ok_button_text = "Sélectionner le dossier"
+	#get_node("FileDialog").ok_button_text = "Sélectionner le dossier"
 
 func update_preferences_dialog() -> void:
 	var label = get_node("PreferencesDialog/PreferencesLabel")
@@ -469,6 +474,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Editor name
 	editor_label.disable(not editor_editable)
 	editor_option.disabled = not editor_editable
+	#editor_button.disabled = not editor_editable
 	editor_edit.editable = editor_editable and editor_option.selected == 0
 	editor_line.get_node("LineIcon").texture = checked_texture if secondary_options_editable else empty_texture
 	editor_line.get_node("LineIcon").modulate = checked_color
@@ -530,9 +536,10 @@ func build_customer_options() -> void:
 
 func build_editor_options() -> void:
 	editor_option.clear()
-	editor_option.add_item("<Nouveau monteur>")
+	#editor_option.add_item("<Nouveau monteur>")
 	for e in user_preferences.editors:
 		editor_option.add_item(e.name)
+	editor_option.selected = -1
 
 func update_editor_fields() -> void:
 	var found_editor: bool = false
@@ -695,7 +702,7 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			production_type_option.selected = -1
 			
 			editor_name = ""
-			editor_option.selected = 0
+			editor_option.selected = -1
 			editor_edit.text = ""
 			editor_phone = ""
 			phone_edit.text = ""
@@ -745,6 +752,8 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			user_preferences.editors = []
 			user_preferences.purge_editors()
 			user_preferences.save_to_file(USER_PREF_PATH)
+			user_manager.build_users()
+			build_editor_options()
 		6: # Purge customers
 			user_preferences.customers = []
 			user_preferences.save_to_file(USER_PREF_PATH)
@@ -777,6 +786,9 @@ func update_line_icon(line, value: bool) -> void:
 	line.get_node("LineIcon").texture = empty_texture if value else information_texture
 	line.get_node("LineIcon").tooltip_text = "" if value else "Cette valeur a été modifiée"
 
+func _on_user_manager_users_changed() -> void:
+	build_editor_options()
+
 # Form signals ====================================================================================
 
 func _on_customer_option_item_selected(index: int) -> void:
@@ -803,12 +815,15 @@ func _on_production_type_option_item_selected(index: int) -> void:
 	update_controls()
 
 func _on_editor_option_item_selected(index: int) -> void:
-	if index == 0:
-		editor_name = editor_edit.text
-	else:
+	if index != -1:
 		editor_name = editor_option.get_item_text(index)
-	update_editor_fields()
+	#else:
+		#editor_name = editor_option.get_item_text(index)
+	#update_editor_fields()
 	update_controls()
+
+func _on_editor_button_pressed() -> void:
+	user_manager.visible = true
 
 func _on_editor_edit_text_changed(new_text: String) -> void:
 	editor_name = new_text

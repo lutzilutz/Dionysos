@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4218x6ymovkk"]
+
+[ext_resource type="Script" uid="uid://dk60bft2ddtod" path="res://scenes/user_manager.gd" id="1_yuxgv"]
+
+[node name="UserManager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yuxgv")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UsersScroll" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsersVBox" type="VBoxContainer" parent="VBoxContainer/UsersScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CloseContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/CloseContainer"]
+custom_minimum_size = Vector2(139.47, 55)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Fermer"
+
+[node name="AcceptDialog" type="ConfirmationDialog" parent="."]
+auto_translate_mode = 1
+title = "Attention !"
+initial_position = 2
+size = Vector2i(514, 106)
+ok_button_text = "Oui, le supprimer"
+cancel_button_text = "Annuler"
+
+[node name="Label" type="Label" parent="AcceptDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 506.0
+offset_bottom = 57.0
+text = "L'utilisateur \"XXX\" sera définitivement supprimé, non-reversible.
+Voulez-vous le supprimer ?"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/CloseContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
+[connection signal="confirmed" from="AcceptDialog" to="." method="_on_accept_dialog_confirmed"]

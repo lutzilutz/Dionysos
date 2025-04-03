@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=15 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="7_tipki"]
 [ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="8_choun"]
 [ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="10_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://c4218x6ymovkk" path="res://scenes/user_manager.tscn" id="11_trceg"]
 [ext_resource type="PackedScene" uid="uid://c7wy6a71iomhv" path="res://scenes/splashscreen.tscn" id="12_eb6dy"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85g3d"]
@@ -236,16 +237,24 @@ text = "Nom du monteur"
 [node name="EditorOption" type="OptionButton" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
 layout_mode = 2
 theme = ExtResource("6_85g3d")
-selected = 0
-item_count = 1
-popup/item_0/text = "<Nouveau monteur>"
-popup/item_0/id = 0
+
+[node name="EditorButton" type="Button" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+custom_minimum_size = Vector2(250.115, 0)
+layout_mode = 2
+theme = ExtResource("6_85g3d")
+text = "Ouvrir gestionnaire des utilisateurs"
 
 [node name="EditorEdit" type="LineEdit" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("6_85g3d")
 placeholder_text = "Entrer le nom du monteur ici ..."
+
+[node name="VSeparator" type="VSeparator" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
 
 [node name="LineIcon" type="TextureRect" parent="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine"]
 modulate = Color(0, 0.521569, 0, 1)
@@ -259,7 +268,7 @@ layout_mode = 2
 
 [node name="IncludeContactLabel" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine" instance=ExtResource("4_tbgi4")]
 layout_mode = 2
-text = "Inclure les données de contact"
+text = "Inclure les données de contact (téléphone + e-mail)"
 
 [node name="IncludeContactCheckbox" type="CheckBox" parent="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine"]
 layout_mode = 2
@@ -278,6 +287,7 @@ texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
 [node name="PhoneLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+visible = false
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
@@ -298,6 +308,7 @@ texture = ExtResource("6_o6xl0")
 stretch_mode = 5
 
 [node name="EmailLine" type="HBoxContainer" parent="Window/WorkspaceHBox/FormContainer/FormVBox"]
+visible = false
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
@@ -511,6 +522,10 @@ size_flags_vertical = 3
 theme = ExtResource("3_4krfr")
 select_mode = 2
 
+[node name="UserManager" parent="." instance=ExtResource("11_trceg")]
+visible = false
+layout_mode = 1
+
 [node name="Tutorial" parent="." instance=ExtResource("6_tefeu")]
 visible = false
 layout_mode = 1
@@ -554,6 +569,7 @@ layout_mode = 1
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
 [connection signal="item_selected" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorOption" to="." method="_on_editor_option_item_selected"]
+[connection signal="pressed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorButton" to="." method="_on_editor_button_pressed"]
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/EditorLine/EditorEdit" to="." method="_on_editor_edit_text_changed"]
 [connection signal="toggled" from="Window/WorkspaceHBox/FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox" to="." method="_on_include_contact_option_toggled"]
 [connection signal="text_changed" from="Window/WorkspaceHBox/FormContainer/FormVBox/PhoneLine/PhoneEdit" to="." method="_on_phone_edit_text_changed"]
