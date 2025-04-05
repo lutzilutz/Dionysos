@@ -7,7 +7,7 @@ var modified_user: int = -1
 var is_new_user: bool = false
 
 #const UserItem = preload("res://scenes/user_item.tscn")
-@onready var users_container = get_node("VBoxContainer/UsersScroll/UsersVBox")
+@onready var users_container = get_node("VBoxContainer/UsersScroll/VBoxContainer/UsersVBox")
 @onready var panel = get_node("VBoxContainer/Panel")
 @onready var modify_panel = panel.get_node("MarginContainer/ModifyPanel")
 @onready var name_edit = modify_panel.get_node("NameEdit")
@@ -19,22 +19,33 @@ func build_users() -> void:
 		print("No user")
 	
 	for u in users_container.get_children():
-		if u.name != "NewButton":
+		if u is UserItem:
 			u.queue_free()
+		else:
+			PrintUtility.print_error("Unknown item in user manager spreadsheet : " + u.name)
 	
-	for i in range(main_scene.user_preferences.editors.size()):
+	var users: Array = main_scene.user_preferences.editors.duplicate(true)
+	users.sort_custom(compare_user_name)
+	
+	for i in range(users.size()):
 		var tmp_user: UserItem = UserItem.new_user(
 			i,
 			DataManager.UserFunction.EDITOR,
-			main_scene.user_preferences.editors[i].name,
-			main_scene.user_preferences.editors[i].phone,
-			main_scene.user_preferences.editors[i].email)
+			users[i].name,
+			users[i].phone,
+			users[i].email)
 		#tmp_user.change_user(i, DataManager.UserFunction.EDITOR, main_scene.user_preferences.editors[i].name, main_scene.user_preferences.editors[i].phone, main_scene.user_preferences.editors[i].email)
 		tmp_user.ask_edition.connect(_on_user_item_ask_edition)
 		tmp_user.ask_deletion.connect(_on_user_item_ask_deletion)
 		users_container.add_child(tmp_user)
 	
-	users_container.move_child(get_node("VBoxContainer/UsersScroll/UsersVBox/NewButton"), get_node("VBoxContainer/UsersScroll/UsersVBox").get_child_count()-1)
+	#users_container.move_child(get_node("VBoxContainer/UsersScroll/UsersVBox/NewButton"), get_node("VBoxContainer/UsersScroll/UsersVBox").get_child_count()-1)
+
+func compare_user_name(a, b) -> bool:
+	if a.name.capitalize() < b.name.capitalize():
+		return true
+	else:
+		return false
 
 func reset_emphasis(index_avoided: int) -> void:
 	for u in users_container.get_children():
@@ -49,7 +60,6 @@ func _on_user_item_ask_edition(index: int) -> void:
 	name_edit.editable = false
 	phone_edit.text = main_scene.user_preferences.editors[modified_user].phone
 	email_edit.text = main_scene.user_preferences.editors[modified_user].email
-	#main_scene.user_preferences.editors[modified_user].emphasized(true)
 	panel.visible = true
 
 func _on_user_item_ask_deletion(index: int) -> void:

@@ -21,6 +21,7 @@ func change_user(index: int, new_function: DataManager.UserFunction, new_name: S
 	get_node("Button/MarginContainer/UserContainer/UserNameLabel").text = full_name
 	get_node("Button/MarginContainer/UserContainer/UserPhoneLabel").text = phone
 	get_node("Button/MarginContainer/UserContainer/UserEmailLabel").text = email
+	get_node("Button/MarginContainer/UserContainer/UserFunctionLabel").text = DataManager.user_function_plain_text(user_function)
 
 static func new_user(index: int, new_function: DataManager.UserFunction, new_name: String, new_phone: String, new_email: String) -> UserItem:
 	var user: UserItem = user_item.instantiate()

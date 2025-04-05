@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4218x6ymovkk"]
+[gd_scene load_steps=5 format=3 uid="uid://c4218x6ymovkk"]
 
 [ext_resource type="Script" uid="uid://dk60bft2ddtod" path="res://scenes/user_manager.gd" id="1_yuxgv"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_cw3ii"]
+[ext_resource type="PackedScene" uid="uid://bxwcydol7xypb" path="res://scenes/user_item_header.tscn" id="2_m8pq0"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="3_m8pq0"]
 
 [node name="UserManager" type="Control"]
@@ -37,13 +38,20 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="UsersVBox" type="VBoxContainer" parent="VBoxContainer/UsersScroll"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/UsersScroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="UserItemHeader" parent="VBoxContainer/UsersScroll/VBoxContainer" instance=ExtResource("2_m8pq0")]
+layout_mode = 2
+
+[node name="UsersVBox" type="VBoxContainer" parent="VBoxContainer/UsersScroll/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="NewButton" type="Button" parent="VBoxContainer/UsersScroll/UsersVBox"]
+[node name="NewButton" type="Button" parent="VBoxContainer/UsersScroll/VBoxContainer"]
 custom_minimum_size = Vector2(162.265, 38.985)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -168,7 +176,7 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Souhaitez-vous le modifier ?"
 
-[connection signal="pressed" from="VBoxContainer/UsersScroll/UsersVBox/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/UsersScroll/VBoxContainer/NewButton" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
