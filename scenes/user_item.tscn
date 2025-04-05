@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://m566vcl3obw5"]
+[gd_scene load_steps=6 format=3 uid="uid://m566vcl3obw5"]
 
 [ext_resource type="Script" uid="uid://dkmkr7aoa80d2" path="res://scenes/user_item.gd" id="1_c2kut"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_d8b10"]
+[ext_resource type="Theme" uid="uid://bh1hga0057obd" path="res://resources/themes/spreadsheet_row.tres" id="2_6vns5"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_ay6y2"]
+[ext_resource type="PackedScene" uid="uid://ccq785xcfesbr" path="res://scenes/delete_button.tscn" id="5_doh4d"]
 
 [node name="UserItem" type="Control"]
-custom_minimum_size = Vector2(0, 52.6)
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
@@ -13,7 +16,26 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 script = ExtResource("1_c2kut")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_6vns5")
+
+[node name="Emphasis" type="ColorRect" parent="Button"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.0392157)
+
+[node name="MarginContainer" type="MarginContainer" parent="Button"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,37 +45,58 @@ grow_vertical = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="UserContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="UserContainer" type="HBoxContainer" parent="Button/MarginContainer"]
 layout_mode = 2
 
-[node name="UserNameLabel" type="Label" parent="MarginContainer/UserContainer"]
+[node name="UserNameLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_ay6y2")
 text = "[Nom de l'utilisateur]"
+text_overrun_behavior = 3
 
-[node name="UserPhoneLabel" type="Label" parent="MarginContainer/UserContainer"]
+[node name="UserPhoneLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_ay6y2")
 text = "[Téléphone]"
+text_overrun_behavior = 3
 
-[node name="UserEmailLabel" type="Label" parent="MarginContainer/UserContainer"]
+[node name="UserEmailLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_ay6y2")
 text = "[E-mail]"
+text_overrun_behavior = 3
 
-[node name="UserEditButton" type="Button" parent="MarginContainer/UserContainer"]
-custom_minimum_size = Vector2(97.71, 27.815)
+[node name="UserFunctionLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+theme = ExtResource("2_ay6y2")
+text = "[Function]"
+text_overrun_behavior = 3
+
+[node name="UserEditButton" type="Button" parent="Button/MarginContainer/UserContainer"]
+visible = false
+custom_minimum_size = Vector2(97.71, 22)
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("1_d8b10")
 text = "Modifier"
 
-[node name="UserDeleteButton" type="Button" parent="MarginContainer/UserContainer"]
-custom_minimum_size = Vector2(97.71, 27.815)
+[node name="UserDeleteButton" type="Button" parent="Button/MarginContainer/UserContainer"]
+visible = false
+custom_minimum_size = Vector2(97.71, 22)
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("1_d8b10")
 text = "Supprimer"
 
-[connection signal="pressed" from="MarginContainer/UserContainer/UserEditButton" to="." method="_on_user_edit_button_pressed"]
-[connection signal="pressed" from="MarginContainer/UserContainer/UserDeleteButton" to="." method="_on_user_delete_button_pressed"]
+[node name="DeleteButton" parent="Button/MarginContainer/UserContainer" instance=ExtResource("5_doh4d")]
+layout_mode = 2
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button/MarginContainer/UserContainer/UserEditButton" to="." method="_on_user_edit_button_pressed"]
+[connection signal="pressed" from="Button/MarginContainer/UserContainer/UserDeleteButton" to="." method="_on_user_delete_button_pressed"]
+[connection signal="pressed" from="Button/MarginContainer/UserContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

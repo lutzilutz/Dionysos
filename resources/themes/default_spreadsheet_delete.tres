@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://bwnnn0ysvkuve"]
+
+[ext_resource type="StyleBox" uid="uid://cugp2we2yubvx" path="res://resources/themes/styleboxes/ui/default_stylebox_ui_pressed.tres" id="1_iyxt2"]
+[ext_resource type="StyleBox" uid="uid://d2q856peoc7ae" path="res://resources/themes/styleboxes/ui/delete_stylebox_ui_pressed.tres" id="1_vvfew"]
+[ext_resource type="StyleBox" uid="uid://dgpe75fde3yuo" path="res://resources/themes/styleboxes/stylebox_empty.tres" id="2_4ar10"]
+[ext_resource type="StyleBox" uid="uid://donpj1tb6rmvg" path="res://resources/themes/styleboxes/ui/default_stylebox_ui_hovered.tres" id="3_5biqx"]
+[ext_resource type="StyleBox" uid="uid://bmdpfnggs4bqk" path="res://resources/themes/styleboxes/ui/delete_stylebox_ui_hovered.tres" id="3_ql2h0"]
+[ext_resource type="StyleBox" uid="uid://cpd4auqmihq3e" path="res://resources/themes/styleboxes/ui/delete_stylebox_ui_normal.tres" id="4_0vdu5"]
+[ext_resource type="StyleBox" uid="uid://dg2in2uye2y34" path="res://resources/themes/styleboxes/ui/default_stylebox_ui_normal.tres" id="4_vvfew"]
+
+[resource]
+Button/font_sizes/font_size = 12
+Button/styles/disabled = ExtResource("1_vvfew")
+Button/styles/focus = ExtResource("2_4ar10")
+Button/styles/hover = ExtResource("3_ql2h0")
+Button/styles/normal = ExtResource("4_0vdu5")
+Button/styles/pressed = ExtResource("1_vvfew")
+LineEdit/font_sizes/font_size = 12
+LineEdit/styles/focus = ExtResource("3_5biqx")
+LineEdit/styles/normal = ExtResource("4_vvfew")
+LineEdit/styles/read_only = ExtResource("1_iyxt2")
+OptionButton/font_sizes/font_size = 12
+PopupMenu/font_sizes/font_size = 12
+PopupMenu/styles/panel = ExtResource("4_vvfew")
