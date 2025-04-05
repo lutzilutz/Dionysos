@@ -158,9 +158,9 @@ func update_preferences_dialog() -> void:
 	var label = get_node("PreferencesDialog/PreferencesLabel")
 	label.text = "Chemin du dossier : " + user_preferences.default_path
 	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
-	label.text += "\nMonteurs : "
-	for e in users.all_users:
-		label.text += "\n   " + e.name + " - " + e.phone + " - " + e.email
+	#label.text += "\nMonteurs : "
+	#for e in users.all_users:
+		#label.text += "\n   " + e.name + " - " + e.phone + " - " + e.email
 	#label.text += "\nClients : " + str(users.customers)
 	label.text += "\nDossier suit conventions : " + str(user_preferences.folder_follow_conventions)
 	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
@@ -537,15 +537,15 @@ func build_customer_options() -> void:
 	var new_customers: Array = []
 	for i in range(users.all_users.size()):
 		if users.all_users[i].function == DataManager.UserFunction.CUSTOMER:
-			new_customers.append(users.all_users[i])
-	#if user_preferences.folder_follow_conventions:
-		#for d in DirAccess.get_directories_at(user_preferences.default_path):
-			#if not users.customer_exists(d):
-				#new_customers.append(d)
+			new_customers.append(users.all_users[i].name)
+	if user_preferences.folder_follow_conventions:
+		for d in DirAccess.get_directories_at(user_preferences.default_path):
+			if not users.customer_exists(d):
+				new_customers.append(d)
 	
 	new_customers.sort()
 	for i in range(new_customers.size()):
-		customer_option.add_item(new_customers[i].name)
+		customer_option.add_item(new_customers[i])
 
 func build_editor_options() -> void:
 	editor_option.clear()

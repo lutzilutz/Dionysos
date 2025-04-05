@@ -29,7 +29,7 @@ func save_to_file(path:String) -> Error:
 		if e.function == DataManager.UserFunction.EDITOR:
 			json_editors[e.name] = json_infos
 		elif e.function == DataManager.UserFunction.CUSTOMER:
-			json_editors[e.name] = json_infos
+			json_customers[e.name] = json_infos
 		else:
 			PrintUtility.print_error("Unknown DataManager.UserFunction value in save_to_file(" + path + ")")
 	#for e: User in customers:
@@ -164,6 +164,16 @@ func customer_exists(new_name: String) -> bool:
 				break
 	return customer_found
 
+func add_user(function: DataManager.UserFunction, name: String, phone: String, email: String) -> void:
+	var user: User = User.new()
+	user.name = name
+	user.phone = phone
+	user.email = email
+	user.function = function
+	if all_users.is_read_only():
+		PrintUtility.print_error("users.all_users is in read-only state")
+	all_users.append(user)
+
 func add_editor(name: String, phone: String, email: String) -> void:
 	var editor: User = User.new()
 	editor.name = name
@@ -184,6 +194,22 @@ func change_editor(name: String, phone: String, email: String) -> void:
 			if u.name.capitalize() == name.capitalize():
 				if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
 					PrintUtility.print_info("User changing editor infos, from, to :")
+					PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
+					PrintUtility.print_info(name + " - " + phone + " - " + email)
+				u.name = name
+				u.phone = phone
+				u.email = email
+
+func change_customer(name: String, phone: String, email: String) -> void:
+	var new_editor: User = User.new()
+	new_editor.name = name
+	new_editor.phone = phone
+	new_editor.email = email
+	for u in all_users:
+		if u.function == DataManager.UserFunction.CUSTOMER:
+			if u.name.capitalize() == name.capitalize():
+				if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
+					PrintUtility.print_info("User changing customer infos, from, to :")
 					PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
 					PrintUtility.print_info(name + " - " + phone + " - " + email)
 				u.name = name

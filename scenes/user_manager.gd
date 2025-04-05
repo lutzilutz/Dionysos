@@ -15,9 +15,6 @@ var is_new_user: bool = false
 @onready var function_edit = modify_panel.get_node("FunctionOption")
 
 func _ready() -> void:
-	function_edit.clear()
-	function_edit.add_item("Client")
-	function_edit.add_item("Monteur")
 	function_edit.selected = -1
 
 func build_users() -> void:
@@ -98,17 +95,34 @@ func _on_save_button_pressed() -> void:
 		#update_modification_dialog()
 		#get_node("ConfirmationDialog").visible = true
 	else:
-		if main_scene.users.editor_exists(name_edit.text) :
+		if main_scene.users.editor_exists(name_edit.text) or main_scene.users.customer_exists(name_edit.text):
 			issue_found = true
 			update_modification_dialog()
 			get_node("ConfirmationDialog").visible = true
 		else:
 			if not issue_found:
-				main_scene.users.add_editor(name_edit.text, phone_edit.text, email_edit.text)
+				#print(function_edit.selected)
+				#print("asdbabd " + str(DataManager.UserFunction.EDITOR))
+				var tmp_function: int = -1
+				match function_edit.get_item_id(function_edit.selected):
+					0: # Customer
+						tmp_function = DataManager.UserFunction.CUSTOMER
+					1: # Editor
+						tmp_function = DataManager.UserFunction.EDITOR
+					_: # Other
+						PrintUtility.print_error("Unknown function type in user_manager._on_save_button_pressed()")
+				main_scene.users.add_user(tmp_function, name_edit.text, phone_edit.text, email_edit.text)
 				is_new_user = false
 	
 	if not issue_found:
-		main_scene.users.change_editor(name_edit.text, phone_edit.text, email_edit.text)
+		match function_edit.get_item_id(function_edit.selected):
+			0: # Customer
+				main_scene.users.change_customer(name_edit.text, phone_edit.text, email_edit.text)
+			1: # Editor
+				main_scene.users.change_editor(name_edit.text, phone_edit.text, email_edit.text)
+			_: # Other
+				PrintUtility.print_error("Unknown function type in user_manager._on_save_button_pressed()")
+		#main_scene.users.change_editor(name_edit.text, phone_edit.text, email_edit.text)
 		main_scene.users.save_to_file(main_scene.SAVE_USERS_PATH)
 		modified_user = -1
 		build_users()
