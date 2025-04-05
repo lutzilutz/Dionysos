@@ -21,8 +21,8 @@ func _ready() -> void:
 	function_edit.selected = -1
 
 func build_users() -> void:
-	if main_scene.users.editors.size() == 0:
-		print("No user")
+	if main_scene.users.all_users.size() == 0:
+		PrintUtility.print_info("No user")
 	
 	for u in users_container.get_children():
 		if u is UserItem:
@@ -30,13 +30,12 @@ func build_users() -> void:
 		else:
 			PrintUtility.print_error("Unknown item in user manager spreadsheet : " + u.name)
 	
-	var users: Array = main_scene.users.editors.duplicate(true)
-	users.sort_custom(compare_user_name)
+	var users: Array = main_scene.users.all_users.duplicate(true)
 	
 	for i in range(users.size()):
 		var tmp_user: UserItem = UserItem.new_user(
 			i,
-			DataManager.UserFunction.EDITOR,
+			users[i].function,
 			users[i].name,
 			users[i].phone,
 			users[i].email)
@@ -45,7 +44,12 @@ func build_users() -> void:
 		tmp_user.ask_deletion.connect(_on_user_item_ask_deletion)
 		users_container.add_child(tmp_user)
 	
+	#sort_users()
+	
 	#users_container.move_child(get_node("VBoxContainer/UsersScroll/UsersVBox/NewButton"), get_node("VBoxContainer/UsersScroll/UsersVBox").get_child_count()-1)
+
+func sort_users() -> void:
+	pass
 
 func compare_user_name(a, b) -> bool:
 	if a.name.capitalize() < b.name.capitalize():

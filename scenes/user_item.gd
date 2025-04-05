@@ -6,6 +6,7 @@ signal ask_edition(index)
 signal ask_deletion(index)
 
 var pref_index: int = -1 # index from user_preferences.editors array
+var spreadsheet_index: int = -1
 var user_function: DataManager.UserFunction = DataManager.UserFunction.UNKNOWN
 var full_name: String = ""
 var phone: String = ""

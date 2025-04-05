@@ -159,9 +159,9 @@ func update_preferences_dialog() -> void:
 	label.text = "Chemin du dossier : " + user_preferences.default_path
 	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
 	label.text += "\nMonteurs : "
-	for e in users.editors:
+	for e in users.all_users:
 		label.text += "\n   " + e.name + " - " + e.phone + " - " + e.email
-	label.text += "\nClients : " + str(user_preferences.customers)
+	#label.text += "\nClients : " + str(users.customers)
 	label.text += "\nDossier suit conventions : " + str(user_preferences.folder_follow_conventions)
 	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
 	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
@@ -535,21 +535,23 @@ func build_customer_options() -> void:
 	customer_option.clear()
 	customer_option.add_item("<Nouveau client>")
 	var new_customers: Array = []
-	for i in range(user_preferences.customers.size()):
-		new_customers.append(user_preferences.customers[i])
-	if user_preferences.folder_follow_conventions:
-		for d in DirAccess.get_directories_at(user_preferences.default_path):
-			if not user_preferences.customer_exists(d):
-				new_customers.append(d)
+	for i in range(users.all_users.size()):
+		if users.all_users[i].function == DataManager.UserFunction.CUSTOMER:
+			new_customers.append(users.all_users[i])
+	#if user_preferences.folder_follow_conventions:
+		#for d in DirAccess.get_directories_at(user_preferences.default_path):
+			#if not users.customer_exists(d):
+				#new_customers.append(d)
 	
 	new_customers.sort()
 	for i in range(new_customers.size()):
-		customer_option.add_item(new_customers[i])
+		customer_option.add_item(new_customers[i].name)
 
 func build_editor_options() -> void:
 	editor_option.clear()
-	for e in users.editors:
-		editor_option.add_item(e.name)
+	for u in users.all_users:
+		if u.function == DataManager.UserFunction.EDITOR:
+			editor_option.add_item(u.name)
 	editor_option.selected = -1
 
 func _on_choose_folder_button_pressed() -> void:
@@ -586,10 +588,10 @@ func _on_pre_generate_folder_button_pressed() -> void:
 	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:
-	if user_preferences.customers.find(customer_name, 0) == -1:
+	if users.customers.find(customer_name, 0) == -1:
 		PrintUtility.print_gen("Saving new customer " + customer_name + " to preferences")
-		user_preferences.customers.append(customer_name)
-		user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
+		users.customers.append(customer_name)
+		users.save_to_file(SAVE_USERS_PATH)
 	else:
 		PrintUtility.print_gen("Customer " + customer_name + " already present in user_preferences.customers, will not be saved")
 	if not users.editor_exists(editor_name):
@@ -793,9 +795,9 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			users.build_users()
 			build_editor_options()
 		6: # Purge customers
-			user_preferences.customers = []
-			user_preferences.purge_customers()
-			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
+			users.customers = []
+			users.purge_customers()
+			users.save_to_file(SAVE_USERS_PATH)
 			build_customer_options()
 		7: # Folder only contains customers
 			user_preferences.folder_follow_conventions = not user_preferences.folder_follow_conventions

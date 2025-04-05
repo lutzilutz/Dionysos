@@ -1,4 +1,4 @@
-class_name Editor extends Resource
+class_name User extends Resource
 
 @export var name: String = ""
 @export var phone: String = ""

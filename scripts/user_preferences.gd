@@ -2,7 +2,6 @@ class_name UserPreferences extends Resource
 
 const DEFAULT_PATH: String = ""
 const HAS_DEFAULT_PATH: bool = false
-const CUSTOMERS: Array = []
 const FOLDER_FOLLOW_CONVENTIONS: bool = true
 const HIDE_LOGO: bool = false
 const SHOW_HIGHLIGHTS: bool = false
@@ -10,7 +9,6 @@ const HAS_SEEN_TUTORIAL: bool = false
 
 @export var default_path: String = DEFAULT_PATH
 @export var has_default_path: bool = HAS_DEFAULT_PATH
-@export var customers: Array = []
 @export var folder_follow_conventions: bool = FOLDER_FOLLOW_CONVENTIONS
 @export var hide_logo: bool = HIDE_LOGO
 @export var show_highlights: bool = SHOW_HIGHLIGHTS
@@ -25,7 +23,6 @@ func save_to_file(path:String) -> Error:
 		"preferences": {
 			"default_path": default_path,
 			"has_default_path": has_default_path,
-			"customers": customers,
 			"folder_follow_conventions": folder_follow_conventions,
 			"hide_logo": hide_logo,
 			"show_highlights": show_highlights,
@@ -42,9 +39,6 @@ func save_to_file(path:String) -> Error:
 	else:
 		return ERR_FILE_CANT_WRITE
 
-func purge_customers() -> void:
-	customers.clear()
-
 static func load_from_file(path: String) -> UserPreferences:
 	# Check if a user preferences file already exists (not first time)
 	# If not, creates a default JSON file to be used
@@ -56,7 +50,6 @@ static func load_from_file(path: String) -> UserPreferences:
 			"preferences": {
 				"default_path": DEFAULT_PATH,
 				"has_default_path": HAS_DEFAULT_PATH,
-				"customers": CUSTOMERS,
 				"folder_follow_conventions": FOLDER_FOLLOW_CONVENTIONS,
 				"hide_logo": HIDE_LOGO,
 				"show_highlights": SHOW_HIGHLIGHTS,
@@ -81,7 +74,6 @@ static func load_from_file(path: String) -> UserPreferences:
 	var json_pref = json.get("preferences", {})
 	res.default_path = json_pref.get("default_path", DEFAULT_PATH)
 	res.has_default_path = json_pref.get("has_default_path", HAS_DEFAULT_PATH)
-	res.customers = json_pref.get("customers", CUSTOMERS)
 	res.folder_follow_conventions = json_pref.get("folder_follow_conventions", FOLDER_FOLLOW_CONVENTIONS)
 	res.hide_logo = json_pref.get("hide_logo", HIDE_LOGO)
 	res.show_highlights = json_pref.get("show_highlights", SHOW_HIGHLIGHTS)
@@ -99,11 +91,3 @@ func reset_user_preferences(path: String) -> void:
 	show_highlights = SHOW_HIGHLIGHTS
 	has_seen_tutorial = HAS_SEEN_TUTORIAL
 	save_to_file(path)
-
-func customer_exists(new_name: String) -> bool:
-	var customer_found: bool = false
-	for c in customers:
-		if c.capitalize() == new_name.capitalize():
-			customer_found = true
-			break
-	return customer_found
