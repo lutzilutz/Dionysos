@@ -15,7 +15,6 @@ const KAREL_PHONE: String = "187 481 33 70"
 const KAREL_EMAIL: String = "vlcpw.xlezfdpv@ocjvled.ns"
 
 @export var all_users: Array = []
-#@export var customers: Array = []
 
 func save_to_file(path:String) -> Error:
 	var json_editors:Dictionary = {}
@@ -32,12 +31,6 @@ func save_to_file(path:String) -> Error:
 			json_customers[e.name] = json_infos
 		else:
 			PrintUtility.print_error("Unknown DataManager.UserFunction value in save_to_file(" + path + ")")
-	#for e: User in customers:
-		#var json_infos: Dictionary = {
-			#"phone": e.phone,
-			#"email": e.email
-		#}
-		#json_customers[e.name] = json_infos
 	# Build main resources
 	var json = {
 		"version": ProjectSettings.get_setting("application/config/version"),
@@ -134,7 +127,6 @@ static func load_from_file(path: String) -> Users:
 			res.all_users.append(tmp_editor)
 	
 	var tmp_customers: Dictionary = json.get("customers", EDITORS_INFILE)
-	#print(tmp_customers)
 	if tmp_customers != null :
 		for e_name in tmp_customers.keys():
 			customer_loaded_count += 1
@@ -191,10 +183,8 @@ func add_editor(name: String, phone: String, email: String) -> void:
 	all_users.append(editor)
 
 func change_user(new_user: User) -> void:
-	#var new_editor: User = User.new()
-	#new_editor.name = name
-	#new_editor.phone = phone
-	#new_editor.email = email
+	PrintUtility.print_user(new_user)
+	var found_user_to_change: bool = false
 	for u in all_users:
 		if u.is_same_as(new_user):
 			if new_user.name != u.name or new_user.phone != u.phone or new_user.email != u.email:
@@ -204,56 +194,9 @@ func change_user(new_user: User) -> void:
 				u.name = new_user.name
 				u.phone = new_user.phone
 				u.email = new_user.email
-
-#func change_editor(name: String, phone: String, email: String) -> void:
-	#var new_editor: User = User.new()
-	#new_editor.name = name
-	#new_editor.phone = phone
-	#new_editor.email = email
-	#for u in all_users:
-		#if u.function == DataManager.UserFunction.EDITOR:
-			#if u.name.capitalize() == name.capitalize():
-				#if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
-					#PrintUtility.print_info("User changing editor infos, from, to :")
-					#PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
-					#PrintUtility.print_info(name + " - " + phone + " - " + email)
-				#u.name = name
-				#u.phone = phone
-				#u.email = email
-
-#func change_customer(name: String, phone: String, email: String) -> void:
-	#var new_editor: User = User.new()
-	#new_editor.name = name
-	#new_editor.phone = phone
-	#new_editor.email = email
-	#for u in all_users:
-		#if u.function == DataManager.UserFunction.CUSTOMER:
-			#if u.name.capitalize() == name.capitalize():
-				#if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
-					#PrintUtility.print_info("User changing customer infos, from, to :")
-					#PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
-					#PrintUtility.print_info(name + " - " + phone + " - " + email)
-				#u.name = name
-				#u.phone = phone
-				#u.email = email
-
-#func get_user_from_name(function: DataManager.UserFunction, name: String) -> User:
-	#var tmp_editor: User = null
-	#for u in all_users:
-		#if u.function == function:
-			#if u.name.capitalize() == name.capitalize():
-				#return u
-	#PrintUtility.print_info("Didn't find user [" + name + "] in users.get_editor_from_name()")
-	#return tmp_editor
-
-#func get_editor_from_name(name: String) -> User:
-	#var tmp_editor: User = null
-	#for u in all_users:
-		#if u.function == DataManager.UserFunction.EDITOR:
-			#if u.name.capitalize() == name.capitalize():
-				#return u
-	#PrintUtility.print_info("Didn't find editor [" + name + "] in users.get_editor_from_name()")
-	#return tmp_editor
+				found_user_to_change = true
+	if not found_user_to_change:
+		PrintUtility.print_error("Didn't find user to change in users.change_user()")
 
 func get_user_from_name(function: DataManager.UserFunction, name: String) -> User:
 	var tmp_user: User = null

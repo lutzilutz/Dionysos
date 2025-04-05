@@ -40,3 +40,15 @@ static func print_folders(tree: Tree) -> void:
 										if sssf.get_child_count() > 0:
 											PrintUtility.print_error("print_folders() didn't go deep enough, still folders to print")
 	print("----------------------------------------------------------------")
+
+static func print_user(user: User) -> void:
+	if user == null:
+		print_info("User is null !")
+	else:
+		print_info("User is :")
+		print("----------------------------------------------------------------")
+		print(user.name)
+		print(user.function)
+		print(user.phone)
+		print(user.email)
+		print("----------------------------------------------------------------")

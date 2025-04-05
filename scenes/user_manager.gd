@@ -4,7 +4,7 @@ signal users_changed
 
 var main_scene
 var modified_user: User = null
-var is_new_user: bool = false
+var is_new_user: bool = true
 
 @onready var users_header = get_node("VBoxContainer/UsersScroll/VBoxContainer/UserItemHeader")
 @onready var users_container = get_node("VBoxContainer/UsersScroll/VBoxContainer/UsersVBox")
@@ -179,19 +179,27 @@ func _on_save_button_pressed() -> void:
 					_: # Other
 						PrintUtility.print_error("Unknown function type in user_manager._on_save_button_pressed() : " + str(function_edit.get_item_id(function_edit.selected)))
 				main_scene.users.add_user(tmp_function, name_edit.text, phone_edit.text, email_edit.text)
-				is_new_user = false
+				#is_new_user = false
 	
 	if not issue_found:
 		var new_user: User = User.new()
 		new_user.name = name_edit.text
-		new_user.function = function_edit.get_item_id(function_edit.selected)
+		match function_edit.selected:
+			0:
+				new_user.function = DataManager.UserFunction.CUSTOMER
+			1:
+				new_user.function = DataManager.UserFunction.EDITOR
+			_:
+				PrintUtility.print_error("Unknown function type in user_manager._on_save_button_pressed() : " + str(function_edit.selected))
 		new_user.phone = phone_edit.text
 		new_user.email = email_edit.text
 		match function_edit.get_item_id(function_edit.selected):
-			0: # Customer or editor
+			0: # Customer
+				PrintUtility.print_info("Changing customer")
 				main_scene.users.change_user(new_user)
 				main_scene.users.save_to_file(main_scene.SAVE_USERS_PATH)
-			1: # Customer or editor
+			1: # Editor
+				PrintUtility.print_info("Changing editor")
 				main_scene.users.change_user(new_user)
 				main_scene.users.save_to_file(main_scene.SAVE_USERS_PATH)
 			_: # Other
@@ -231,10 +239,8 @@ func update_modification_dialog() -> void:
 func _on_cancel_button_pressed() -> void:
 	modified_user = null
 	panel.visible = false
-	is_new_user = false
 
 func _on_new_button_pressed() -> void:
-	is_new_user = true
 	name_edit.editable = true
 	name_edit.text = ""
 	phone_edit.text = ""

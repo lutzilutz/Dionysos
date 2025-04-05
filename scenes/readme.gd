@@ -36,8 +36,8 @@ func generate_team() -> String:
 	s += add_subsection("Montage")
 	s += add_line(2, "Monteur : " + main_scene.editor_name)
 	if main_scene.use_contact:
-		s += add_line(2, "Téléphone : " + main_scene.users.get_editor_from_name(main_scene.editor_name).phone)
-		s += add_line(2, "E-mail : " + main_scene.users.get_editor_from_name(main_scene.editor_name).email)
+		s += add_line(2, "Téléphone : " + main_scene.users.get_user_from_name(DataManager.UserFunction.EDITOR, main_scene.editor_name).phone)
+		s += add_line(2, "E-mail : " + main_scene.users.get_user_from_name(DataManager.UserFunction.EDITOR, main_scene.editor_name).email)
 	return s
 
 func generate_details() -> String:

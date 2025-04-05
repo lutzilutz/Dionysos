@@ -144,7 +144,6 @@ func _ready() -> void:
 	update_controls()
 	update_preferences_dialog()
 	tabs_manager.ask_tab_change.connect(_on_tabs_manager_change)
-	#get_node("FileDialog").ok_button_text = "Sélectionner le dossier"
 
 func _on_tabs_manager_change(type) -> void:
 	if type == TabButton.TabType.FOLDER_MANAGER:
@@ -158,10 +157,6 @@ func update_preferences_dialog() -> void:
 	var label = get_node("PreferencesDialog/PreferencesLabel")
 	label.text = "Chemin du dossier : " + user_preferences.default_path
 	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
-	#label.text += "\nMonteurs : "
-	#for e in users.all_users:
-		#label.text += "\n   " + e.name + " - " + e.phone + " - " + e.email
-	#label.text += "\nClients : " + str(users.customers)
 	label.text += "\nDossier suit conventions : " + str(user_preferences.folder_follow_conventions)
 	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
 	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
@@ -589,8 +584,7 @@ func _on_pre_generate_folder_button_pressed() -> void:
 
 func _on_generate_folder_button_pressed() -> void:
 	if not users.customer_exists(customer_name):
-		PrintUtility.print_gen("Saving new customer " + customer_name + " to preferences")
-		users.customers.append(customer_name)
+		PrintUtility.print_gen("Saving new customer " + customer_name + " to file")
 		users.add_user(DataManager.UserFunction.CUSTOMER, customer_name, "", "")
 		users.save_to_file(SAVE_USERS_PATH)
 	else:
@@ -598,16 +592,14 @@ func _on_generate_folder_button_pressed() -> void:
 	if not users.editor_exists(editor_name):
 		PrintUtility.print_gen("Using editor " + editor_name + " that doesn't exist in users.json")
 		PrintUtility.print_error("Can't save editor through main workspace")
-		#user_preferences.add_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
-		#user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	else:
 		PrintUtility.print_gen("Using existing editor, will not be saved")
-		#user_preferences.change_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
-		#user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	
 	generation_has_issue = 0
 	generation_issues = ""
 	generate_system_folders()
+	
+	user_manager.build_users()
 	
 	update_generation_completed_dialog()
 	generation_completed_dialog.visible = true
