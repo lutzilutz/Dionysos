@@ -1,14 +1,8 @@
-class_name UserPreferences extends Resource
+class_name Users extends Resource
 
-const DEFAULT_PATH: String = ""
-const HAS_DEFAULT_PATH: bool = false
 const EDITORS_INCODE: Array = []
 const EDITORS_INFILE: Dictionary = {}
 const CUSTOMERS: Array = []
-const FOLDER_FOLLOW_CONVENTIONS: bool = true
-const HIDE_LOGO: bool = false
-const SHOW_HIGHLIGHTS: bool = false
-const HAS_SEEN_TUTORIAL: bool = false
 
 const LUTZ_NAME: String = "Wfekt Wfek"
 const LUTZ_PHONE: String = "180 263 15 06"
@@ -20,16 +14,8 @@ const KAREL_NAME: String = "Vlcpw Xlezfdpv"
 const KAREL_PHONE: String = "187 481 33 70"
 const KAREL_EMAIL: String = "vlcpw.xlezfdpv@ocjvled.ns"
 
-@export var default_path: String = DEFAULT_PATH
-@export var has_default_path: bool = HAS_DEFAULT_PATH
 @export var editors: Array = []
 @export var customers: Array = []
-@export var folder_follow_conventions: bool = FOLDER_FOLLOW_CONVENTIONS
-@export var hide_logo: bool = HIDE_LOGO
-@export var show_highlights: bool = SHOW_HIGHLIGHTS
-@export var has_seen_tutorial: bool = HAS_SEEN_TUTORIAL
-
-@export var achievements: Array = []
 
 func save_to_file(path:String) -> Error:
 	var json_editors:Dictionary = {}
@@ -37,23 +23,14 @@ func save_to_file(path:String) -> Error:
 	for e: Editor in editors:
 		var json_infos: Dictionary = {
 			"phone": e.phone,
-			"email": e.email
+			"email": e.email,
+			"function": e.function
 		}
 		json_editors[e.name] = json_infos
 	# Build main resources
 	var json = {
 		"version": ProjectSettings.get_setting("application/config/version"),
-		"preferences": {
-			"default_path": default_path,
-			"has_default_path": has_default_path,
-			"editors": json_editors,
-			"customers": customers,
-			"folder_follow_conventions": folder_follow_conventions,
-			"hide_logo": hide_logo,
-			"show_highlights": show_highlights,
-			"has_seen_tutorial": has_seen_tutorial
-			},
-		"achievements": []
+		"users": json_editors
 	}
 	var file = FileAccess.open(path, FileAccess.WRITE)
 
@@ -75,83 +52,60 @@ func purge_customers() -> void:
 
 static func generate_drykats_team() -> Dictionary:
 	var d: Dictionary
-	d[LUTZ_NAME] = {
-		"phone": LUTZ_PHONE,
-		"email": LUTZ_EMAIL
+	d[decrypt_string(LUTZ_NAME)] = {
+		"phone": decrypt_string(LUTZ_PHONE),
+		"email": decrypt_string(LUTZ_EMAIL),
+		"function" : DataManager.UserFunction.EDITOR
 	}
-	d[YANN_NAME] = {
-		"phone": YANN_PHONE,
-		"email": YANN_EMAIL
+	d[decrypt_string(YANN_NAME)] = {
+		"phone": decrypt_string(YANN_PHONE),
+		"email": decrypt_string(YANN_EMAIL),
+		"function" : DataManager.UserFunction.EDITOR
 	}
-	d[KAREL_NAME] = {
-		"phone": KAREL_PHONE,
-		"email": KAREL_EMAIL
+	d[decrypt_string(KAREL_NAME)] = {
+		"phone": decrypt_string(KAREL_PHONE),
+		"email": decrypt_string(KAREL_EMAIL),
+		"function" : DataManager.UserFunction.EDITOR
 	}
 	return d
 
-static func load_from_file(path: String) -> UserPreferences:
+static func load_from_file(path: String) -> Users:
 	# Check if a user preferences file already exists (not first time)
 	# If not, creates a default JSON file to be used
 	if not FileAccess.file_exists(path):
-		PrintUtility.print_info("No user_preferences.json found")
+		PrintUtility.print_info("No users.json found")
 		var new_file = FileAccess.open(path, FileAccess.WRITE)
 		var new_json = {
 			"version": ProjectSettings.get_setting("application/config/version"),
-			"preferences": {
-				"default_path": DEFAULT_PATH,
-				"has_default_path": HAS_DEFAULT_PATH,
-				"editors": generate_drykats_team(),
-				"customers": CUSTOMERS,
-				"folder_follow_conventions": FOLDER_FOLLOW_CONVENTIONS,
-				"hide_logo": HIDE_LOGO,
-				"show_highlights": SHOW_HIGHLIGHTS,
-				"has_seen_tutorial": HAS_SEEN_TUTORIAL
-				},
-			"achievements": []
+			"users": generate_drykats_team()
 		}
 		if new_file:
 			new_file.store_string(JSON.stringify(new_json, "\t"))
 			new_file.flush()
-			PrintUtility.print_info("Successful creation of user_preferences.json")
+			PrintUtility.print_info("Successful creation of users.json")
 		else:
-			PrintUtility.print_error("Can't write a new file user_preferences.json")
+			PrintUtility.print_error("Can't write a new file users.json")
 			PrintUtility.print_error(str(FileAccess.get_open_error()))
 	else:
-		PrintUtility.print_info("user_preferences.json found")
+		PrintUtility.print_info("users.json found")
 	
-	PrintUtility.print_info("Loading user_preferences.json ...")
+	PrintUtility.print_info("Loading users.json ...")
 	var file = FileAccess.get_file_as_string(path)
 	var json = JSON.parse_string(file) as Dictionary
-	var res = UserPreferences.new()
-	var json_pref = json.get("preferences", {})
-	res.default_path = json_pref.get("default_path", DEFAULT_PATH)
-	res.has_default_path = json_pref.get("has_default_path", HAS_DEFAULT_PATH)
-	var tmp_editors = json_pref.get("editors", EDITORS_INCODE)
+	var res = Users.new()
+	var tmp_editors: Dictionary = json.get("users", EDITORS_INFILE)
 	if tmp_editors != null :
 		for e_name in tmp_editors.keys():
 			var tmp_editor: Editor = Editor.new()
 			tmp_editor.name = e_name
 			tmp_editor.phone = tmp_editors[e_name].get("phone", "")
 			tmp_editor.email = tmp_editors[e_name].get("email", "")
+			tmp_editor.function = tmp_editors[e_name].get("function", 0)
 			res.editors.append(tmp_editor)
-	res.customers = json_pref.get("customers", CUSTOMERS)
-	res.folder_follow_conventions = json_pref.get("folder_follow_conventions", FOLDER_FOLLOW_CONVENTIONS)
-	res.hide_logo = json_pref.get("hide_logo", HIDE_LOGO)
-	res.show_highlights = json_pref.get("show_highlights", SHOW_HIGHLIGHTS)
-	res.has_seen_tutorial = json_pref.get("has_seen_tutorial", HAS_SEEN_TUTORIAL)
 	if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
-		PrintUtility.print_info("Current preferences are version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
-		PrintUtility.print_TODO("Manage upgrade of preferences.json")
+		PrintUtility.print_info("Current users.json is version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
+		PrintUtility.print_TODO("Manage upgrade of users.json")
 	return res
-
-func reset_user_preferences(path: String) -> void:
-	default_path = DEFAULT_PATH
-	has_default_path = HAS_DEFAULT_PATH
-	folder_follow_conventions = FOLDER_FOLLOW_CONVENTIONS
-	hide_logo = HIDE_LOGO
-	show_highlights = SHOW_HIGHLIGHTS
-	has_seen_tutorial = HAS_SEEN_TUTORIAL
-	save_to_file(path)
 
 func editor_exists(new_name: String) -> bool:
 	var editor_found: bool = false
@@ -160,14 +114,6 @@ func editor_exists(new_name: String) -> bool:
 			editor_found = true
 			break
 	return editor_found
-
-func customer_exists(new_name: String) -> bool:
-	var customer_found: bool = false
-	for c in customers:
-		if c.capitalize() == new_name.capitalize():
-			customer_found = true
-			break
-	return customer_found
 
 func add_editor(name: String, phone: String, email: String) -> void:
 	var editor: Editor = Editor.new()
@@ -203,7 +149,7 @@ func get_editor_from_name(name: String) -> Editor:
 func remove_editor(index: int) -> void:
 	editors.remove_at(index)
 
-func encrypt_string(text: String) -> String:
+static func encrypt_string(text: String) -> String:
 	var new_text: String = ""
 	for i in range(text.length()):
 		if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:
@@ -216,7 +162,7 @@ func encrypt_string(text: String) -> String:
 			new_text += text[i]
 	return new_text
 
-func decrypt_string(text: String) -> String:
+static func decrypt_string(text: String) -> String:
 	var new_text: String = ""
 	for i in range(text.length()):
 		if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:

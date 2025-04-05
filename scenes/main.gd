@@ -5,7 +5,8 @@ enum ProductionType {
 	INTERNAL
 }
 
-const USER_PREF_PATH: String = "user://user_preferences.json"
+const SAVE_PREFERENCES_PATH: String = "user://preferences.json"
+const SAVE_USERS_PATH: String = "user://users.json"
 
 const TREE_DEFAULT: Color = Color(0.7, 0.7, 0.7, 1)
 const TREE_HIGHLIGHTED: Color = Color(0.8, 0.4, 0, 1)
@@ -90,6 +91,7 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var version_label = get_node("VersionLabel")
 
 var user_preferences: UserPreferences
+var users: Users
 
 # Project informations
 var customer_name: String = ""
@@ -124,7 +126,8 @@ func check_if_release() -> void:
 func _ready() -> void:
 	check_if_release()
 	version_label.set_text("Version " + ProjectSettings.get_setting("application/config/version"))
-	user_preferences = UserPreferences.load_from_file(USER_PREF_PATH)
+	user_preferences = UserPreferences.load_from_file(SAVE_PREFERENCES_PATH)
+	users = Users.load_from_file(SAVE_USERS_PATH)
 	user_manager.main_scene = self
 	user_manager.build_users()
 	user_manager.users_changed.connect(_on_user_manager_users_changed)
@@ -156,7 +159,7 @@ func update_preferences_dialog() -> void:
 	label.text = "Chemin du dossier : " + user_preferences.default_path
 	label.text += "\nA un chemin : " + str(user_preferences.has_default_path)
 	label.text += "\nMonteurs : "
-	for e in user_preferences.editors:
+	for e in users.editors:
 		label.text += "\n   " + e.name + " - " + e.phone + " - " + e.email
 	label.text += "\nClients : " + str(user_preferences.customers)
 	label.text += "\nDossier suit conventions : " + str(user_preferences.folder_follow_conventions)
@@ -166,7 +169,7 @@ func update_preferences_dialog() -> void:
 
 func _on_tutorial_ended() -> void:
 	user_preferences.has_seen_tutorial = true
-	user_preferences.save_to_file(USER_PREF_PATH)
+	user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	update_tutorial_screen()
 
 func update_tutorial_screen() -> void:
@@ -545,8 +548,7 @@ func build_customer_options() -> void:
 
 func build_editor_options() -> void:
 	editor_option.clear()
-	#editor_option.add_item("<Nouveau monteur>")
-	for e in user_preferences.editors:
+	for e in users.editors:
 		editor_option.add_item(e.name)
 	editor_option.selected = -1
 
@@ -557,13 +559,13 @@ func _on_choose_folder_button_pressed() -> void:
 
 func _on_save_pref_button_pressed() -> void:
 	PrintUtility.print_WIP("Save preferences to JSON file ...")
-	user_preferences.save_to_file(USER_PREF_PATH)
+	user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 
 func _on_file_dialog_dir_selected(dir: String) -> void:
 	PrintUtility.print_info("Selected folder is : " + dir + "/")
 	user_preferences.default_path = dir
 	user_preferences.has_default_path = true
-	user_preferences.save_to_file(USER_PREF_PATH)
+	user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	build_customer_options()
 	update_controls()
 
@@ -587,18 +589,18 @@ func _on_generate_folder_button_pressed() -> void:
 	if user_preferences.customers.find(customer_name, 0) == -1:
 		PrintUtility.print_gen("Saving new customer " + customer_name + " to preferences")
 		user_preferences.customers.append(customer_name)
-		user_preferences.save_to_file(USER_PREF_PATH)
+		user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	else:
 		PrintUtility.print_gen("Customer " + customer_name + " already present in user_preferences.customers, will not be saved")
-	if not user_preferences.editor_exists(editor_name):
-		PrintUtility.print_gen("Using editor " + editor_name + " that doesn't exist in preferences")
+	if not users.editor_exists(editor_name):
+		PrintUtility.print_gen("Using editor " + editor_name + " that doesn't exist in users.json")
 		PrintUtility.print_error("Can't save editor through main workspace")
 		#user_preferences.add_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
-		#user_preferences.save_to_file(USER_PREF_PATH)
+		#user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	else:
 		PrintUtility.print_gen("Using existing editor, will not be saved")
 		#user_preferences.change_editor(editor_name, user_preferences.get_editor_from_name(editor_name).phone, user_preferences.get_editor_from_name(editor_name).email)
-		#user_preferences.save_to_file(USER_PREF_PATH)
+		#user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	
 	generation_has_issue = 0
 	generation_issues = ""
@@ -766,7 +768,7 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 	match id:
 		0: # Reset preferences
 			PrintUtility.print_info("Reset preferences")
-			user_preferences.reset_user_preferences(USER_PREF_PATH)
+			user_preferences.reset_user_preferences(SAVE_PREFERENCES_PATH)
 			project_name = ""
 			customer_name = ""
 			update_edit_folder_follow_conventions()
@@ -775,29 +777,29 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			update_controls()
 		1: # Hide logo
 			user_preferences.hide_logo = not user_preferences.hide_logo
-			user_preferences.save_to_file(USER_PREF_PATH)
+			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 			update_edit_hide_logo()
 		2: # Show highlight
 			user_preferences.show_highlights = not user_preferences.show_highlights
-			user_preferences.save_to_file(USER_PREF_PATH)
+			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 			update_edit_show_highlights()
 		4: # Show preferences summary
 			update_preferences_dialog()
 			preferences_dialog.visible = true
 		5: # Purge editors
-			user_preferences.editors = []
-			user_preferences.purge_editors()
-			user_preferences.save_to_file(USER_PREF_PATH)
-			user_manager.build_users()
+			users.editors = []
+			users.purge_editors()
+			users.save_to_file(SAVE_USERS_PATH)
+			users.build_users()
 			build_editor_options()
 		6: # Purge customers
 			user_preferences.customers = []
 			user_preferences.purge_customers()
-			user_preferences.save_to_file(USER_PREF_PATH)
+			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 			build_customer_options()
 		7: # Folder only contains customers
 			user_preferences.folder_follow_conventions = not user_preferences.folder_follow_conventions
-			user_preferences.save_to_file(USER_PREF_PATH)
+			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 			update_edit_folder_follow_conventions()
 		_:
 			PrintUtility.print_info("Unkown edition menu option")
@@ -808,7 +810,7 @@ func _on_help_menu_id_pressed(id: int) -> void:
 			pass
 		1: # Rewatch tutorial
 			user_preferences.has_seen_tutorial = false
-			user_preferences.save_to_file(USER_PREF_PATH)
+			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 			update_tutorial_screen()
 		2: # Splashscreen
 			splashscreen.enable(true)

@@ -6,16 +6,22 @@ var main_scene
 var modified_user: int = -1
 var is_new_user: bool = false
 
-#const UserItem = preload("res://scenes/user_item.tscn")
 @onready var users_container = get_node("VBoxContainer/UsersScroll/VBoxContainer/UsersVBox")
 @onready var panel = get_node("VBoxContainer/Panel")
 @onready var modify_panel = panel.get_node("MarginContainer/ModifyPanel")
 @onready var name_edit = modify_panel.get_node("NameEdit")
 @onready var phone_edit = modify_panel.get_node("PhoneEdit")
 @onready var email_edit = modify_panel.get_node("EmailEdit")
+@onready var function_edit = modify_panel.get_node("FunctionOption")
+
+func _ready() -> void:
+	function_edit.clear()
+	function_edit.add_item("Client")
+	function_edit.add_item("Monteur")
+	function_edit.selected = -1
 
 func build_users() -> void:
-	if main_scene.user_preferences.editors.size() == 0:
+	if main_scene.users.editors.size() == 0:
 		print("No user")
 	
 	for u in users_container.get_children():
@@ -24,7 +30,7 @@ func build_users() -> void:
 		else:
 			PrintUtility.print_error("Unknown item in user manager spreadsheet : " + u.name)
 	
-	var users: Array = main_scene.user_preferences.editors.duplicate(true)
+	var users: Array = main_scene.users.editors.duplicate(true)
 	users.sort_custom(compare_user_name)
 	
 	for i in range(users.size()):
@@ -56,20 +62,20 @@ func reset_emphasis(index_avoided: int) -> void:
 func _on_user_item_ask_edition(index: int) -> void:
 	reset_emphasis(index)
 	modified_user = index
-	name_edit.text = main_scene.user_preferences.editors[modified_user].name
+	name_edit.text = main_scene.users.editors[modified_user].name
 	name_edit.editable = false
-	phone_edit.text = main_scene.user_preferences.editors[modified_user].phone
-	email_edit.text = main_scene.user_preferences.editors[modified_user].email
+	phone_edit.text = main_scene.users.editors[modified_user].phone
+	email_edit.text = main_scene.users.editors[modified_user].email
 	panel.visible = true
 
 func _on_user_item_ask_deletion(index: int) -> void:
 	modified_user = index
-	get_node("AcceptDialog/Label").text = "L'utilisateur \"" + main_scene.user_preferences.editors[modified_user].name + "\" sera définitivement supprimé, non-reversible.\nVoulez-vous le supprimer ?"
+	get_node("AcceptDialog/Label").text = "L'utilisateur \"" + main_scene.users.editors[modified_user].name + "\" sera définitivement supprimé, non-reversible.\nVoulez-vous le supprimer ?"
 	get_node("AcceptDialog").visible = true
 
 func _on_accept_dialog_confirmed() -> void:
-	main_scene.user_preferences.remove_editor(modified_user)
-	main_scene.user_preferences.save_to_file(main_scene.USER_PREF_PATH)
+	main_scene.users.remove_editor(modified_user)
+	main_scene.users.save_to_file(main_scene.SAVE_USERS_PATH)
 	build_users()
 	users_changed.emit()
 	modified_user = -1
@@ -88,18 +94,18 @@ func _on_save_button_pressed() -> void:
 		#update_modification_dialog()
 		#get_node("ConfirmationDialog").visible = true
 	else:
-		if main_scene.user_preferences.editor_exists(name_edit.text) :
+		if main_scene.users.editor_exists(name_edit.text) :
 			issue_found = true
 			update_modification_dialog()
 			get_node("ConfirmationDialog").visible = true
 		else:
 			if not issue_found:
-				main_scene.user_preferences.add_editor(name_edit.text, phone_edit.text, email_edit.text)
+				main_scene.users.add_editor(name_edit.text, phone_edit.text, email_edit.text)
 				is_new_user = false
 	
 	if not issue_found:
-		main_scene.user_preferences.change_editor(name_edit.text, phone_edit.text, email_edit.text)
-		main_scene.user_preferences.save_to_file(main_scene.USER_PREF_PATH)
+		main_scene.users.change_editor(name_edit.text, phone_edit.text, email_edit.text)
+		main_scene.users.save_to_file(main_scene.SAVE_USERS_PATH)
 		modified_user = -1
 		build_users()
 		panel.visible = false
@@ -108,7 +114,7 @@ func _on_save_button_pressed() -> void:
 func update_modification_dialog() -> void:
 	get_node("ConfirmationDialog/VBoxContainer/Label").text = "L'utilisateur \"" + name_edit.text + "\" est déjà présent. Les modifications suivantes seront apportées :"
 	get_node("ConfirmationDialog/VBoxContainer/Label2").text = ""
-	var current_editor = main_scene.user_preferences.get_editor_from_name(name_edit.text)
+	var current_editor = main_scene.users.get_editor_from_name(name_edit.text)
 	
 	if name_edit.text != current_editor.name:
 		get_node("ConfirmationDialog/VBoxContainer/Label2").text += "Nom : " + current_editor.name + " -> " + name_edit.text + "\n"
@@ -137,8 +143,8 @@ func _on_new_button_pressed() -> void:
 	panel.visible = true
 
 func _on_confirmation_dialog_confirmed() -> void:
-	main_scene.user_preferences.change_editor(name_edit.text, phone_edit.text, email_edit.text)
-	main_scene.user_preferences.save_to_file(main_scene.USER_PREF_PATH)
+	main_scene.users.change_editor(name_edit.text, phone_edit.text, email_edit.text)
+	main_scene.users.save_to_file(main_scene.SAVE_USERS_PATH)
 	modified_user = -1
 	build_users()
 	panel.visible = false
