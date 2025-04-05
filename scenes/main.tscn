@@ -498,10 +498,6 @@ select_mode = 2
 [node name="UserManager" parent="Window/Workspace" instance=ExtResource("11_trceg")]
 layout_mode = 2
 
-[node name="UserManager" parent="." instance=ExtResource("11_trceg")]
-visible = false
-layout_mode = 1
-
 [node name="Tutorial" parent="." instance=ExtResource("6_tefeu")]
 visible = false
 layout_mode = 1

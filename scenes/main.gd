@@ -588,9 +588,10 @@ func _on_pre_generate_folder_button_pressed() -> void:
 	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:
-	if users.customers.find(customer_name, 0) == -1:
+	if not users.customer_exists(customer_name):
 		PrintUtility.print_gen("Saving new customer " + customer_name + " to preferences")
 		users.customers.append(customer_name)
+		users.add_user(DataManager.UserFunction.CUSTOMER, customer_name, "", "")
 		users.save_to_file(SAVE_USERS_PATH)
 	else:
 		PrintUtility.print_gen("Customer " + customer_name + " already present in user_preferences.customers, will not be saved")
@@ -842,7 +843,9 @@ func update_line_icon(line, value: bool) -> void:
 
 func _on_user_manager_users_changed() -> void:
 	build_editor_options()
+	build_customer_options()
 	editor_name = ""
+	customer_name = ""
 	update_controls()
 
 # Form signals ====================================================================================

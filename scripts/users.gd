@@ -117,12 +117,15 @@ static func load_from_file(path: String) -> Users:
 	
 	# Actual loading of the file into Users resource
 	PrintUtility.print_info("Loading users.json ...")
+	var editor_loaded_count: int = 0
+	var customer_loaded_count: int = 0
 	var file = FileAccess.get_file_as_string(path)
 	var json = JSON.parse_string(file) as Dictionary
 	var res = Users.new()
 	var tmp_editors: Dictionary = json.get("editors", EDITORS_INFILE)
 	if tmp_editors != null :
 		for e_name in tmp_editors.keys():
+			editor_loaded_count += 1
 			var tmp_editor: User = User.new()
 			tmp_editor.name = e_name
 			tmp_editor.phone = tmp_editors[e_name].get("phone", "")
@@ -134,12 +137,15 @@ static func load_from_file(path: String) -> Users:
 	#print(tmp_customers)
 	if tmp_customers != null :
 		for e_name in tmp_customers.keys():
+			customer_loaded_count += 1
 			var tmp_customer: User = User.new()
 			tmp_customer.name = e_name
 			tmp_customer.phone = tmp_customers[e_name].get("phone", "")
 			tmp_customer.email = tmp_customers[e_name].get("email", "")
 			tmp_customer.function = DataManager.UserFunction.CUSTOMER
 			res.all_users.append(tmp_customer)
+	
+	PrintUtility.print_info("Loaded " + str(editor_loaded_count) + " editors and " + str(customer_loaded_count) + " customers")
 	
 	if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
 		PrintUtility.print_info("Current users.json is version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
@@ -184,55 +190,91 @@ func add_editor(name: String, phone: String, email: String) -> void:
 		PrintUtility.print_error("users.all_users is in read-only state")
 	all_users.append(editor)
 
-func change_editor(name: String, phone: String, email: String) -> void:
-	var new_editor: User = User.new()
-	new_editor.name = name
-	new_editor.phone = phone
-	new_editor.email = email
+func change_user(new_user: User) -> void:
+	#var new_editor: User = User.new()
+	#new_editor.name = name
+	#new_editor.phone = phone
+	#new_editor.email = email
 	for u in all_users:
-		if u.function == DataManager.UserFunction.EDITOR:
-			if u.name.capitalize() == name.capitalize():
-				if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
-					PrintUtility.print_info("User changing editor infos, from, to :")
-					PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
-					PrintUtility.print_info(name + " - " + phone + " - " + email)
-				u.name = name
-				u.phone = phone
-				u.email = email
+		if u.is_same_as(new_user):
+			if new_user.name != u.name or new_user.phone != u.phone or new_user.email != u.email:
+				PrintUtility.print_info("User changing editor infos, from, to :")
+				PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
+				PrintUtility.print_info(new_user.name + " - " + new_user.phone + " - " + new_user.email)
+				u.name = new_user.name
+				u.phone = new_user.phone
+				u.email = new_user.email
 
-func change_customer(name: String, phone: String, email: String) -> void:
-	var new_editor: User = User.new()
-	new_editor.name = name
-	new_editor.phone = phone
-	new_editor.email = email
-	for u in all_users:
-		if u.function == DataManager.UserFunction.CUSTOMER:
-			if u.name.capitalize() == name.capitalize():
-				if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
-					PrintUtility.print_info("User changing customer infos, from, to :")
-					PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
-					PrintUtility.print_info(name + " - " + phone + " - " + email)
-				u.name = name
-				u.phone = phone
-				u.email = email
+#func change_editor(name: String, phone: String, email: String) -> void:
+	#var new_editor: User = User.new()
+	#new_editor.name = name
+	#new_editor.phone = phone
+	#new_editor.email = email
+	#for u in all_users:
+		#if u.function == DataManager.UserFunction.EDITOR:
+			#if u.name.capitalize() == name.capitalize():
+				#if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
+					#PrintUtility.print_info("User changing editor infos, from, to :")
+					#PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
+					#PrintUtility.print_info(name + " - " + phone + " - " + email)
+				#u.name = name
+				#u.phone = phone
+				#u.email = email
 
-func get_editor_from_name(name: String) -> User:
-	var tmp_editor: User = null
-	for u in all_users:
-		if u.function == DataManager.UserFunction.EDITOR:
-			if u.name.capitalize() == name.capitalize():
-				return u
-	return tmp_editor
+#func change_customer(name: String, phone: String, email: String) -> void:
+	#var new_editor: User = User.new()
+	#new_editor.name = name
+	#new_editor.phone = phone
+	#new_editor.email = email
+	#for u in all_users:
+		#if u.function == DataManager.UserFunction.CUSTOMER:
+			#if u.name.capitalize() == name.capitalize():
+				#if new_editor.name != u.name or new_editor.phone != u.phone or new_editor.email != u.email:
+					#PrintUtility.print_info("User changing customer infos, from, to :")
+					#PrintUtility.print_info(u.name + " - " + u.phone + " - " + u.email)
+					#PrintUtility.print_info(name + " - " + phone + " - " + email)
+				#u.name = name
+				#u.phone = phone
+				#u.email = email
 
-func get_user_from_name(name: String) -> User:
-	var tmp_editor: User = null
+#func get_user_from_name(function: DataManager.UserFunction, name: String) -> User:
+	#var tmp_editor: User = null
+	#for u in all_users:
+		#if u.function == function:
+			#if u.name.capitalize() == name.capitalize():
+				#return u
+	#PrintUtility.print_info("Didn't find user [" + name + "] in users.get_editor_from_name()")
+	#return tmp_editor
+
+#func get_editor_from_name(name: String) -> User:
+	#var tmp_editor: User = null
+	#for u in all_users:
+		#if u.function == DataManager.UserFunction.EDITOR:
+			#if u.name.capitalize() == name.capitalize():
+				#return u
+	#PrintUtility.print_info("Didn't find editor [" + name + "] in users.get_editor_from_name()")
+	#return tmp_editor
+
+func get_user_from_name(function: DataManager.UserFunction, name: String) -> User:
+	var tmp_user: User = null
 	for u in all_users:
-		if u.name.capitalize() == name.capitalize():
+		if u.function == function and u.name.capitalize() == name.capitalize():
 			return u
-	return tmp_editor
+	PrintUtility.print_info("Didn't find user [" + name + "] with function " + str(function) + " in users.get_user_from_name()")
+	return tmp_user
 
 func remove_editor(index: int) -> void:
 	all_users.remove_at(index)
+
+func remove_user(user: User) -> void:
+	var index_to_remove: int = -1
+	for i in range(all_users.size()):
+		if all_users[i].is_same_as(user):
+			index_to_remove = i
+	if index_to_remove != -1:
+		all_users.remove_at(index_to_remove)
+	else:
+		PrintUtility.print_error("Couldn't find user in users.remove_user(user)")
 
 static func encrypt_string(text: String) -> String:
 	var new_text: String = ""
