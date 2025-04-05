@@ -47,6 +47,7 @@ theme_override_constants/margin_right = 20
 
 [node name="UserContainer" type="HBoxContainer" parent="Button/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="UserNameLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
 layout_mode = 2

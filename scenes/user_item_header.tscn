@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bxwcydol7xypb"]
+[gd_scene load_steps=5 format=3 uid="uid://bxwcydol7xypb"]
 
-[ext_resource type="Theme" uid="uid://bh1hga0057obd" path="res://resources/themes/spreadsheet_row.tres" id="2_ywa88"]
-[ext_resource type="Texture2D" uid="uid://b850uyfyh84e0" path="res://resources/icons/cancel_16.png" id="3_k17oq"]
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_k17oq"]
+[ext_resource type="Script" uid="uid://7hrnbasodn0l" path="res://scenes/user_item_header.gd" id="1_pl27i"]
+[ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="2_t1m4x"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="3_rrmun"]
 
 [node name="UserItemHeader" type="Control"]
@@ -12,27 +13,9 @@ anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+script = ExtResource("1_pl27i")
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("2_ywa88")
-
-[node name="Emphasis" type="ColorRect" parent="Button"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 1, 1, 0.0392157)
-
-[node name="MarginContainer" type="MarginContainer" parent="Button"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,40 +25,91 @@ grow_vertical = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="UserContainer" type="HBoxContainer" parent="Button/MarginContainer"]
+[node name="UserContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
-[node name="UserNameLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
+[node name="UserNameButton" type="Button" parent="MarginContainer/UserContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_k17oq")
+
+[node name="UserNameLabel" type="Label" parent="MarginContainer/UserContainer/UserNameButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_rrmun")
 text = "Nom de l'utilisateur"
+vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="UserPhoneLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
+[node name="UserPhoneButton" type="Button" parent="MarginContainer/UserContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_k17oq")
+
+[node name="UserPhoneLabel" type="Label" parent="MarginContainer/UserContainer/UserPhoneButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_rrmun")
 text = "Téléphone"
+vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="UserEmailLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
+[node name="UserEmailButton" type="Button" parent="MarginContainer/UserContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_k17oq")
+
+[node name="UserEmailLabel" type="Label" parent="MarginContainer/UserContainer/UserEmailButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_rrmun")
 text = "E-mail"
+vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="UserFunctionLabel" type="Label" parent="Button/MarginContainer/UserContainer"]
+[node name="UserFunctionButton" type="Button" parent="MarginContainer/UserContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+theme = ExtResource("1_k17oq")
+
+[node name="UserFunctionLabel" type="Label" parent="MarginContainer/UserContainer/UserFunctionButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.6
 theme = ExtResource("3_rrmun")
 text = "Fonction"
+vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="TextureRect" type="TextureRect" parent="Button/MarginContainer/UserContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/UserContainer"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
-texture = ExtResource("3_k17oq")
+texture = ExtResource("2_t1m4x")
 stretch_mode = 3
+
+[connection signal="pressed" from="MarginContainer/UserContainer/UserNameButton" to="." method="_on_user_name_button_pressed"]
+[connection signal="pressed" from="MarginContainer/UserContainer/UserPhoneButton" to="." method="_on_user_phone_button_pressed"]
+[connection signal="pressed" from="MarginContainer/UserContainer/UserEmailButton" to="." method="_on_user_email_button_pressed"]
+[connection signal="pressed" from="MarginContainer/UserContainer/UserFunctionButton" to="." method="_on_user_function_button_pressed"]

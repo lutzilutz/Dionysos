@@ -59,6 +59,7 @@ theme = ExtResource("3_m8pq0")
 text = "Nouvel utilisateur"
 
 [node name="Panel" type="Panel" parent="VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 
@@ -154,12 +155,6 @@ text = "L'utilisateur \"XXX\" sera définitivement supprimé, non-reversible.
 Voulez-vous le supprimer ?"
 horizontal_alignment = 1
 
-[node name="AcceptDialog2" type="AcceptDialog" parent="."]
-title = "Erreur"
-initial_position = 2
-size = Vector2i(249, 100)
-dialog_text = "Le nom ne peut pas être vide !"
-
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 title = "Attention !"
 initial_position = 2
@@ -191,6 +186,8 @@ layout_mode = 2
 text = "Souhaitez-vous le modifier ?"
 
 [connection signal="pressed" from="VBoxContainer/UsersScroll/VBoxContainer/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="text_changed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/NameEdit" to="." method="_on_name_edit_text_changed"]
+[connection signal="item_selected" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/FunctionOption" to="." method="_on_function_option_item_selected"]
 [connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
