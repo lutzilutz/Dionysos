@@ -27,10 +27,6 @@ func _ready() -> void:
 	users_header.sort_by_function.connect(_on_header_sort_by_function)
 	function_edit.selected = -1
 
-func sort_by_name(ascending) -> void:
-	users_container
-	pass
-
 func _on_header_sort_by_name(ascending: bool) -> void:
 	PrintUtility.print_signal("Sort by name ascending " + str(ascending))
 	build_users()
@@ -295,10 +291,10 @@ func _on_confirmation_dialog_confirmed() -> void:
 func _on_confirmation_dialog_canceled() -> void:
 	pass # Replace with function body.
 
-func _on_name_edit_text_changed(new_text: String) -> void:
+func _on_name_edit_text_changed(_new_text: String) -> void:
 	update_controls()
 
-func _on_function_option_item_selected(index: int) -> void:
+func _on_function_option_item_selected(_index: int) -> void:
 	update_controls()
 
 func filter_items(show_editors: bool, show_customers: bool) -> void:

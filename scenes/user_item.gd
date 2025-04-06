@@ -1,6 +1,7 @@
 class_name UserItem extends Control
 
 const user_item_scene: PackedScene = preload("res://scenes/user_item.tscn")
+const data_manager_script = preload("res://scripts/data_manager.gd")
 
 signal ask_edition(user)
 signal ask_deletion(user)
@@ -15,7 +16,7 @@ func update_controls(new_user) -> void:
 	get_node("Button/MarginContainer/UserContainer/UserNameLabel").text = new_user.name
 	get_node("Button/MarginContainer/UserContainer/UserPhoneLabel").text = new_user.phone
 	get_node("Button/MarginContainer/UserContainer/UserEmailLabel").text = new_user.email
-	get_node("Button/MarginContainer/UserContainer/UserFunctionLabel").text = DataManager.user_function_plain_text(new_user.function)
+	get_node("Button/MarginContainer/UserContainer/UserFunctionLabel").text = data_manager_script.user_function_plain_text(new_user.function)
 
 # Setget ==========================================================================================
 

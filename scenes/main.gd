@@ -727,6 +727,8 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			reset_project()
 		2: # Open saves folder
 			OS.shell_open(OS.get_user_data_dir())
+		4: # Open github releases
+			OS.shell_open("https://github.com/lutzilutz/Dionysos/releases")
 		_:
 			PrintUtility.print_info("Unkown file menu option")
 
