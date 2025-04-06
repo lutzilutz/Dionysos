@@ -61,8 +61,7 @@ theme_override_constants/margin_bottom = 30
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 text = "Oui. Comme la plupart des logiciels, Dionysos a créée un dossier dans le dossier %AppData%.
-Sous Windows, le chemin habituel est : C:/Users/[Ton nom]/AppData/
-Le dossier créée devrait s'appeler Dionysos ou Godot."
+Sous Windows, le chemin habituel est : C:/Users/[Ton nom]/AppData/Roaming/Dionysos"
 label_settings = ExtResource("3_xa2uf")
 autowrap_mode = 2
 

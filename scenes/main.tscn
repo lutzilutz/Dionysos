@@ -60,11 +60,13 @@ theme = ExtResource("3_4krfr")
 [node name="FileMenu" type="PopupMenu" parent="Window/MenuBar"]
 title = "Fichier"
 size = Vector2i(294, 100)
-item_count = 2
+item_count = 3
 item_0/text = "Nouveau projet"
 item_0/id = 1
-item_1/text = "Quitter"
-item_1/id = 0
+item_1/text = "Ouvrir dossier de sauvegarde"
+item_1/id = 2
+item_2/text = "Quitter"
+item_2/id = 0
 
 [node name="EditMenu" type="PopupMenu" parent="Window/MenuBar"]
 auto_translate_mode = 1

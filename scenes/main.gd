@@ -725,6 +725,8 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			get_tree().quit()
 		1: # Start new project
 			reset_project()
+		2: # Open saves folder
+			OS.shell_open(OS.get_user_data_dir())
 		_:
 			PrintUtility.print_info("Unkown file menu option")
 
