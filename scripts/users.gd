@@ -183,7 +183,6 @@ func add_editor(name: String, phone: String, email: String) -> void:
 	all_users.append(editor)
 
 func change_user(new_user: User) -> void:
-	PrintUtility.print_user(new_user)
 	var found_user_to_change: bool = false
 	for u in all_users:
 		if u.is_same_as(new_user):

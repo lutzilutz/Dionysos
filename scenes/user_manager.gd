@@ -32,19 +32,19 @@ func sort_by_name(ascending) -> void:
 	pass
 
 func _on_header_sort_by_name(ascending: bool) -> void:
-	PrintUtility.print_TODO("Sort by name ascending " + str(ascending))
+	PrintUtility.print_signal("Sort by name ascending " + str(ascending))
 	build_users()
 
 func _on_header_sort_by_phone(ascending: bool) -> void:
-	PrintUtility.print_TODO("Sort by phone ascending " + str(ascending))
+	PrintUtility.print_signal("Sort by phone ascending " + str(ascending))
 	build_users()
 
 func _on_header_sort_by_email(ascending: bool) -> void:
-	PrintUtility.print_TODO("Sort by email ascending " + str(ascending))
+	PrintUtility.print_signal("Sort by email ascending " + str(ascending))
 	build_users()
 
 func _on_header_sort_by_function(ascending: bool) -> void:
-	PrintUtility.print_TODO("Sort by function ascending " + str(ascending))
+	PrintUtility.print_signal("Sort by function ascending " + str(ascending))
 	build_users()
 
 func update_controls() -> void:
@@ -75,8 +75,22 @@ func build_users() -> void:
 		user_item.set_user(u)
 		user_item.ask_edition.connect(_on_user_item_ask_edition)
 		user_item.ask_deletion.connect(_on_user_item_ask_deletion)
+		initialize_visibility(user_item)
 		users_container.add_child(user_item)
 	update_labels()
+
+func initialize_visibility(user_item: UserItem) -> void:
+	match filters_option.get_item_id(filters_option.selected):
+		DataManager.UserFunction.UNKNOWN:
+			pass
+		DataManager.UserFunction.CUSTOMER:
+			if user_item.user.function != DataManager.UserFunction.CUSTOMER:
+				user_item.visible = false
+		DataManager.UserFunction.EDITOR:
+			if user_item.user.function != DataManager.UserFunction.EDITOR:
+				user_item.visible = false
+		_:
+			pass
 
 func sort_users(a, b) -> bool:
 	var a_is_greater: bool = false
@@ -120,12 +134,6 @@ func sort_users(a, b) -> bool:
 		_:
 			PrintUtility.print_error("Unknown sort type " + str(users_header.currently_sorted_by) + " in user_manager.sort_users(a, b)")
 	return a_is_greater
-
-#func reset_emphasis(index_avoided: int) -> void:
-	#for u in users_container.get_children():
-		#if u is UserItem:
-			#if u.pref_index != index_avoided:
-				#u.emphasized(false)
 
 func _on_user_item_ask_edition(user: User) -> void:
 	var current_user: User = null
@@ -186,7 +194,6 @@ func _on_save_button_pressed() -> void:
 					_: # Other
 						PrintUtility.print_error("Unknown function type in user_manager._on_save_button_pressed() : " + str(function_edit.get_item_id(function_edit.selected)))
 				main_scene.users.add_user(tmp_function, name_edit.text, phone_edit.text, email_edit.text)
-				#is_new_user = false
 	
 	if not issue_found:
 		var new_user: User = User.new()
@@ -215,6 +222,7 @@ func _on_save_button_pressed() -> void:
 		build_users()
 		panel.visible = false
 		users_changed.emit()
+		filters_option.selected = 0
 
 func update_modification_dialog() -> void:
 	var current_user: User = null
