@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4218x6ymovkk"]
+[gd_scene load_steps=6 format=3 uid="uid://c4218x6ymovkk"]
 
 [ext_resource type="Script" uid="uid://dk60bft2ddtod" path="res://scenes/user_manager.gd" id="1_yuxgv"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_cw3ii"]
 [ext_resource type="PackedScene" uid="uid://bxwcydol7xypb" path="res://scenes/user_item_header.tscn" id="2_m8pq0"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="3_m8pq0"]
+[ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="4_0psj5"]
 
 [node name="UserManager" type="Control"]
 layout_mode = 3
@@ -34,6 +35,54 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="FiltersHBox" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+
+[node name="FilterFunctionLabel" type="Label" parent="VBoxContainer/FiltersHBox"]
+layout_mode = 2
+theme = ExtResource("2_cw3ii")
+text = "Filtrer par fonction"
+
+[node name="FilterFunctionOption" type="OptionButton" parent="VBoxContainer/FiltersHBox"]
+layout_mode = 2
+theme = ExtResource("3_m8pq0")
+selected = 0
+item_count = 3
+popup/item_0/text = "Tout"
+popup/item_0/id = 0
+popup/item_1/text = "Clients"
+popup/item_1/id = 2
+popup/item_2/text = "Monteurs"
+popup/item_2/id = 1
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/FiltersHBox"]
+layout_mode = 2
+theme = ExtResource("4_0psj5")
+
+[node name="NewButton" type="Button" parent="VBoxContainer/FiltersHBox"]
+custom_minimum_size = Vector2(144.68, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_m8pq0")
+text = "Nouvel utilisateur"
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/FiltersHBox"]
+layout_mode = 2
+theme = ExtResource("4_0psj5")
+
+[node name="CountLabel" type="Label" parent="VBoxContainer/FiltersHBox"]
+layout_mode = 2
+theme = ExtResource("2_cw3ii")
+text = "Utilisateurs affichés / total : X/X"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_0psj5")
+
+[node name="UserItemHeader" parent="VBoxContainer" instance=ExtResource("2_m8pq0")]
+layout_mode = 2
+
 [node name="UsersScroll" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -43,20 +92,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="UserItemHeader" parent="VBoxContainer/UsersScroll/VBoxContainer" instance=ExtResource("2_m8pq0")]
-layout_mode = 2
-
 [node name="UsersVBox" type="VBoxContainer" parent="VBoxContainer/UsersScroll/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
-
-[node name="NewButton" type="Button" parent="VBoxContainer/UsersScroll/VBoxContainer"]
-custom_minimum_size = Vector2(162.265, 38.985)
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("3_m8pq0")
-text = "Nouvel utilisateur"
 
 [node name="Panel" type="Panel" parent="VBoxContainer"]
 visible = false
@@ -188,7 +227,8 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Souhaitez-vous le modifier ?"
 
-[connection signal="pressed" from="VBoxContainer/UsersScroll/VBoxContainer/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/FiltersHBox/FilterFunctionOption" to="." method="_on_filter_function_option_item_selected"]
+[connection signal="pressed" from="VBoxContainer/FiltersHBox/NewButton" to="." method="_on_new_button_pressed"]
 [connection signal="text_changed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="item_selected" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/FunctionOption" to="." method="_on_function_option_item_selected"]
 [connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]

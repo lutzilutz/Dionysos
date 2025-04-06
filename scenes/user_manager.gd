@@ -6,7 +6,10 @@ var main_scene
 var modified_user: User = null
 var is_new_user: bool = true
 
-@onready var users_header = get_node("VBoxContainer/UsersScroll/VBoxContainer/UserItemHeader")
+@onready var filters_container = get_node("VBoxContainer/FiltersHBox")
+@onready var filters_option = get_node("VBoxContainer/FiltersHBox/FilterFunctionOption")
+@onready var count_label = get_node("VBoxContainer/FiltersHBox/CountLabel")
+@onready var users_header = get_node("VBoxContainer/UserItemHeader")
 @onready var users_container = get_node("VBoxContainer/UsersScroll/VBoxContainer/UsersVBox")
 @onready var panel = get_node("VBoxContainer/Panel")
 @onready var modify_panel = panel.get_node("MarginContainer/ModifyPanel")
@@ -48,6 +51,12 @@ func update_controls() -> void:
 	var can_save: bool = name_edit.text != "" and function_edit.selected != -1
 	save_button.disabled = not can_save
 
+func update_labels() -> void:
+	var count_visible: int = 0
+	for ui in users_container.get_children():
+		if ui.visible: count_visible += 1
+	count_label.text = "Utilisateurs affichés / total : " + str(count_visible) + "/" + str(users_container.get_child_count())
+
 func build_users() -> void:
 	if main_scene.users.all_users.size() == 0:
 		PrintUtility.print_info("No user")
@@ -55,6 +64,7 @@ func build_users() -> void:
 	for u in users_container.get_children():
 		if u is UserItem:
 			u.queue_free()
+			await u.tree_exited
 		else:
 			PrintUtility.print_error("Unknown item in user manager spreadsheet : " + u.name)
 	
@@ -66,6 +76,7 @@ func build_users() -> void:
 		user_item.ask_edition.connect(_on_user_item_ask_edition)
 		user_item.ask_deletion.connect(_on_user_item_ask_deletion)
 		users_container.add_child(user_item)
+	update_labels()
 
 func sort_users(a, b) -> bool:
 	var a_is_greater: bool = false
@@ -110,23 +121,19 @@ func sort_users(a, b) -> bool:
 			PrintUtility.print_error("Unknown sort type " + str(users_header.currently_sorted_by) + " in user_manager.sort_users(a, b)")
 	return a_is_greater
 
-#func compare_user_name(a, b) -> bool:
-	#if a.name.capitalize() < b.name.capitalize():
-		#return true
-	#else:
-		#return false
-
-func reset_emphasis(index_avoided: int) -> void:
-	for u in users_container.get_children():
-		if u is UserItem:
-			if u.pref_index != index_avoided:
-				u.emphasized(false)
+#func reset_emphasis(index_avoided: int) -> void:
+	#for u in users_container.get_children():
+		#if u is UserItem:
+			#if u.pref_index != index_avoided:
+				#u.emphasized(false)
 
 func _on_user_item_ask_edition(user: User) -> void:
 	var current_user: User = null
 	for u in users_container.get_children():
 		if u.user.is_same_as(user):
 			current_user = user
+		else:
+			u.emphasized(false)
 	
 	name_edit.text = current_user.name
 	name_edit.editable = false
@@ -236,7 +243,15 @@ func update_modification_dialog() -> void:
 	if email_edit.text != current_user.email:
 		get_node("ConfirmationDialog/VBoxContainer/Label2").text += "E-mail : " + current_user.email + " -> " + email_edit.text
 
+func reset_all_emphasis() -> void:
+	for ui in users_container.get_children():
+		ui.emphasized(false)
+
 func _on_cancel_button_pressed() -> void:
+	cancel_selection()
+
+func cancel_selection() -> void:
+	reset_all_emphasis()
 	modified_user = null
 	panel.visible = false
 
@@ -277,3 +292,25 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 
 func _on_function_option_item_selected(index: int) -> void:
 	update_controls()
+
+func filter_items(show_editors: bool, show_customers: bool) -> void:
+	cancel_selection()
+	for ui in users_container.get_children():
+		if ui.user.function == DataManager.UserFunction.EDITOR:
+			ui.visible = show_editors
+		elif ui.user.function == DataManager.UserFunction.CUSTOMER:
+			ui.visible = show_customers
+		else:
+			PrintUtility.print_error("UserItem doesn't have a function ! In user_manager.filter_items()")
+
+func _on_filter_function_option_item_selected(index: int) -> void:
+	match filters_option.get_item_id(index):
+		DataManager.UserFunction.UNKNOWN:
+			filter_items(true, true)
+		DataManager.UserFunction.CUSTOMER:
+			filter_items(false, true)
+		DataManager.UserFunction.EDITOR:
+			filter_items(true, false)
+		_:
+			pass
+	update_labels()
