@@ -61,48 +61,28 @@ theme_override_constants/margin_bottom = 30
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 text = "Oui. Comme la plupart des logiciels, Dionysos a créée un dossier dans le dossier %AppData%.
-Sous Windows, le chemin habituel est : C:/Users/[Ton nom]/AppData/Roaming/Dionysos"
+Sous Windows, le chemin habituel est : C:/Users/[Ton nom]/AppData/Roaming/Dionysos
+Tu pourras ouvrir ce dossier via le menu."
 label_settings = ExtResource("3_xa2uf")
 autowrap_mode = 2
 
-[node name="Question2" type="Label" parent="VBoxContainer"]
+[node name="Question5" type="Label" parent="VBoxContainer"]
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
-text = "> J'ai remarqué un bug, que dois-je faire ?"
+text = "> Comment puis-je mettre à jour Dionysos ?"
 label_settings = ExtResource("2_ylx5r")
 autowrap_mode = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_right = -30
 theme_override_constants/margin_bottom = 30
 
-[node name="Answer" type="Label" parent="VBoxContainer/MarginContainer2"]
+[node name="Answer" type="Label" parent="VBoxContainer/MarginContainer5"]
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
-text = "Si tu utilises github, merci de publier le bug ici : github.com/lutzilutz/Dionysos/issues
-Sinon, tu peux simplement écrire à Lutz pour lui expliquer le bug."
-label_settings = ExtResource("3_xa2uf")
-autowrap_mode = 2
-
-[node name="Question3" type="Label" parent="VBoxContainer"]
-custom_minimum_size = Vector2(550, 0)
-layout_mode = 2
-text = "> Comment puis-je faire confiance à ce logiciel ?"
-label_settings = ExtResource("2_ylx5r")
-autowrap_mode = 2
-
-[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_right = -30
-theme_override_constants/margin_bottom = 30
-
-[node name="Answer" type="Label" parent="VBoxContainer/MarginContainer3"]
-custom_minimum_size = Vector2(550, 0)
-layout_mode = 2
-text = "Ce logiciel est open-source, le code est hébergé ici : github.com/lutzilutz/Dionysos
-Lutzi Lutz s'engage personnellement à garantir l'intégrité du logiciel."
+text = "Tu devras le faire manuellement.
+Une option est disponible dans le menu pour t'amener sur la page des téléchargements"
 label_settings = ExtResource("3_xa2uf")
 autowrap_mode = 2

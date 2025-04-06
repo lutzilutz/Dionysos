@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://chx2gfya25vkc"]
+[gd_scene load_steps=10 format=3 uid="uid://chx2gfya25vkc"]
 
 [ext_resource type="Script" uid="uid://bom206aomgjy5" path="res://scenes/tutorial/tutorial.gd" id="1_c13y7"]
 [ext_resource type="PackedScene" uid="uid://bold22vhsyo8q" path="res://scenes/tutorial/tutorial_intro.tscn" id="2_8ho6b"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://djhsfawi8fbmt" path="res://scenes/tutorial/tutorial_outro.tscn" id="4_4kmhl"]
 [ext_resource type="PackedScene" uid="uid://dfpu4utbaxbvj" path="res://scenes/tutorial/tutorial_faq.tscn" id="4_cq4me"]
 [ext_resource type="PackedScene" uid="uid://c5mu5ctyftsii" path="res://scenes/tutorial/tutorial_presentation.tscn" id="4_g7eoy"]
+[ext_resource type="PackedScene" uid="uid://b6be3fr36ymc0" path="res://scenes/tutorial/tutorial_faq_2.tscn" id="7_4nriy"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="8_ha56g"]
 
 [node name="Tutorial" type="Control"]
@@ -57,6 +58,10 @@ visible = false
 layout_mode = 2
 
 [node name="TutorialFAQ" parent="VBoxContainer/TutorialContainer" instance=ExtResource("4_cq4me")]
+visible = false
+layout_mode = 2
+
+[node name="TutorialFAQ2" parent="VBoxContainer/TutorialContainer" instance=ExtResource("7_4nriy")]
 visible = false
 layout_mode = 2
 
