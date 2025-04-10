@@ -7,6 +7,7 @@ signal ask_edition(user)
 signal ask_deletion(user)
 
 var user: User
+var is_even: bool = false: set = set_is_even
 
 func change_user(new_user: User) -> void:
 	user = new_user
@@ -29,6 +30,10 @@ func emphasized(is_emphasized: bool) -> void:
 		get_node("Button/Emphasis").visible = true
 	else:
 		get_node("Button/Emphasis").visible = false
+
+func set_is_even(value: bool) -> void:
+	is_even = value
+	get_node("Button/EvenRect").visible = value
 
 # Signals =========================================================================================
 

@@ -66,6 +66,7 @@ func build_users() -> void:
 	
 	var users: Array = main_scene.users.all_users.duplicate(true)
 	users.sort_custom(sort_users)
+	var is_even: bool = false
 	for u in users:
 		var user_item: UserItem = UserItem.user_item_scene.instantiate()
 		user_item.set_user(u)
@@ -73,6 +74,7 @@ func build_users() -> void:
 		user_item.ask_deletion.connect(_on_user_item_ask_deletion)
 		initialize_visibility(user_item)
 		users_container.add_child(user_item)
+	update_even()
 	update_labels()
 
 func initialize_visibility(user_item: UserItem) -> void:
@@ -307,6 +309,13 @@ func filter_items(show_editors: bool, show_customers: bool) -> void:
 		else:
 			PrintUtility.print_error("UserItem doesn't have a function ! In user_manager.filter_items()")
 
+func update_even() -> void:
+	var temp_even: bool = false
+	for ui in users_container.get_children():
+		if ui.visible:
+			ui.set_is_even(temp_even)
+			temp_even = not temp_even
+
 func _on_filter_function_option_item_selected(index: int) -> void:
 	match filters_option.get_item_id(index):
 		DataManager.UserFunction.UNKNOWN:
@@ -317,4 +326,5 @@ func _on_filter_function_option_item_selected(index: int) -> void:
 			filter_items(true, false)
 		_:
 			pass
+	update_even()
 	update_labels()
