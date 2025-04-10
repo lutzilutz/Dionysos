@@ -345,11 +345,10 @@ stretch_mode = 5
 layout_mode = 2
 theme = ExtResource("5_ouhtv")
 
-[node name="PreGenerateFolderButton" type="Button" parent="FormContainer/FormVBox"]
-custom_minimum_size = Vector2(0, 32)
+[node name="PreGenerateFolderButton" parent="FormContainer/FormVBox" instance=ExtResource("5_m8qtv")]
+custom_minimum_size = Vector2(47.345, 32)
 layout_mode = 2
-theme = ExtResource("3_m8qtv")
-text = "Verrouiller et prévisualiser"
+button_text = "Verrouiller et prévisualiser"
 
 [node name="GenerateFolderButton" type="Button" parent="FormContainer/FormVBox"]
 custom_minimum_size = Vector2(0, 32)
