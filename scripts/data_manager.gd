@@ -49,6 +49,7 @@ static func is_alphanumerical(chara: int, is_strict: bool) -> bool:
 	elif chara >= 97 and chara <= 122:
 		result = true
 	
+	# Letters with accents
 	else:
 		if not is_strict:
 			if chara == 158 or chara == 159:

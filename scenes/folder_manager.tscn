@@ -85,7 +85,6 @@ layout_mode = 2
 [node name="CustomerEdit" parent="FormContainer/FormVBox/CustomerLine" instance=ExtResource("7_ouhtv")]
 custom_minimum_size = Vector2(226.665, 0)
 layout_mode = 2
-placeholder_text = "Entrer le nom ..."
 
 [node name="VSeparator" type="VSeparator" parent="FormContainer/FormVBox/CustomerLine"]
 layout_mode = 2
@@ -109,7 +108,6 @@ text = "Nom du projet"
 [node name="ProjectNameEdit" parent="FormContainer/FormVBox/ProjectNameLine" instance=ExtResource("7_ouhtv")]
 custom_minimum_size = Vector2(241.68, 0)
 layout_mode = 2
-placeholder_text = "Entrer le nom ..."
 
 [node name="VSeparator" type="VSeparator" parent="FormContainer/FormVBox/ProjectNameLine"]
 layout_mode = 2

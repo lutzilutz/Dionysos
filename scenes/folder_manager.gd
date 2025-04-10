@@ -360,8 +360,8 @@ func check_tree_item_for_audio_sfx(tree_item: TreeItem) -> void:
 func update_controls() -> void: # Updating form controls depending how much user has filled it
 	
 	var customer_editable = main_scene.user_preferences.has_default_path and not info_locked
-	var project_name_editable = customer_editable and customer_name != ""
-	var production_type_editable = project_name_editable and project_name != ""
+	var project_name_editable = customer_editable and customer_name != "" and is_customer_name_valid(customer_name)
+	var production_type_editable = project_name_editable and project_name != "" and is_project_name_valid(project_name)
 	var editor_editable = production_type_editable and production_type_option.selected != -1
 	var secondary_options_editable = editor_editable and editor_option.selected != -1
 	
@@ -381,6 +381,16 @@ func update_controls() -> void: # Updating form controls depending how much user
 	customer_option.toggle_emphasis(customer_editable and not project_name_editable)
 	customer_edit.editable = customer_editable and customer_option.selected == 0
 	customer_edit.toggle_emphasis(customer_editable and not project_name_editable)
+	if customer_editable and customer_name != "" and is_customer_name_valid(customer_name):
+		customer_edit.modulate = Color(1,1,1,1)
+		customer_line.get_node("LineIcon").texture = main_scene.checked_texture
+		customer_line.get_node("LineIcon").modulate = main_scene.checked_color
+		customer_line.get_node("LineIcon").tooltip_text = ""
+	else:
+		customer_edit.modulate = Color(1,0.5,0,1)
+		customer_line.get_node("LineIcon").texture = main_scene.error_texture
+		customer_line.get_node("LineIcon").modulate = main_scene.warning_color
+		customer_line.get_node("LineIcon").tooltip_text = "Ce nom ne peut pas être vide et ne doit pas contenir de caractères spéciaux !"
 	customer_line.get_node("LineIcon").texture = main_scene.checked_texture if project_name_editable else main_scene.empty_texture
 	customer_line.get_node("LineIcon").modulate = main_scene.checked_color
 	
@@ -393,10 +403,18 @@ func update_controls() -> void: # Updating form controls depending how much user
 			project_name_edit.modulate = Color(1,0.5,0,1)
 			project_name_line.get_node("LineIcon").texture = main_scene.error_texture
 			project_name_line.get_node("LineIcon").modulate = main_scene.warning_color
+			project_name_line.get_node("LineIcon").tooltip_text = "Un projet avec le même nom existe déjà pour ce client !"
 		else:
-			project_name_edit.modulate = Color(1,1,1,1)
-			project_name_line.get_node("LineIcon").texture = main_scene.checked_texture
-			project_name_line.get_node("LineIcon").modulate = main_scene.checked_color
+			if is_project_name_valid(project_name) :
+				project_name_edit.modulate = Color(1,1,1,1)
+				project_name_line.get_node("LineIcon").texture = main_scene.checked_texture
+				project_name_line.get_node("LineIcon").modulate = main_scene.checked_color
+				project_name_line.get_node("LineIcon").tooltip_text = ""
+			else:
+				project_name_edit.modulate = Color(1,0.5,0,1)
+				project_name_line.get_node("LineIcon").texture = main_scene.error_texture
+				project_name_line.get_node("LineIcon").modulate = main_scene.warning_color
+				project_name_line.get_node("LineIcon").tooltip_text = "Ce nom ne peut pas être vide et ne doit pas contenir de caractères spéciaux !"
 	if not production_type_editable:
 		project_name_line.get_node("LineIcon").texture = main_scene.empty_texture
 	
@@ -456,6 +474,20 @@ func update_controls() -> void: # Updating form controls depending how much user
 
 func path_has_conflict() -> bool:
 	return DirAccess.dir_exists_absolute(main_scene.user_preferences.default_path + "/" + customer_name + "/" + project_name)
+
+func is_customer_name_valid(value: String) -> bool:
+	var result: bool = true
+	for i in range(value.length()):
+		if not DataManager.is_alphanumerical(value.unicode_at(i), false):
+			result = false
+	return result
+
+func is_project_name_valid(value: String) -> bool:
+	var result: bool = true
+	for i in range(value.length()):
+		if not DataManager.is_alphanumerical(value.unicode_at(i), false):
+			result = false
+	return result
 
 func build_customer_options() -> void:
 	customer_option.clear()
