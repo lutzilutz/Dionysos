@@ -83,6 +83,8 @@ var readme: ReadMe
 var control_hovered
 var generation_has_issue: int = 0
 var generation_issues: String = ""
+var folders_generated: int = 0
+var files_generated: int = 0
 
 func _ready() -> void:
 	pass
@@ -467,7 +469,6 @@ func update_controls() -> void: # Updating form controls depending how much user
 	vfx_checkbox.disabled = not secondary_options_editable
 	
 	# Buttons
-	#preview_folder_button.disabled = not (main_scene.user_preferences.has_default_path and customer_name != "" and project_name != "" and production_type_option.selected != -1 and editor_name != "" and not path_has_conflict())
 	preview_folder_button.disabled = not can_preview()
 	preview_folder_button.toggle_emphasis(secondary_options_editable)
 	if can_preview():
@@ -476,6 +477,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 		else:
 			preview_folder_button.button_text = "Verrouiller et prévisualiser"
 	generate_folder_button.disabled = not can_generate()
+	generate_folder_button.toggle_emphasis(can_generate())
 	
 	# Tree
 	if customer_name != "" and project_name != "":
@@ -562,9 +564,9 @@ func _on_pre_generate_folder_button_pressed() -> void:
 	
 	if info_locked:
 		has_previewed = true
-		preview_folder_button.text = "Annuler"
+		preview_folder_button.button_text = "Annuler"
 	else:
-		preview_folder_button.text = "Verrouiller et prévisualiser"
+		preview_folder_button.button_text = "Verrouiller et prévisualiser"
 	update_controls()
 
 func _on_generate_folder_button_pressed() -> void:
@@ -580,22 +582,30 @@ func _on_generate_folder_button_pressed() -> void:
 	else:
 		PrintUtility.print_gen("Using existing editor, will not be saved")
 	
-	generation_has_issue = 0
-	generation_issues = ""
+	reset_generation_flags()
 	generate_system_folders()
+	update_generation_completed_dialog()
+	#reset_generation_flags()
+	generation_completed_dialog.visible = true
 	
 	main_scene.user_manager.build_users()
-	
-	update_generation_completed_dialog()
-	generation_completed_dialog.visible = true
+
+func reset_generation_flags() -> void:
+	generation_has_issue = 0
+	generation_issues = ""
+	folders_generated = 0
 
 func update_generation_completed_dialog() -> void:
 	generation_completed_dialog.get_node("ScrollContainer/Label").text = "La génération du dossier :\n" + main_scene.user_preferences.default_path + "/" + customer_name + "/" + project_name
 	if generation_has_issue > 0:
 		generation_completed_dialog.get_node("ScrollContainer/Label").text += "\nNe s'est pas bien déroulée :(\n\n"
-		generation_completed_dialog.get_node("ScrollContainer/Label").text += str(generation_has_issue) + " erreurs détectées ! Liste des erreurs :" + generation_issues
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += str(generation_has_issue) + " erreurs détectées ! \n"
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += str(folders_generated) + " dossiers créés et " + str(files_generated) + " fichiers créés\n"
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += "Liste des erreurs : \n" + generation_issues
 	else:
-		generation_completed_dialog.get_node("ScrollContainer/Label").text += "\nS'est terminée avec succès. Le contenu a bien été généré."
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += "\nS'est terminée avec succès. Le contenu a bien été généré.\n"
+		generation_completed_dialog.get_node("ScrollContainer/Label").text += str(folders_generated) + " dossiers créés et " + str(files_generated) + " fichiers créés\n"
+		
 
 func generate_system_folders() -> void:
 	var main_path: String = main_scene.user_preferences.default_path
@@ -671,6 +681,7 @@ func generate_folder_at(path: String) -> void:
 					0:
 						file.store_string(readme.generate_readme_content())
 						PrintUtility.print_gen("Readme created at " + path)
+						files_generated += 1
 					32:
 						PrintUtility.print_gen("Readme file already exists " + path)
 						PrintUtility.print_error("Can't create readme file")
@@ -690,6 +701,7 @@ func generate_folder_at(path: String) -> void:
 		match result:
 			0:
 				PrintUtility.print_gen("New folder created at " + path)
+				folders_generated += 1
 			32:
 				PrintUtility.print_gen("Folder already exists " + path)
 				PrintUtility.print_error("Can't create folder " + path)
@@ -729,7 +741,7 @@ func reset_project() -> void:
 	use_audio_sfx = true
 	audio_sfx_checkbox.button_pressed = true
 	info_locked = false
-	preview_folder_button.text = "Verrouiller et prévisualiser"
+	preview_folder_button.button_text = "Verrouiller et prévisualiser"
 	update_controls()
 
 func update_line_icon(line, value: bool) -> void:
@@ -836,15 +848,16 @@ func _on_vfx_line_mouse_entered() -> void:
 
 func _on_generation_completed_dialog_confirmed() -> void:
 	if generation_has_issue > 0:
-		generation_has_issue = 0
-		generation_issues = ""
 		info_locked = false
 		update_controls()
-		PrintUtility.print_info("Automatic cancelled previewing folders")
-		preview_folder_button.text = "Verrouiller et prévisualiser"
+		PrintUtility.print_info("Automatic cancelled generating folders")
+		#preview_folder_button.text = "Verrouiller et prévisualiser"
 	else:
-		generation_has_issue = 0
-		generation_issues = ""
 		build_customer_options()
 		build_editor_options()
 		reset_project()
+	reset_generation_flags()
+
+
+func _on_generation_completed_dialog_canceled() -> void:
+	_on_generation_completed_dialog_confirmed()

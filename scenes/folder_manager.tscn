@@ -350,11 +350,10 @@ custom_minimum_size = Vector2(47.345, 32)
 layout_mode = 2
 button_text = "Verrouiller et prévisualiser"
 
-[node name="GenerateFolderButton" type="Button" parent="FormContainer/FormVBox"]
-custom_minimum_size = Vector2(0, 32)
+[node name="GenerateFolderButton" parent="FormContainer/FormVBox" instance=ExtResource("5_m8qtv")]
+custom_minimum_size = Vector2(47.345, 32)
 layout_mode = 2
-theme = ExtResource("3_m8qtv")
-text = "Générer la structure"
+button_text = "Générer la structure"
 
 [node name="Label" type="Label" parent="FormContainer/FormVBox"]
 visible = false
@@ -444,5 +443,7 @@ access = 2
 [connection signal="toggled" from="FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
 [connection signal="pressed" from="FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
 [connection signal="pressed" from="FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
+[connection signal="canceled" from="GenerationCompletedDialog" to="." method="_on_generation_completed_dialog_canceled"]
+[connection signal="confirmed" from="GenerationCompletedDialog" to="." method="_on_generation_completed_dialog_confirmed"]
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
