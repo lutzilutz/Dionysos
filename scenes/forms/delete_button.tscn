@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://ccq785xcfesbr"]
 
-[ext_resource type="Theme" uid="uid://bwnnn0ysvkuve" path="res://resources/themes/default_spreadsheet_delete.tres" id="1_chv0k"]
-[ext_resource type="Texture2D" uid="uid://b850uyfyh84e0" path="res://resources/icons/cancel_16.png" id="1_pvopu"]
+[ext_resource type="Theme" uid="uid://bwnnn0ysvkuve" path="res://resources/themes/default_spreadsheet_delete.tres" id="1_jt1lr"]
+[ext_resource type="Texture2D" uid="uid://b850uyfyh84e0" path="res://resources/icons/cancel_16.png" id="2_nx5ai"]
 
 [node name="DeleteButton" type="Button"]
 custom_minimum_size = Vector2(28, 28)
 offset_right = 8.0
 offset_bottom = 8.0
-theme = ExtResource("1_chv0k")
+theme = ExtResource("1_jt1lr")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -16,7 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_pvopu")
+texture = ExtResource("2_nx5ai")
 stretch_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

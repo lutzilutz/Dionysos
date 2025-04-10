@@ -1,13 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://dljpx2q5kn00k"]
+[gd_scene load_steps=14 format=3 uid="uid://dljpx2q5kn00k"]
 
-[ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="1_aq72c"]
+[ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/forms/form_title.tscn" id="1_aq72c"]
 [ext_resource type="Script" uid="uid://clqf5yn6idcvy" path="res://scenes/folder_manager.gd" id="1_b28kj"]
-[ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="2_b28kj"]
+[ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/forms/form_label.tscn" id="2_b28kj"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="3_m8qtv"]
 [ext_resource type="Texture2D" uid="uid://dy0vbm26sh3nt" path="res://resources/icons/checked_16.png" id="4_r0t3p"]
+[ext_resource type="PackedScene" uid="uid://cdiyovxq5yx3t" path="res://scenes/forms/form_button.tscn" id="5_m8qtv"]
 [ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="5_ouhtv"]
 [ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="6_40lls"]
+[ext_resource type="PackedScene" uid="uid://b5tdjo0q25246" path="res://scenes/forms/form_option.tscn" id="6_r0t3p"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="7_67cyy"]
+[ext_resource type="PackedScene" uid="uid://df3ka7i8dxcsf" path="res://scenes/forms/form_edit.tscn" id="7_ouhtv"]
 [ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="8_dfjhl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85g3d"]
@@ -48,11 +51,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Dossier racine des projets"
 
-[node name="ChooseFolderButton" type="Button" parent="FormContainer/FormVBox/ChooseFolderLine"]
-custom_minimum_size = Vector2(179.835, 0)
+[node name="ChooseFolderButton" parent="FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("5_m8qtv")]
 layout_mode = 2
-theme = ExtResource("3_m8qtv")
-text = "Sélectionner un dossier"
+size_flags_horizontal = 3
+button_text = "Sélectionner un dossier"
 
 [node name="ChooseFolderResult" parent="FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("2_b28kj")]
 layout_mode = 2
@@ -77,19 +79,11 @@ layout_mode = 2
 layout_mode = 2
 text = "Nom du client"
 
-[node name="CustomerOption" type="OptionButton" parent="FormContainer/FormVBox/CustomerLine"]
+[node name="CustomerOption" parent="FormContainer/FormVBox/CustomerLine" instance=ExtResource("6_r0t3p")]
 layout_mode = 2
-theme = ExtResource("3_m8qtv")
-selected = 0
-item_count = 1
-popup/item_0/text = "<Nouveau client>"
-popup/item_0/id = 0
 
-[node name="CustomerEdit" type="LineEdit" parent="FormContainer/FormVBox/CustomerLine"]
+[node name="CustomerEdit" parent="FormContainer/FormVBox/CustomerLine" instance=ExtResource("7_ouhtv")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("3_m8qtv")
-placeholder_text = "Entrer le nom du client ici ..."
 
 [node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/CustomerLine"]
 modulate = Color(0, 0.521569, 0, 1)
@@ -105,11 +99,8 @@ layout_mode = 2
 layout_mode = 2
 text = "Nom du projet"
 
-[node name="ProjectNameEdit" type="LineEdit" parent="FormContainer/FormVBox/ProjectNameLine"]
+[node name="ProjectNameEdit" parent="FormContainer/FormVBox/ProjectNameLine" instance=ExtResource("7_ouhtv")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("3_m8qtv")
-placeholder_text = "Entrer le nom du projet ici ..."
 
 [node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/ProjectNameLine"]
 modulate = Color(0, 0.521569, 0, 1)
@@ -125,12 +116,11 @@ layout_mode = 2
 layout_mode = 2
 text = "Type de production"
 
-[node name="ProductionTypeOption" type="OptionButton" parent="FormContainer/FormVBox/ProductionTypeLine"]
+[node name="ProductionTypeOption" parent="FormContainer/FormVBox/ProductionTypeLine" instance=ExtResource("6_r0t3p")]
 layout_mode = 2
-theme = ExtResource("3_m8qtv")
+selected = -1
 item_count = 2
 popup/item_0/text = "Client externe"
-popup/item_0/id = 0
 popup/item_1/text = "Projet interne"
 popup/item_1/id = 1
 
@@ -153,16 +143,12 @@ layout_mode = 2
 layout_mode = 2
 text = "Nom du monteur"
 
-[node name="EditorOption" type="OptionButton" parent="FormContainer/FormVBox/EditorLine"]
+[node name="EditorOption" parent="FormContainer/FormVBox/EditorLine" instance=ExtResource("6_r0t3p")]
 layout_mode = 2
-theme = ExtResource("3_m8qtv")
+item_count = 0
 
-[node name="EditorEdit" type="LineEdit" parent="FormContainer/FormVBox/EditorLine"]
-visible = false
+[node name="EditorEdit" parent="FormContainer/FormVBox/EditorLine" instance=ExtResource("7_ouhtv")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("3_m8qtv")
-placeholder_text = "Entrer le nom du monteur ici ..."
 
 [node name="VSeparator" type="VSeparator" parent="FormContainer/FormVBox/EditorLine"]
 layout_mode = 2
@@ -423,7 +409,6 @@ mode_overrides_title = false
 file_mode = 2
 access = 2
 
-[connection signal="pressed" from="FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
 [connection signal="item_selected" from="FormContainer/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
 [connection signal="text_changed" from="FormContainer/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
 [connection signal="text_changed" from="FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]

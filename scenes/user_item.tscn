@@ -4,7 +4,7 @@
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_d8b10"]
 [ext_resource type="Theme" uid="uid://bh1hga0057obd" path="res://resources/themes/spreadsheet_row.tres" id="2_6vns5"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_ay6y2"]
-[ext_resource type="PackedScene" uid="uid://ccq785xcfesbr" path="res://scenes/delete_button.tscn" id="5_doh4d"]
+[ext_resource type="PackedScene" uid="uid://ccq785xcfesbr" path="res://scenes/forms/delete_button.tscn" id="5_doh4d"]
 
 [node name="UserItem" type="Control"]
 custom_minimum_size = Vector2(0, 28)

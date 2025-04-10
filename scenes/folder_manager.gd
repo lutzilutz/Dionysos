@@ -368,6 +368,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Choose folder button
 	general_label.disable(info_locked)
 	choose_folder_button.disabled = info_locked
+	choose_folder_button.toggle_emphasis(not main_scene.user_preferences.has_default_path and not info_locked)
 	choose_folder_label.disable(info_locked)
 	choose_folder_result.text = main_scene.user_preferences.default_path
 	choose_folder_result.tooltip_text = main_scene.user_preferences.default_path
@@ -377,13 +378,16 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Customer name
 	customer_label.disable(not customer_editable)
 	customer_option.disabled = not customer_editable
+	customer_option.toggle_emphasis(customer_editable and not project_name_editable)
 	customer_edit.editable = customer_editable and customer_option.selected == 0
+	customer_edit.toggle_emphasis(customer_editable and not project_name_editable)
 	customer_line.get_node("LineIcon").texture = main_scene.checked_texture if project_name_editable else main_scene.empty_texture
 	customer_line.get_node("LineIcon").modulate = main_scene.checked_color
 	
 	# Project name
 	project_name_label.disable(not project_name_editable)
 	project_name_edit.editable = project_name_editable
+	project_name_edit.toggle_emphasis(project_name_editable and not production_type_editable)
 	if project_name_editable and project_name != "":
 		if path_has_conflict():
 			project_name_edit.modulate = Color(1,0.5,0,1)
@@ -399,13 +403,16 @@ func update_controls() -> void: # Updating form controls depending how much user
 	# Production type
 	production_type_label.disable(not production_type_editable)
 	production_type_option.disabled = not production_type_editable
+	production_type_option.toggle_emphasis(production_type_editable and not editor_editable)
 	production_type_line.get_node("LineIcon").texture = main_scene.checked_texture if editor_editable else main_scene.empty_texture
 	production_type_line.get_node("LineIcon").modulate = main_scene.checked_color
 	
 	# Editor name
 	editor_label.disable(not editor_editable)
 	editor_option.disabled = not editor_editable
+	editor_option.toggle_emphasis(editor_editable and not secondary_options_editable)
 	editor_edit.editable = editor_editable and editor_option.selected == 0
+	editor_edit.toggle_emphasis(editor_editable and not secondary_options_editable)
 	editor_line.get_node("LineIcon").texture = main_scene.checked_texture if secondary_options_editable else main_scene.empty_texture
 	editor_line.get_node("LineIcon").modulate = main_scene.checked_color
 	

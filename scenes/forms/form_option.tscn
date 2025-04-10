@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5tdjo0q25246"]
+
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_vxhhc"]
+[ext_resource type="Script" uid="uid://dry53655s604s" path="res://scenes/forms/form_option.gd" id="2_5vhki"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tkr6q"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.34902, 0, 1)
+
+[node name="FormOption" type="OptionButton"]
+offset_right = 32.0
+offset_bottom = 20.0
+theme = ExtResource("1_vxhhc")
+selected = 0
+item_count = 1
+popup/item_0/text = "<Nouveau>"
+popup/item_0/id = 0
+script = ExtResource("2_5vhki")
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tkr6q")
