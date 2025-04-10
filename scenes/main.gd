@@ -14,13 +14,14 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var tutorial = get_node("Tutorial")
 @onready var splashscreen = get_node("Splashscreen")
 
-@onready var edit_menu = get_node("Window/MenuBar/EditMenu")
+@onready var edit_menu = get_node("Window/MenuContainer/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
 @onready var preferences_dialog = get_node("PreferencesDialog")
 @onready var tabs_manager = get_node("Window/Workspace/TabsManager")
 @onready var folder_manager = get_node("Window/Workspace/FolderManager")
 @onready var user_manager = get_node("Window/Workspace/UserManager")
 
+@onready var workspace_title = get_node("Window/MenuContainer/WorkspaceTitle")
 @onready var version_label = get_node("VersionLabel")
 
 var user_preferences: UserPreferences
@@ -57,9 +58,11 @@ func _ready() -> void:
 
 func _on_tabs_manager_change(type) -> void:
 	if type == TabButton.TabType.FOLDER_MANAGER:
+		workspace_title.text = "Générateur de dossiers"
 		folder_manager.visible = true
 		user_manager.visible = false
 	elif type == TabButton.TabType.USER_MANAGER:
+		workspace_title.text = "Gestionnaire des utilisateurs"
 		folder_manager.visible = false
 		user_manager.visible = true
 

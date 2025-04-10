@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://rvfixiqdxhj5"]
+[gd_scene load_steps=10 format=3 uid="uid://rvfixiqdxhj5"]
 
 [ext_resource type="Script" uid="uid://cg3dakhfpgbxn" path="res://scenes/main.gd" id="1_h26jr"]
 [ext_resource type="Texture2D" uid="uid://bmilsg2l8tatg" path="res://resources/branding/Dionysos logo v02 512.png" id="2_tefeu"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://chx2gfya25vkc" path="res://scenes/tutorial/tutorial.tscn" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c4218x6ymovkk" path="res://scenes/user_manager.tscn" id="11_trceg"]
 [ext_resource type="PackedScene" uid="uid://c7wy6a71iomhv" path="res://scenes/splashscreen.tscn" id="12_eb6dy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tipki"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -45,11 +47,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuBar" type="MenuBar" parent="Window"]
+[node name="MenuContainer" type="HBoxContainer" parent="Window"]
+layout_mode = 2
+
+[node name="MenuBar" type="MenuBar" parent="Window/MenuContainer"]
 layout_mode = 2
 theme = ExtResource("3_4krfr")
 
-[node name="FileMenu" type="PopupMenu" parent="Window/MenuBar"]
+[node name="FileMenu" type="PopupMenu" parent="Window/MenuContainer/MenuBar"]
 title = "Fichier"
 size = Vector2i(294, 170)
 item_count = 6
@@ -67,7 +72,7 @@ item_4/separator = true
 item_5/text = "Quitter"
 item_5/id = 0
 
-[node name="EditMenu" type="PopupMenu" parent="Window/MenuBar"]
+[node name="EditMenu" type="PopupMenu" parent="Window/MenuContainer/MenuBar"]
 auto_translate_mode = 1
 title = "Préférences"
 size = Vector2i(404, 201)
@@ -93,7 +98,7 @@ item_6/id = 6
 item_7/text = "Réinitialiser les préférences"
 item_7/id = 0
 
-[node name="HelpMenu" type="PopupMenu" parent="Window/MenuBar"]
+[node name="HelpMenu" type="PopupMenu" parent="Window/MenuContainer/MenuBar"]
 auto_translate_mode = 1
 title = "Aide"
 size = Vector2i(149, 100)
@@ -104,6 +109,16 @@ item_1/text = "Revoir le tutoriel"
 item_1/id = 1
 item_2/text = "Aidez-moi !"
 item_2/id = 0
+
+[node name="VSeparator" type="VSeparator" parent="Window/MenuContainer"]
+custom_minimum_size = Vector2(84.36, 0)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_tipki")
+
+[node name="WorkspaceTitle" type="Label" parent="Window/MenuContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.699653, 0.699653, 0.699653, 1)
+text = "Générateur de dossiers"
 
 [node name="Workspace" type="HBoxContainer" parent="Window"]
 layout_mode = 2
@@ -153,6 +168,6 @@ layout_mode = 1
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
-[connection signal="id_pressed" from="Window/MenuBar/FileMenu" to="." method="_on_file_menu_id_pressed"]
-[connection signal="id_pressed" from="Window/MenuBar/EditMenu" to="." method="_on_edit_menu_id_pressed"]
-[connection signal="id_pressed" from="Window/MenuBar/HelpMenu" to="." method="_on_help_menu_id_pressed"]
+[connection signal="id_pressed" from="Window/MenuContainer/MenuBar/FileMenu" to="." method="_on_file_menu_id_pressed"]
+[connection signal="id_pressed" from="Window/MenuContainer/MenuBar/EditMenu" to="." method="_on_edit_menu_id_pressed"]
+[connection signal="id_pressed" from="Window/MenuContainer/MenuBar/HelpMenu" to="." method="_on_help_menu_id_pressed"]
