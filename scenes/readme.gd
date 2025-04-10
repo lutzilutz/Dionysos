@@ -16,7 +16,7 @@ func generate_readme_content() -> String:
 	return s
 
 func generate_intro() -> String:
-	var s: String = "Bienvenue dans le dossier du projet \"" + main_scene.project_name + "\" de " + main_scene.customer_name + "."
+	var s: String = "Bienvenue dans le dossier du projet \"" + main_scene.folder_manager.project_name + "\" de " + main_scene.folder_manager.customer_name + "."
 	s += add_line(0, "Vous trouverez ci-dessous des indications sur la structure du projet et les emplacements intéressants.")
 	s += add_line(0, "Pour toute question d'ordre technique, merci de bien vouloir écrire à : lutz@drykats.ch")
 	return s
@@ -26,7 +26,7 @@ func generate_important() -> String:
 	s += add_section("Important")
 	s += add_line(1, "Vidéos temporaires : " + working_renders)
 	s += add_line(1, "Vidéos finales : " + final_renders)
-	if main_scene.production_type == main_scene.ProductionType.EXTERNAL:
+	if main_scene.folder_manager.production_type == DataManager.ProductionType.EXTERNAL:
 		s += add_line(1, "Pour nous transmettre vos logos : " + drop_box)
 	return s
 
@@ -34,10 +34,10 @@ func generate_team() -> String:
 	var s: String = ""
 	s += add_section("Équipe")
 	s += add_subsection("Montage")
-	s += add_line(2, "Monteur : " + main_scene.editor_name)
-	if main_scene.use_contact:
-		s += add_line(2, "Téléphone : " + main_scene.users.get_user_from_name(DataManager.UserFunction.EDITOR, main_scene.editor_name).phone)
-		s += add_line(2, "E-mail : " + main_scene.users.get_user_from_name(DataManager.UserFunction.EDITOR, main_scene.editor_name).email)
+	s += add_line(2, "Monteur : " + main_scene.folder_manager.editor_name)
+	if main_scene.folder_manager.use_contact:
+		s += add_line(2, "Téléphone : " + main_scene.users.get_user_from_name(DataManager.UserFunction.EDITOR, main_scene.folder_manager.editor_name).phone)
+		s += add_line(2, "E-mail : " + main_scene.users.get_user_from_name(DataManager.UserFunction.EDITOR, main_scene.folder_manager.editor_name).email)
 	return s
 
 func generate_details() -> String:
@@ -58,9 +58,9 @@ func generate_map() -> String:
 	var s: String = ""
 	s += add_section("Plan")
 	
-	if main_scene.folder_tree.get_root():
-		if main_scene.folder_tree.get_root().get_child_count() > 0:
-			for f: TreeItem in main_scene.folder_tree.get_root().get_children():
+	if main_scene.folder_manager.folder_tree.get_root():
+		if main_scene.folder_manager.folder_tree.get_root().get_child_count() > 0:
+			for f: TreeItem in main_scene.folder_manager.folder_tree.get_root().get_children():
 				s += add_map_folder(0, f.get_text(0)) + f.get_tooltip_text(0)
 				if f.get_child_count() > 0:
 					for sf: TreeItem in f.get_children():

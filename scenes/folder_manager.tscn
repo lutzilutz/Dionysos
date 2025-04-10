@@ -1,0 +1,449 @@
+[gd_scene load_steps=11 format=3 uid="uid://dljpx2q5kn00k"]
+
+[ext_resource type="PackedScene" uid="uid://bykv8asyllwbm" path="res://scenes/form_title.tscn" id="1_aq72c"]
+[ext_resource type="Script" uid="uid://clqf5yn6idcvy" path="res://scenes/folder_manager.gd" id="1_b28kj"]
+[ext_resource type="PackedScene" uid="uid://c0hehmr5yk3sb" path="res://scenes/form_label.tscn" id="2_b28kj"]
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="3_m8qtv"]
+[ext_resource type="Texture2D" uid="uid://dy0vbm26sh3nt" path="res://resources/icons/checked_16.png" id="4_r0t3p"]
+[ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="5_ouhtv"]
+[ext_resource type="Texture2D" uid="uid://clj1cieuigv6d" path="res://resources/icons/empty_16.png" id="6_40lls"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="7_67cyy"]
+[ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="8_dfjhl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85g3d"]
+
+[node name="FolderManager" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_b28kj")
+
+[node name="FormContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="FormVBox" type="VBoxContainer" parent="FormContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="GeneralTitleLabel" parent="FormContainer/FormVBox" instance=ExtResource("1_aq72c")]
+layout_mode = 2
+text = "Informations générales"
+
+[node name="ChooseFolderLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ChooseFolderLabel" parent="FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Dossier racine des projets"
+
+[node name="ChooseFolderButton" type="Button" parent="FormContainer/FormVBox/ChooseFolderLine"]
+custom_minimum_size = Vector2(179.835, 0)
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+text = "Sélectionner un dossier"
+
+[node name="ChooseFolderResult" parent="FormContainer/FormVBox/ChooseFolderLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+theme_override_colors/font_color = Color(0.548963, 0.548963, 0.548963, 1)
+theme_override_font_sizes/font_size = 10
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/ChooseFolderLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("4_r0t3p")
+stretch_mode = 5
+
+[node name="CustomerLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="CustomerLabel" parent="FormContainer/FormVBox/CustomerLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Nom du client"
+
+[node name="CustomerOption" type="OptionButton" parent="FormContainer/FormVBox/CustomerLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+selected = 0
+item_count = 1
+popup/item_0/text = "<Nouveau client>"
+popup/item_0/id = 0
+
+[node name="CustomerEdit" type="LineEdit" parent="FormContainer/FormVBox/CustomerLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_m8qtv")
+placeholder_text = "Entrer le nom du client ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/CustomerLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("4_r0t3p")
+stretch_mode = 5
+
+[node name="ProjectNameLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ProjectNameLabel" parent="FormContainer/FormVBox/ProjectNameLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Nom du projet"
+
+[node name="ProjectNameEdit" type="LineEdit" parent="FormContainer/FormVBox/ProjectNameLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_m8qtv")
+placeholder_text = "Entrer le nom du projet ici ..."
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/ProjectNameLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("4_r0t3p")
+stretch_mode = 5
+
+[node name="ProductionTypeLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ProductionTypeLabel" parent="FormContainer/FormVBox/ProductionTypeLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Type de production"
+
+[node name="ProductionTypeOption" type="OptionButton" parent="FormContainer/FormVBox/ProductionTypeLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+item_count = 2
+popup/item_0/text = "Client externe"
+popup/item_0/id = 0
+popup/item_1/text = "Projet interne"
+popup/item_1/id = 1
+
+[node name="VSeparator" type="VSeparator" parent="FormContainer/FormVBox/ProductionTypeLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/ProductionTypeLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("4_r0t3p")
+stretch_mode = 5
+
+[node name="EditorLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="EditorLabel" parent="FormContainer/FormVBox/EditorLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Nom du monteur"
+
+[node name="EditorOption" type="OptionButton" parent="FormContainer/FormVBox/EditorLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+
+[node name="EditorEdit" type="LineEdit" parent="FormContainer/FormVBox/EditorLine"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_m8qtv")
+placeholder_text = "Entrer le nom du monteur ici ..."
+
+[node name="VSeparator" type="VSeparator" parent="FormContainer/FormVBox/EditorLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/EditorLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("4_r0t3p")
+stretch_mode = 5
+
+[node name="IncludeContactLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="IncludeContactLabel" parent="FormContainer/FormVBox/IncludeContactLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Inclure les données de contact (téléphone + e-mail)"
+
+[node name="IncludeContactCheckbox" type="CheckBox" parent="FormContainer/FormVBox/IncludeContactLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+button_pressed = true
+
+[node name="VSeparator" type="VSeparator" parent="FormContainer/FormVBox/IncludeContactLine"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_85g3d")
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/IncludeContactLine"]
+modulate = Color(0, 0.521569, 0, 1)
+layout_mode = 2
+texture = ExtResource("4_r0t3p")
+stretch_mode = 5
+
+[node name="HSeparator" type="HSeparator" parent="FormContainer/FormVBox"]
+layout_mode = 2
+theme = ExtResource("5_ouhtv")
+
+[node name="VideoTitleLabel" parent="FormContainer/FormVBox" instance=ExtResource("1_aq72c")]
+layout_mode = 2
+text = "Vidéo"
+
+[node name="DayCountLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="DayCountLabel" parent="FormContainer/FormVBox/DayCountLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Jours de tournage"
+
+[node name="DayCountSpin" type="SpinBox" parent="FormContainer/FormVBox/DayCountLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+allow_greater = true
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/DayCountLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("6_40lls")
+stretch_mode = 5
+
+[node name="CameraCountLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="CameraCountLabel" parent="FormContainer/FormVBox/CameraCountLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Nombre de caméra"
+
+[node name="CameraCountSpin" type="SpinBox" parent="FormContainer/FormVBox/CameraCountLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+min_value = 1.0
+max_value = 26.0
+value = 1.0
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/CameraCountLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("6_40lls")
+stretch_mode = 5
+
+[node name="VFXLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="VFXLabel" parent="FormContainer/FormVBox/VFXLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Effets visuels VFX"
+
+[node name="VFXCheckBox" type="CheckBox" parent="FormContainer/FormVBox/VFXLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/VFXLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("6_40lls")
+stretch_mode = 5
+
+[node name="HSeparator2" type="HSeparator" parent="FormContainer/FormVBox"]
+layout_mode = 2
+theme = ExtResource("5_ouhtv")
+
+[node name="AudioTitleLabel" parent="FormContainer/FormVBox" instance=ExtResource("1_aq72c")]
+layout_mode = 2
+text = "Audio et musique"
+
+[node name="ProductionAudioLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="ProductionAudioLabel" parent="FormContainer/FormVBox/ProductionAudioLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Tournage avec audio"
+
+[node name="ProductionAudioCheckBox" type="CheckBox" parent="FormContainer/FormVBox/ProductionAudioLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/ProductionAudioLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("6_40lls")
+stretch_mode = 5
+
+[node name="MusicLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="MusicLabel" parent="FormContainer/FormVBox/MusicLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Utilisation de musique"
+
+[node name="MusicCheckBox" type="CheckBox" parent="FormContainer/FormVBox/MusicLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/MusicLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("6_40lls")
+stretch_mode = 5
+
+[node name="AudioSFXLine" type="HBoxContainer" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="AudioSFXLabel" parent="FormContainer/FormVBox/AudioSFXLine" instance=ExtResource("2_b28kj")]
+layout_mode = 2
+text = "Bruitages audio SFX"
+
+[node name="AudioSFXCheckBox" type="CheckBox" parent="FormContainer/FormVBox/AudioSFXLine"]
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+button_pressed = true
+
+[node name="LineIcon" type="TextureRect" parent="FormContainer/FormVBox/AudioSFXLine"]
+modulate = Color(0.396889, 0.396889, 0.396889, 1)
+layout_mode = 2
+tooltip_text = "Cette valeur a été modifiée"
+texture = ExtResource("6_40lls")
+stretch_mode = 5
+
+[node name="HSeparator3" type="HSeparator" parent="FormContainer/FormVBox"]
+layout_mode = 2
+theme = ExtResource("5_ouhtv")
+
+[node name="PreGenerateFolderButton" type="Button" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+text = "Verrouiller et prévisualiser"
+
+[node name="GenerateFolderButton" type="Button" parent="FormContainer/FormVBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme = ExtResource("3_m8qtv")
+text = "Générer la structure"
+
+[node name="Label" type="Label" parent="FormContainer/FormVBox"]
+visible = false
+layout_mode = 2
+theme = ExtResource("7_67cyy")
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+theme = ExtResource("5_ouhtv")
+
+[node name="SummaryContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Summary" type="VBoxContainer" parent="SummaryContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SummaryTitleLabel" type="Label" parent="SummaryContainer/Summary"]
+layout_mode = 2
+theme = ExtResource("8_dfjhl")
+text = "Prévisualisation des dossiers"
+
+[node name="SummaryBodyLabel" type="Label" parent="SummaryContainer/Summary"]
+layout_mode = 2
+theme = ExtResource("7_67cyy")
+text = "La structure ci-dessous sera créée à l'emplacement choisi"
+
+[node name="Tree" type="Tree" parent="SummaryContainer/Summary"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("7_67cyy")
+select_mode = 2
+
+[node name="GenerationCompletedDialog" type="AcceptDialog" parent="."]
+auto_translate_mode = 1
+title = "Génération terminée"
+initial_position = 2
+size = Vector2i(593, 367)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="GenerationCompletedDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 585.0
+offset_bottom = 318.0
+
+[node name="Label" type="Label" parent="GenerationCompletedDialog/ScrollContainer"]
+layout_mode = 2
+text = "La génération du dossier :
+S'est terminée avec succès. Le contenu a bien été généré.
+
+Aucune erreur à signaler."
+
+[node name="FileDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Ouvrir un dossier"
+initial_position = 2
+size = Vector2i(617, 375)
+content_scale_factor = 0.75
+ok_button_text = "Select Current Folder"
+mode_overrides_title = false
+file_mode = 2
+access = 2
+
+[connection signal="pressed" from="FormContainer/FormVBox/ChooseFolderLine/ChooseFolderButton" to="." method="_on_choose_folder_button_pressed"]
+[connection signal="item_selected" from="FormContainer/FormVBox/CustomerLine/CustomerOption" to="." method="_on_customer_option_item_selected"]
+[connection signal="text_changed" from="FormContainer/FormVBox/CustomerLine/CustomerEdit" to="." method="_on_customer_edit_text_changed"]
+[connection signal="text_changed" from="FormContainer/FormVBox/ProjectNameLine/ProjectNameEdit" to="." method="_on_project_name_edit_text_changed"]
+[connection signal="item_selected" from="FormContainer/FormVBox/ProductionTypeLine/ProductionTypeOption" to="." method="_on_production_type_option_item_selected"]
+[connection signal="item_selected" from="FormContainer/FormVBox/EditorLine/EditorOption" to="." method="_on_editor_option_item_selected"]
+[connection signal="text_changed" from="FormContainer/FormVBox/EditorLine/EditorEdit" to="." method="_on_editor_edit_text_changed"]
+[connection signal="toggled" from="FormContainer/FormVBox/IncludeContactLine/IncludeContactCheckbox" to="." method="_on_include_contact_option_toggled"]
+[connection signal="mouse_entered" from="FormContainer/FormVBox/DayCountLine" to="." method="_on_day_count_line_mouse_entered"]
+[connection signal="value_changed" from="FormContainer/FormVBox/DayCountLine/DayCountSpin" to="." method="_on_day_count_spin_value_changed"]
+[connection signal="mouse_entered" from="FormContainer/FormVBox/CameraCountLine" to="." method="_on_camera_count_line_mouse_entered"]
+[connection signal="value_changed" from="FormContainer/FormVBox/CameraCountLine/CameraCountSpin" to="." method="_on_camera_count_spin_value_changed"]
+[connection signal="mouse_entered" from="FormContainer/FormVBox/VFXLine" to="." method="_on_vfx_line_mouse_entered"]
+[connection signal="toggled" from="FormContainer/FormVBox/VFXLine/VFXCheckBox" to="." method="_on_vfx_check_box_toggled"]
+[connection signal="mouse_entered" from="FormContainer/FormVBox/ProductionAudioLine" to="." method="_on_production_audio_line_mouse_entered"]
+[connection signal="toggled" from="FormContainer/FormVBox/ProductionAudioLine/ProductionAudioCheckBox" to="." method="_on_production_audio_check_box_toggled"]
+[connection signal="mouse_entered" from="FormContainer/FormVBox/MusicLine" to="." method="_on_music_line_mouse_entered"]
+[connection signal="toggled" from="FormContainer/FormVBox/MusicLine/MusicCheckBox" to="." method="_on_music_check_box_toggled"]
+[connection signal="mouse_entered" from="FormContainer/FormVBox/AudioSFXLine" to="." method="_on_audio_sfx_line_mouse_entered"]
+[connection signal="toggled" from="FormContainer/FormVBox/AudioSFXLine/AudioSFXCheckBox" to="." method="_on_audio_sfx_check_box_toggled"]
+[connection signal="pressed" from="FormContainer/FormVBox/PreGenerateFolderButton" to="." method="_on_pre_generate_folder_button_pressed"]
+[connection signal="pressed" from="FormContainer/FormVBox/GenerateFolderButton" to="." method="_on_generate_folder_button_pressed"]
+[connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
