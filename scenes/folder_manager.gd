@@ -363,7 +363,7 @@ func update_controls() -> void: # Updating form controls depending how much user
 	var project_name_editable = customer_editable and customer_name != ""
 	var production_type_editable = project_name_editable and project_name != ""
 	var editor_editable = production_type_editable and production_type_option.selected != -1
-	var secondary_options_editable = editor_editable and editor_name != ""
+	var secondary_options_editable = editor_editable and editor_option.selected != -1
 	
 	# Choose folder button
 	general_label.disable(info_locked)

@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://df3ka7i8dxcsf"]
+[gd_scene load_steps=4 format=3 uid="uid://df3ka7i8dxcsf"]
 
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_mgm6i"]
 [ext_resource type="Script" uid="uid://bdxxn0s3xvhdv" path="res://scenes/forms/form_edit.gd" id="1_moonl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_moonl"]
@@ -11,12 +12,16 @@ border_width_bottom = 1
 border_color = Color(1, 0.34902, 0, 1)
 
 [node name="FormEdit" type="LineEdit"]
+custom_minimum_size = Vector2(108.205, 0)
 offset_right = 68.5625
 offset_bottom = 31.0
+theme = ExtResource("1_mgm6i")
+placeholder_text = "Entrer le nom ..."
 script = ExtResource("1_moonl")
 
 [node name="Panel" type="Panel" parent="."]
 visible = false
+modulate = Color(1, 1, 1, 0.729412)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
