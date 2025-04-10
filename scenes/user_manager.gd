@@ -328,3 +328,19 @@ func _on_filter_function_option_item_selected(index: int) -> void:
 			pass
 	update_even()
 	update_labels()
+
+func _on_all_delete_button_pressed() -> void:
+	PrintUtility.print_info("User asked to delete all users")
+	get_node("AllDeleteDialog").visible = true
+	get_node("AllDeleteDialog/Label").text = "Tous les utilisateurs (" + str(main_scene.users.all_users.size()) + ") seront définitivement supprimés, non-reversible.\nVoulez-vous les supprimer ?"
+
+func _on_all_delete_dialog_canceled() -> void:
+	PrintUtility.print_info("User canceled deletetion of all users")
+
+func _on_all_delete_dialog_confirmed() -> void:
+	PrintUtility.print_info("User confirmed deletetion of all users")
+	PrintUtility.print_info("Delete all users")
+	main_scene.users.purge_editors()
+	main_scene.users.purge_customers()
+	main_scene.users.save_to_file(main_scene.SAVE_USERS_PATH)
+	build_users()

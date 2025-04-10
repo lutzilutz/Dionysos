@@ -72,9 +72,28 @@ layout_mode = 2
 theme = ExtResource("4_0psj5")
 
 [node name="CountLabel" type="Label" parent="VBoxContainer/FiltersHBox"]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme = ExtResource("2_cw3ii")
 text = "Utilisateurs affichés / total : X/X"
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/FiltersHBox"]
+layout_mode = 2
+theme = ExtResource("4_0psj5")
+
+[node name="VSeparator4" type="VSeparator" parent="VBoxContainer/FiltersHBox"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_0psj5")
+
+[node name="AllDeleteButton" type="Button" parent="VBoxContainer/FiltersHBox"]
+modulate = Color(1, 0.4, 0.4, 1)
+custom_minimum_size = Vector2(220.445, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_m8pq0")
+text = "Supprimer tous les utilisateurs"
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
@@ -197,6 +216,23 @@ text = "L'utilisateur \"XXX\" sera définitivement supprimé, non-reversible.
 Voulez-vous le supprimer ?"
 horizontal_alignment = 1
 
+[node name="AllDeleteDialog" type="ConfirmationDialog" parent="."]
+auto_translate_mode = 1
+title = "Attention !"
+initial_position = 2
+size = Vector2i(597, 106)
+ok_button_text = "Oui, le supprimer"
+cancel_button_text = "Annuler"
+
+[node name="Label" type="Label" parent="AllDeleteDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 589.0
+offset_bottom = 57.0
+text = "Tous les utilisateurs (XXX) seront définitivement supprimés, non-reversible.
+Voulez-vous les supprimer ?"
+horizontal_alignment = 1
+
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 title = "Attention !"
 initial_position = 2
@@ -229,11 +265,14 @@ text = "Souhaitez-vous le modifier ?"
 
 [connection signal="item_selected" from="VBoxContainer/FiltersHBox/FilterFunctionOption" to="." method="_on_filter_function_option_item_selected"]
 [connection signal="pressed" from="VBoxContainer/FiltersHBox/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/FiltersHBox/AllDeleteButton" to="." method="_on_all_delete_button_pressed"]
 [connection signal="text_changed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="item_selected" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/FunctionOption" to="." method="_on_function_option_item_selected"]
 [connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Panel/MarginContainer/ModifyPanel/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
 [connection signal="confirmed" from="AcceptDialog" to="." method="_on_accept_dialog_confirmed"]
+[connection signal="canceled" from="AllDeleteDialog" to="." method="_on_all_delete_dialog_canceled"]
+[connection signal="confirmed" from="AllDeleteDialog" to="." method="_on_all_delete_dialog_confirmed"]
 [connection signal="canceled" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_canceled"]
 [connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]
