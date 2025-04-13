@@ -64,10 +64,12 @@ func _on_tabs_manager_change(type) -> void:
 		workspace_title.text = "Générateur de dossiers"
 		folder_manager.visible = true
 		user_manager.visible = false
+		get_node("Window/MenuContainer/MenuBar/FileMenu").set_item_disabled(get_node("Window/MenuContainer/MenuBar/FileMenu").get_item_index(1), false)
 	elif type == TabButton.TabType.USER_MANAGER:
 		workspace_title.text = "Gestionnaire des utilisateurs"
 		folder_manager.visible = false
 		user_manager.visible = true
+		get_node("Window/MenuContainer/MenuBar/FileMenu").set_item_disabled(get_node("Window/MenuContainer/MenuBar/FileMenu").get_item_index(1), true)
 
 func update_preferences_dialog() -> void:
 	var label = get_node("PreferencesDialog/PreferencesLabel")
