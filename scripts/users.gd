@@ -1,5 +1,7 @@
 class_name Users extends Resource
 
+signal users_imported(user_count: int, users: String)
+
 const EDITORS_INCODE: Array = []
 const EDITORS_INFILE: Dictionary = {}
 const CUSTOMERS: Array = []
@@ -116,6 +118,8 @@ static func load_from_file(path: String) -> Users:
 	return res
 
 func import_from_file(path: String) -> void:
+	var imported_count: int = 0
+	var imported_users: String = ""
 	if not FileAccess.file_exists(path):
 		PrintUtility.print_error("File doesn't appear to exist : " + path)
 	else:
@@ -135,6 +139,8 @@ func import_from_file(path: String) -> void:
 				tmp_editor.email = tmp_editors[e_name].get("email", "")
 				tmp_editor.function = DataManager.UserFunction.EDITOR
 				all_users.append(tmp_editor)
+				imported_count += 1
+				imported_users += tmp_editor.name + " - " + tmp_editor.phone + " - " + tmp_editor.email + "\n"
 		
 		var tmp_customers: Dictionary = json.get("customers", EDITORS_INFILE)
 		if tmp_customers != null :
@@ -146,11 +152,16 @@ func import_from_file(path: String) -> void:
 				tmp_customer.email = tmp_customers[e_name].get("email", "")
 				tmp_customer.function = DataManager.UserFunction.CUSTOMER
 				all_users.append(tmp_customer)
+				imported_count += 1
+				imported_users += tmp_customer.name + " - " + tmp_customer.phone + " - " + tmp_customer.email + "\n"
 		
 		PrintUtility.print_info("Imported " + str(editor_loaded_count) + " editors and " + str(customer_loaded_count) + " customers")
 		
 		if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
 			PrintUtility.print_info("Current json is version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
+	if imported_users.unicode_at(imported_users.length()-1) == 10 or imported_users.unicode_at(imported_users.length()-1) == 13:
+		imported_users = imported_users.left(imported_users.length()-1)
+	users_imported.emit(imported_count, imported_users)
 
 func editor_exists(new_name: String) -> bool:
 	var editor_found: bool = false

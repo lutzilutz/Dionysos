@@ -17,6 +17,8 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var edit_menu = get_node("Window/MenuContainer/MenuBar/EditMenu")
 @onready var background_logo_sprite = get_node("BackgroundLogoSprite")
 @onready var preferences_dialog = get_node("PreferencesDialog")
+@onready var import_dialog = get_node("ImportDialog")
+@onready var import_result_dialog = get_node("ImportResultDialog")
 @onready var tabs_manager = get_node("Window/Workspace/TabsManager")
 @onready var folder_manager = get_node("Window/Workspace/FolderManager")
 @onready var user_manager = get_node("Window/Workspace/UserManager")
@@ -44,6 +46,7 @@ func _ready() -> void:
 	user_manager.main_scene = self
 	user_manager.build_users()
 	user_manager.users_changed.connect(_on_user_manager_users_changed)
+	users.users_imported.connect(_on_users_users_imported)
 	
 	# Read-me init -----
 	folder_manager.init(self)
@@ -102,7 +105,7 @@ func _on_file_menu_id_pressed(id: int) -> void:
 		4: # Open github releases
 			OS.shell_open("https://github.com/lutzilutz/Dionysos/releases")
 		6: # Import users file
-			users.import_from_file("")
+			import_dialog.visible = true
 		_:
 			PrintUtility.print_info("Unkown file menu option")
 
@@ -182,6 +185,10 @@ func _on_user_manager_users_changed() -> void:
 	folder_manager.customer_name = ""
 	folder_manager.update_controls()
 
+func _on_users_users_imported(count: int, text: String) -> void:
+	import_result_dialog.get_node("VBoxContainer/Label").text = str(count) + " utilisateur(s) importé(s)"
+	import_result_dialog.get_node("VBoxContainer/ScrollContainer/Label").text = text
+
 # =================================================================================================
 
 func _input(event: InputEvent) -> void:
@@ -194,3 +201,5 @@ func _on_import_dialog_file_selected(path: String) -> void:
 	user_manager.build_users()
 	folder_manager.build_editor_options()
 	folder_manager.build_customer_options()
+	import_dialog.visible = false
+	import_result_dialog.visible = true

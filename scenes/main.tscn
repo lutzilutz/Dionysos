@@ -44,7 +44,6 @@ auto_translate_mode = 1
 title = "Importer fichier utilisateur"
 initial_position = 2
 size = Vector2i(617, 375)
-visible = true
 content_scale_factor = 0.75
 ok_button_text = "Import"
 mode_overrides_title = false
@@ -180,6 +179,35 @@ offset_bottom = 296.0
 [node name="Splashscreen" parent="." instance=ExtResource("12_eb6dy")]
 visible = false
 layout_mode = 1
+
+[node name="ImportResultDialog" type="AcceptDialog" parent="."]
+title = "Résumé de l'importation"
+initial_position = 2
+size = Vector2i(442, 285)
+ok_button_text = "Fermer"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ImportResultDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ImportResultDialog/VBoxContainer"]
+layout_mode = 2
+text = "X utilisateurs importés :"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ImportResultDialog/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="ImportResultDialog/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+text = "- asdasd"
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
