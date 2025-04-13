@@ -77,6 +77,7 @@ func update_preferences_dialog() -> void:
 	label.text += "\nCacher logo : " + str(user_preferences.hide_logo)
 	label.text += "\nAfficher surlignage : " + str(user_preferences.show_highlights)
 	label.text += "\nA vu le tutoriel : " + str(user_preferences.has_seen_tutorial)
+	label.text += "\nDernier chemin importation : " + str(user_preferences.last_user_import_path)
 
 func _on_tutorial_ended() -> void:
 	user_preferences.has_seen_tutorial = true
@@ -105,6 +106,8 @@ func _on_file_menu_id_pressed(id: int) -> void:
 		4: # Open github releases
 			OS.shell_open("https://github.com/lutzilutz/Dionysos/releases")
 		6: # Import users file
+			if user_preferences.last_user_import_path != "":
+				import_dialog.current_dir = user_preferences.last_user_import_path
 			import_dialog.visible = true
 		_:
 			PrintUtility.print_info("Unkown file menu option")
@@ -201,5 +204,7 @@ func _on_import_dialog_file_selected(path: String) -> void:
 	user_manager.build_users()
 	folder_manager.build_editor_options()
 	folder_manager.build_customer_options()
+	user_preferences.last_user_import_path = path.get_base_dir()
+	user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 	import_dialog.visible = false
 	import_result_dialog.visible = true
