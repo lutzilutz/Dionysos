@@ -1,6 +1,6 @@
 class_name Users extends Resource
 
-signal users_imported(user_count: int, users: String)
+signal users_imported(imported_count: int, imported_users: String, changed_count: int, changed_users: String)
 
 const EDITORS_INCODE: Array = []
 const EDITORS_INFILE: Dictionary = {}
@@ -120,6 +120,8 @@ static func load_from_file(path: String) -> Users:
 func import_from_file(path: String) -> void:
 	var imported_count: int = 0
 	var imported_users: String = ""
+	var changed_count: int = 0
+	var changed_users: String = ""
 	if not FileAccess.file_exists(path):
 		PrintUtility.print_error("File doesn't appear to exist : " + path)
 	else:
@@ -132,28 +134,54 @@ func import_from_file(path: String) -> void:
 		var tmp_editors: Dictionary = json.get("editors", EDITORS_INFILE)
 		if tmp_editors != null :
 			for e_name in tmp_editors.keys():
+				var has_duplicate: bool = false
+				# Check if user already exists in database
+				for u in all_users:
+					if u.function == DataManager.UserFunction.EDITOR:
+						if u.name == e_name:
+							PrintUtility.print_info("Found matching editor " + u.name + ", changing it")
+							has_duplicate = true
+							u.phone = tmp_editors[e_name].get("phone", "")
+							u.email = tmp_editors[e_name].get("email", "")
+							changed_count += 1
+							changed_users += u.name + " - " + u.phone + " - " + u.email + "\n"
+				
+				if not has_duplicate:
+					var tmp_editor: User = User.new()
+					tmp_editor.name = e_name
+					tmp_editor.phone = tmp_editors[e_name].get("phone", "")
+					tmp_editor.email = tmp_editors[e_name].get("email", "")
+					tmp_editor.function = DataManager.UserFunction.EDITOR
+					all_users.append(tmp_editor)
+					imported_count += 1
+					imported_users += tmp_editor.name + " - " + tmp_editor.phone + " - " + tmp_editor.email + "\n"
 				editor_loaded_count += 1
-				var tmp_editor: User = User.new()
-				tmp_editor.name = e_name
-				tmp_editor.phone = tmp_editors[e_name].get("phone", "")
-				tmp_editor.email = tmp_editors[e_name].get("email", "")
-				tmp_editor.function = DataManager.UserFunction.EDITOR
-				all_users.append(tmp_editor)
-				imported_count += 1
-				imported_users += tmp_editor.name + " - " + tmp_editor.phone + " - " + tmp_editor.email + "\n"
 		
 		var tmp_customers: Dictionary = json.get("customers", EDITORS_INFILE)
 		if tmp_customers != null :
 			for e_name in tmp_customers.keys():
+				var has_duplicate: bool = false
+				# Check if user already exists in database
+				for u in all_users:
+					if u.function == DataManager.UserFunction.CUSTOMER:
+						if u.name == e_name:
+							PrintUtility.print_info("Found matching customer " + u.name + ", changing it")
+							has_duplicate = true
+							u.phone = tmp_customers[e_name].get("phone", "")
+							u.email = tmp_customers[e_name].get("email", "")
+							changed_count += 1
+							changed_users += u.name + " - " + u.phone + " - " + u.email + "\n"
+				
+				if not has_duplicate:
+					var tmp_customer: User = User.new()
+					tmp_customer.name = e_name
+					tmp_customer.phone = tmp_customers[e_name].get("phone", "")
+					tmp_customer.email = tmp_customers[e_name].get("email", "")
+					tmp_customer.function = DataManager.UserFunction.CUSTOMER
+					all_users.append(tmp_customer)
+					imported_count += 1
+					imported_users += tmp_customer.name + " - " + tmp_customer.phone + " - " + tmp_customer.email + "\n"
 				customer_loaded_count += 1
-				var tmp_customer: User = User.new()
-				tmp_customer.name = e_name
-				tmp_customer.phone = tmp_customers[e_name].get("phone", "")
-				tmp_customer.email = tmp_customers[e_name].get("email", "")
-				tmp_customer.function = DataManager.UserFunction.CUSTOMER
-				all_users.append(tmp_customer)
-				imported_count += 1
-				imported_users += tmp_customer.name + " - " + tmp_customer.phone + " - " + tmp_customer.email + "\n"
 		
 		PrintUtility.print_info("Imported " + str(editor_loaded_count) + " editors and " + str(customer_loaded_count) + " customers")
 		
@@ -161,7 +189,8 @@ func import_from_file(path: String) -> void:
 			PrintUtility.print_info("Current json is version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
 	if imported_users.unicode_at(imported_users.length()-1) == 10 or imported_users.unicode_at(imported_users.length()-1) == 13:
 		imported_users = imported_users.left(imported_users.length()-1)
-	users_imported.emit(imported_count, imported_users)
+	
+	users_imported.emit(imported_count, imported_users, changed_count, changed_users)
 
 func editor_exists(new_name: String) -> bool:
 	var editor_found: bool = false

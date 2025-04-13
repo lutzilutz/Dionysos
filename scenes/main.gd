@@ -188,9 +188,29 @@ func _on_user_manager_users_changed() -> void:
 	folder_manager.customer_name = ""
 	folder_manager.update_controls()
 
-func _on_users_users_imported(count: int, text: String) -> void:
-	import_result_dialog.get_node("VBoxContainer/Label").text = str(count) + " utilisateur(s) importé(s)"
-	import_result_dialog.get_node("VBoxContainer/ScrollContainer/Label").text = text
+func _on_users_users_imported(imported_count: int, imported_text: String, changed_count: int, changed_text: String) -> void:
+	if imported_count > 0:
+		import_result_dialog.get_node("VBoxContainer/ImportedLabel").text = str(imported_count) + " utilisateur(s) importé(s)"
+		import_result_dialog.get_node("VBoxContainer/ImportedContainer/Label").text = imported_text
+		import_result_dialog.get_node("VBoxContainer/ImportedLabel").visible = true
+		import_result_dialog.get_node("VBoxContainer/ImportedContainer").visible = true
+	else:
+		import_result_dialog.get_node("VBoxContainer/ImportedLabel").visible = false
+		import_result_dialog.get_node("VBoxContainer/ImportedContainer").visible = false
+	
+	if changed_count > 0:
+		import_result_dialog.get_node("VBoxContainer/ChangedLabel").text = str(changed_count) + " utilisateur(s) modifié(s)"
+		import_result_dialog.get_node("VBoxContainer/ChangedContainer/Label").text = changed_text
+		import_result_dialog.get_node("VBoxContainer/ChangedLabel").visible = true
+		import_result_dialog.get_node("VBoxContainer/ChangedContainer").visible = true
+	else:
+		import_result_dialog.get_node("VBoxContainer/ChangedLabel").visible = false
+		import_result_dialog.get_node("VBoxContainer/ChangedContainer").visible = false
+	
+	if imported_count == 0 and changed_count == 0:
+		import_result_dialog.get_node("VBoxContainer/ImportedLabel").text = "Aucun utilisateur importé, erreur !"
+		import_result_dialog.get_node("VBoxContainer/ImportedLabel").visible = true
+		PrintUtility.print_error("No user imported from file in main_scene._on_users_users_imported()")
 
 # =================================================================================================
 
