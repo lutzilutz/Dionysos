@@ -4,8 +4,10 @@ In-home software for Dry Kats Pictures projects.
 
 ## Features
 
-- Generates folder structure for a new project
+- Generating folder structure for a new project
 - Options to customize the structure
+- Database of customers and editors
+- Importing of database file
 
 No other features, for now ...
 
