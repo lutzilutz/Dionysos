@@ -39,6 +39,19 @@ mode_overrides_title = false
 file_mode = 2
 access = 2
 
+[node name="ImportDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Importer fichier utilisateur"
+initial_position = 2
+size = Vector2i(617, 375)
+visible = true
+content_scale_factor = 0.75
+ok_button_text = "Import"
+mode_overrides_title = false
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.json")
+
 [node name="Window" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -56,21 +69,23 @@ theme = ExtResource("3_4krfr")
 
 [node name="FileMenu" type="PopupMenu" parent="Window/MenuContainer/MenuBar"]
 title = "Fichier"
-size = Vector2i(294, 170)
-item_count = 6
+size = Vector2i(294, 174)
+item_count = 7
 item_0/text = "Nouveau projet"
 item_0/id = 1
-item_1/text = "Ouvrir dossier de sauvegarde"
-item_1/id = 2
-item_2/text = "Internet"
-item_2/id = 3
-item_2/separator = true
-item_3/text = "Ouvrir page de téléchargement"
-item_3/id = 4
-item_4/id = 5
-item_4/separator = true
-item_5/text = "Quitter"
-item_5/id = 0
+item_1/text = "Importer utilisateurs"
+item_1/id = 6
+item_2/text = "Ouvrir dossier de sauvegarde"
+item_2/id = 2
+item_3/text = "Internet"
+item_3/id = 3
+item_3/separator = true
+item_4/text = "Ouvrir page de téléchargement"
+item_4/id = 4
+item_5/id = 5
+item_5/separator = true
+item_6/text = "Quitter"
+item_6/id = 0
 
 [node name="EditMenu" type="PopupMenu" parent="Window/MenuContainer/MenuBar"]
 auto_translate_mode = 1
@@ -168,6 +183,7 @@ layout_mode = 1
 
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="file_selected" from="ImportDialog" to="." method="_on_import_dialog_file_selected"]
 [connection signal="id_pressed" from="Window/MenuContainer/MenuBar/FileMenu" to="." method="_on_file_menu_id_pressed"]
 [connection signal="id_pressed" from="Window/MenuContainer/MenuBar/EditMenu" to="." method="_on_edit_menu_id_pressed"]
 [connection signal="id_pressed" from="Window/MenuContainer/MenuBar/HelpMenu" to="." method="_on_help_menu_id_pressed"]

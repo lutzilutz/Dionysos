@@ -101,6 +101,8 @@ func _on_file_menu_id_pressed(id: int) -> void:
 			OS.shell_open(OS.get_user_data_dir())
 		4: # Open github releases
 			OS.shell_open("https://github.com/lutzilutz/Dionysos/releases")
+		6: # Import users file
+			users.import_from_file("")
 		_:
 			PrintUtility.print_info("Unkown file menu option")
 
@@ -185,3 +187,10 @@ func _on_user_manager_users_changed() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("PrintFolders"):
 		PrintUtility.print_folders(folder_manager.folder_tree)
+
+func _on_import_dialog_file_selected(path: String) -> void:
+	users.import_from_file(path)
+	users.save_to_file(SAVE_USERS_PATH)
+	user_manager.build_users()
+	folder_manager.build_editor_options()
+	folder_manager.build_customer_options()

@@ -4,16 +4,6 @@ const EDITORS_INCODE: Array = []
 const EDITORS_INFILE: Dictionary = {}
 const CUSTOMERS: Array = []
 
-const LUTZ_NAME: String = "Wfekt Wfek"
-const LUTZ_PHONE: String = "180 263 15 06"
-const LUTZ_EMAIL: String = "wfek@ocjvled.ns"
-const YANN_NAME: String = "Jlyy Xlezfdpv"
-const YANN_PHONE: String = "187 481 34 19"
-const YANN_EMAIL: String = "jlyy.xlezfdpv@ocjvled.ns"
-const KAREL_NAME: String = "Vlcpw Xlezfdpv"
-const KAREL_PHONE: String = "187 481 33 70"
-const KAREL_EMAIL: String = "vlcpw.xlezfdpv@ocjvled.ns"
-
 @export var all_users: Array = []
 
 func save_to_file(path:String) -> Error:
@@ -52,9 +42,6 @@ func purge_editors() -> void:
 		if u.function != DataManager.UserFunction.EDITOR:
 			tmp_users.append(u)
 	all_users = tmp_users
-	add_editor(decrypt_string(KAREL_NAME), decrypt_string(KAREL_PHONE), decrypt_string(KAREL_EMAIL))
-	add_editor(decrypt_string(LUTZ_NAME), decrypt_string(LUTZ_PHONE), decrypt_string(LUTZ_EMAIL))
-	add_editor(decrypt_string(YANN_NAME), decrypt_string(YANN_PHONE), decrypt_string(YANN_EMAIL))
 
 func purge_customers() -> void:
 	var tmp_users: Array = []
@@ -62,22 +49,6 @@ func purge_customers() -> void:
 		if u.function != DataManager.UserFunction.CUSTOMER:
 			tmp_users.append(u)
 	all_users = tmp_users
-
-static func generate_drykats_team() -> Dictionary:
-	var d: Dictionary
-	d[decrypt_string(LUTZ_NAME)] = {
-		"phone": decrypt_string(LUTZ_PHONE),
-		"email": decrypt_string(LUTZ_EMAIL)
-	}
-	d[decrypt_string(YANN_NAME)] = {
-		"phone": decrypt_string(YANN_PHONE),
-		"email": decrypt_string(YANN_EMAIL)
-	}
-	d[decrypt_string(KAREL_NAME)] = {
-		"phone": decrypt_string(KAREL_PHONE),
-		"email": decrypt_string(KAREL_EMAIL)
-	}
-	return d
 
 static func generate_drykats_customers() -> Dictionary:
 	var d: Dictionary
@@ -95,8 +66,8 @@ static func load_from_file(path: String) -> Users:
 		var new_file = FileAccess.open(path, FileAccess.WRITE)
 		var new_json = {
 			"version": ProjectSettings.get_setting("application/config/version"),
-			"editors": generate_drykats_team(),
-			"customers": generate_drykats_customers()
+			"editors": {},
+			"customers": {}
 		}
 		if new_file:
 			new_file.store_string(JSON.stringify(new_json, "\t"))
@@ -143,6 +114,43 @@ static func load_from_file(path: String) -> Users:
 		PrintUtility.print_info("Current users.json is version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
 		PrintUtility.print_TODO("Manage upgrade of users.json")
 	return res
+
+func import_from_file(path: String) -> void:
+	if not FileAccess.file_exists(path):
+		PrintUtility.print_error("File doesn't appear to exist : " + path)
+	else:
+		# Actual loading of the file into Users resource
+		PrintUtility.print_info("Importing " + path + " ...")
+		var editor_loaded_count: int = 0
+		var customer_loaded_count: int = 0
+		var file = FileAccess.get_file_as_string(path)
+		var json = JSON.parse_string(file) as Dictionary
+		var tmp_editors: Dictionary = json.get("editors", EDITORS_INFILE)
+		if tmp_editors != null :
+			for e_name in tmp_editors.keys():
+				editor_loaded_count += 1
+				var tmp_editor: User = User.new()
+				tmp_editor.name = e_name
+				tmp_editor.phone = tmp_editors[e_name].get("phone", "")
+				tmp_editor.email = tmp_editors[e_name].get("email", "")
+				tmp_editor.function = DataManager.UserFunction.EDITOR
+				all_users.append(tmp_editor)
+		
+		var tmp_customers: Dictionary = json.get("customers", EDITORS_INFILE)
+		if tmp_customers != null :
+			for e_name in tmp_customers.keys():
+				customer_loaded_count += 1
+				var tmp_customer: User = User.new()
+				tmp_customer.name = e_name
+				tmp_customer.phone = tmp_customers[e_name].get("phone", "")
+				tmp_customer.email = tmp_customers[e_name].get("email", "")
+				tmp_customer.function = DataManager.UserFunction.CUSTOMER
+				all_users.append(tmp_customer)
+		
+		PrintUtility.print_info("Imported " + str(editor_loaded_count) + " editors and " + str(customer_loaded_count) + " customers")
+		
+		if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
+			PrintUtility.print_info("Current json is version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
 
 func editor_exists(new_name: String) -> bool:
 	var editor_found: bool = false
@@ -218,28 +226,28 @@ func remove_user(user: User) -> void:
 	else:
 		PrintUtility.print_error("Couldn't find user in users.remove_user(user)")
 
-static func encrypt_string(text: String) -> String:
-	var new_text: String = ""
-	for i in range(text.length()):
-		if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:
-			new_text += String.chr(((text.unicode_at(i)-65 + 11) % 26) + 65)
-		elif text.unicode_at(i) >= 97 and text.unicode_at(i) <= 122:
-			new_text += String.chr(((text.unicode_at(i)-97 + 11) % 26) + 97)
-		elif text.unicode_at(i) >= 48 and text.unicode_at(i) <= 57:
-			new_text += String.chr(((text.unicode_at(i)-48 + 11) % 10) + 48)
-		else:
-			new_text += text[i]
-	return new_text
-
-static func decrypt_string(text: String) -> String:
-	var new_text: String = ""
-	for i in range(text.length()):
-		if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:
-			new_text += String.chr(((text.unicode_at(i)-65 + 15) % 26) + 65)
-		elif text.unicode_at(i) >= 97 and text.unicode_at(i) <= 122:
-			new_text += String.chr(((text.unicode_at(i)-97 + 15) % 26) + 97)
-		elif text.unicode_at(i) >= 48 and text.unicode_at(i) <= 57:
-			new_text += String.chr(((text.unicode_at(i)-48 + 9) % 10) + 48)
-		else:
-			new_text += text[i]
-	return new_text
+#static func encrypt_string(text: String) -> String:
+	#var new_text: String = ""
+	#for i in range(text.length()):
+		#if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:
+			#new_text += String.chr(((text.unicode_at(i)-65 + 11) % 26) + 65)
+		#elif text.unicode_at(i) >= 97 and text.unicode_at(i) <= 122:
+			#new_text += String.chr(((text.unicode_at(i)-97 + 11) % 26) + 97)
+		#elif text.unicode_at(i) >= 48 and text.unicode_at(i) <= 57:
+			#new_text += String.chr(((text.unicode_at(i)-48 + 11) % 10) + 48)
+		#else:
+			#new_text += text[i]
+	#return new_text
+#
+#static func decrypt_string(text: String) -> String:
+	#var new_text: String = ""
+	#for i in range(text.length()):
+		#if text.unicode_at(i) >= 65 and text.unicode_at(i) <= 90:
+			#new_text += String.chr(((text.unicode_at(i)-65 + 15) % 26) + 65)
+		#elif text.unicode_at(i) >= 97 and text.unicode_at(i) <= 122:
+			#new_text += String.chr(((text.unicode_at(i)-97 + 15) % 26) + 97)
+		#elif text.unicode_at(i) >= 48 and text.unicode_at(i) <= 57:
+			#new_text += String.chr(((text.unicode_at(i)-48 + 9) % 10) + 48)
+		#else:
+			#new_text += text[i]
+	#return new_text
