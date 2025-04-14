@@ -187,8 +187,8 @@ func import_from_file(path: String) -> void:
 		
 		if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
 			PrintUtility.print_info("Current json is version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
-	if imported_users.unicode_at(imported_users.length()-1) == 10 or imported_users.unicode_at(imported_users.length()-1) == 13:
-		imported_users = imported_users.left(imported_users.length()-1)
+	#if imported_users.unicode_at(imported_users.length()-1) == 10 or imported_users.unicode_at(imported_users.length()-1) == 13:
+		#imported_users = imported_users.left(imported_users.length()-1)
 	
 	users_imported.emit(imported_count, imported_users, changed_count, changed_users)
 

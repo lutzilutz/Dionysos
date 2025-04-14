@@ -61,6 +61,7 @@ func _ready() -> void:
 
 func _on_tabs_manager_change(type) -> void:
 	if type == TabButton.TabType.FOLDER_MANAGER:
+		folder_manager.reset_project()
 		workspace_title.text = "Générateur de dossiers"
 		folder_manager.visible = true
 		user_manager.visible = false

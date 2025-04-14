@@ -66,7 +66,7 @@ func build_users() -> void:
 	
 	var users: Array = main_scene.users.all_users.duplicate(true)
 	users.sort_custom(sort_users)
-	var is_even: bool = false
+	#var is_even: bool = false
 	for u in users:
 		var user_item: UserItem = UserItem.user_item_scene.instantiate()
 		user_item.set_user(u)
