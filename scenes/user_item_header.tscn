@@ -22,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_right = 18
+theme_override_constants/margin_right = 10
 
 [node name="UserContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -42,7 +42,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_rrmun")
-text = "Nom de l'utilisateur"
+text = "Nom de l'utilisateur ˅"
 vertical_alignment = 1
 text_overrun_behavior = 3
 

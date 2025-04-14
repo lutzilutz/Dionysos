@@ -142,10 +142,10 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="FolderManager" parent="Window/Workspace" instance=ExtResource("5_tipki")]
+visible = false
 layout_mode = 2
 
 [node name="UserManager" parent="Window/Workspace" instance=ExtResource("11_trceg")]
-visible = false
 layout_mode = 2
 
 [node name="Tutorial" parent="." instance=ExtResource("6_tefeu")]
