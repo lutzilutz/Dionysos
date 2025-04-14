@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4218x6ymovkk"]
+[gd_scene load_steps=6 format=3 uid="uid://c4218x6ymovkk"]
 
 [ext_resource type="Script" uid="uid://dk60bft2ddtod" path="res://scenes/user_manager.gd" id="1_yuxgv"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_cw3ii"]
 [ext_resource type="PackedScene" uid="uid://bxwcydol7xypb" path="res://scenes/user_item_header.tscn" id="2_m8pq0"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="3_m8pq0"]
 [ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="4_0psj5"]
-[ext_resource type="PackedScene" uid="uid://m566vcl3obw5" path="res://scenes/user_item.tscn" id="6_8hd43"]
 
 [node name="UserManager" type="Control"]
 layout_mode = 3
@@ -116,9 +115,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
-
-[node name="UserItem" parent="VBoxContainer/UsersScroll/VBoxContainer/UsersVBox" instance=ExtResource("6_8hd43")]
-layout_mode = 2
 
 [node name="Panel" type="Panel" parent="VBoxContainer"]
 visible = false
