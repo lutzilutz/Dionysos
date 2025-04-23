@@ -12,7 +12,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 follow_focus = true
-draw_focus_border = true
 script = ExtResource("1_686ck")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]

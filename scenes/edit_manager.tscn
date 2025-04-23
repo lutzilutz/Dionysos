@@ -27,7 +27,19 @@ grow_vertical = 2
 custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 
-[node name="GeneralLabel" type="Label" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="GeneralLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_bsji4")
+text = "Plus d'une heure"
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_djefy")
+
+[node name="GeneralLabel2" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("3_bsji4")
 text = "Informations générales"
@@ -97,5 +109,6 @@ ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/CheckBox" to="." method="_on_check_box_toggled"]
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]

@@ -4,11 +4,15 @@ const timecode_note_scene: PackedScene = preload("res://scenes/forms/timecode_no
 
 @onready var notes_container = get_node("VBoxContainer")
 
+var edit_manager
 var notes: EditNotes = EditNotes.new()
 
 func _ready() -> void:
 	notes_container.get_node("TimecodeNote").text_submitted_or_next.connect(_on_text_submitted_or_next)
 	notes_container.get_node("TimecodeNote").set_line_id(0)
+
+func init(parent) -> void:
+	edit_manager = parent
 
 func sort_notes_by_time() -> void:
 	notes_container.get_children().sort_custom(compare_times)
@@ -62,11 +66,16 @@ func build_notes_controls():
 		#print(notes.notes[i].frame)
 		notes_container.add_child(new_note)
 	
-	
 	var new_edit_note = timecode_note_scene.instantiate()
 	notes_container.add_child(new_edit_note)
 	new_edit_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
 	new_edit_note.set_line_id(notes_container.get_child_count()-1)
+	
+	update_hour_slot(edit_manager.use_hour)
+
+func update_hour_slot(use_hour: bool) -> void:
+	for c in notes_container.get_children():
+		c.get_node("HourEdit").visible = use_hour
 
 # Signals -----------------------------------------------------------------------------------------
 

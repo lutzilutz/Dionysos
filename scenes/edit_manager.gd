@@ -10,6 +10,7 @@ var customer_name: String = ""
 var version_name: String = ""
 #var version_suffix: String = ""
 var md_file_path: String = ""
+var use_hour: bool = false
 
 func init(scene) -> void:
 	main_scene = scene
@@ -17,6 +18,7 @@ func init(scene) -> void:
 		get_node("FileDialog").current_dir = main_scene.user_preferences.default_path
 	if main_scene.user_preferences.last_edit_manager_path != "":
 		_on_file_dialog_dir_selected(main_scene.user_preferences.last_edit_manager_path)
+	timecode_notes.init(self)
 
 func _ready() -> void:
 	project_summary.open_folder.connect(_on_open_folder_pressed)
@@ -24,19 +26,43 @@ func _ready() -> void:
 func generate_notes_string() -> String:
 	var s: String = ""
 	s += "# " + version_name
-	s += new_line()
-	s += "test " + str(int(Time.get_unix_time_from_system()))
-	s += new_line()
-	s += get_node("VBoxContainer/GeneralEdit").text
-	s += new_line()
-	s += "Liste des modifications :"
+	if get_node("VBoxContainer/GeneralEdit").text != "":
+		s += new_line()
+		s += get_node("VBoxContainer/GeneralEdit").text
 	if timecode_notes.notes.notes.size() > 0:
+		s += new_line()
+		s += "Liste des modifications :"
 		PrintUtility.print_gen("Generating " + str(timecode_notes.notes.notes.size()) + " notes ...")
 		for c in timecode_notes.notes.notes:
-			s += "\n - " + c.text
+			s += "\n - "
+			if c.has_timecode():
+				if c.hour > 0:
+					s += formatted_timecode_binome(c.hour) + ":"
+				else:
+					if get_node("VBoxContainer/HBoxContainer/CheckBox").button_pressed:
+						s += "00:"
+				if c.minute > 0:
+					s += formatted_timecode_binome(c.minute) + ":"
+				else:
+					s += "00:"
+				if c.second > 0:
+					s += formatted_timecode_binome(c.second) + ":"
+				else:
+					s += "00:"
+				if c.frame > 0:
+					s += formatted_timecode_binome(c.frame)
+				else:
+					s += "00"
 	else:
 		PrintUtility.print_gen("No timecode notes found")
 	return s
+
+func formatted_timecode_binome(value: int) -> String:
+	var result: String = ""
+	if value < 10:
+		result += "0"
+	result += str(value)
+	return result
 
 func new_line() -> String:
 	return "\n\n"
@@ -57,7 +83,7 @@ func write_to_file() -> void:
 		0:
 			PrintUtility.print_gen("MD successfully opened at " + file_path)
 			if file.get_length() > 0:
-				file.store_string(new_line() + notes_string)
+				file.store_string(new_line() + "---" + new_line() + notes_string)
 			else:
 				file.store_string(notes_string)
 		_:
@@ -131,3 +157,7 @@ func get_parent_path(path: String) -> String:
 
 func _on_button_pressed() -> void:
 	write_to_file()
+
+func _on_check_box_toggled(toggled_on: bool) -> void:
+	timecode_notes.update_hour_slot(toggled_on)
+	use_hour = toggled_on
