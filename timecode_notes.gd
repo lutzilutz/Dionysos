@@ -4,15 +4,19 @@ const timecode_note_scene: PackedScene = preload("res://scenes/forms/timecode_no
 
 @onready var notes_container = get_node("VBoxContainer")
 
+var main_scene
 var edit_manager
 var notes: EditNotes = EditNotes.new()
 
 func _ready() -> void:
 	notes_container.get_node("TimecodeNote").text_submitted_or_next.connect(_on_text_submitted_or_next)
+	notes_container.get_node("TimecodeNote").field_has_changed.connect(_on_field_has_changed)
 	notes_container.get_node("TimecodeNote").set_line_id(0)
 
-func init(parent) -> void:
+func init(gparent, parent) -> void:
+	main_scene = gparent
 	edit_manager = parent
+	notes_container.get_node("TimecodeNote").show_ids(main_scene.user_preferences.show_ids)
 
 func sort_notes_by_time() -> void:
 	notes_container.get_children().sort_custom(compare_times)
@@ -63,12 +67,17 @@ func build_notes_controls():
 		if notes.notes[i].minute > 0: new_note.get_node("MinuteEdit").text = str(notes.notes[i].minute)
 		if notes.notes[i].second > 0: new_note.get_node("SecondEdit").text = str(notes.notes[i].second)
 		if notes.notes[i].frame > 0: new_note.get_node("FrameEdit").text = str(notes.notes[i].frame)
-		#print(notes.notes[i].frame)
+		new_note.show_ids(main_scene.user_preferences.show_ids)
+		new_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
+		new_note.field_has_changed.connect(_on_field_has_changed)
+		new_note.update_timecode_visibility()
 		notes_container.add_child(new_note)
 	
 	var new_edit_note = timecode_note_scene.instantiate()
 	notes_container.add_child(new_edit_note)
+	new_edit_note.show_ids(main_scene.user_preferences.show_ids)
 	new_edit_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
+	new_edit_note.field_has_changed.connect(_on_field_has_changed)
 	new_edit_note.set_line_id(notes_container.get_child_count()-1)
 	
 	update_hour_slot(edit_manager.use_hour)
@@ -78,6 +87,21 @@ func update_hour_slot(use_hour: bool) -> void:
 		c.get_node("HourEdit").visible = use_hour
 
 # Signals -----------------------------------------------------------------------------------------
+
+func _on_field_has_changed(line_id: int, field_id: int, text: String) -> void:
+	if line_id < notes.notes.size()-1:
+		PrintUtility.print_signal("Field has changed : " + str(line_id) + " - " + str(field_id) + " - " + text)
+		match field_id:
+			0: # Hour
+				notes.notes[line_id].hour = int(text)
+			1: # Minute
+				notes.notes[line_id].minute = int(text)
+			2: # Second
+				notes.notes[line_id].second = int(text)
+			3: # Frame
+				notes.notes[line_id].frame = int(text)
+			4: # Text
+				notes.notes[line_id].text = text
 
 func _on_text_submitted_or_next(line_id: int) -> void:
 	# Save current line

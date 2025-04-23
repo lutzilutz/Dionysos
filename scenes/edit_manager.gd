@@ -18,7 +18,7 @@ func init(scene) -> void:
 		get_node("FileDialog").current_dir = main_scene.user_preferences.default_path
 	if main_scene.user_preferences.last_edit_manager_path != "":
 		_on_file_dialog_dir_selected(main_scene.user_preferences.last_edit_manager_path)
-	timecode_notes.init(self)
+	timecode_notes.init(main_scene, self)
 
 func _ready() -> void:
 	project_summary.open_folder.connect(_on_open_folder_pressed)
@@ -53,6 +53,11 @@ func generate_notes_string() -> String:
 					s += formatted_timecode_binome(c.frame)
 				else:
 					s += "00"
+			else:
+				if get_node("VBoxContainer/HBoxContainer/CheckBox").button_pressed:
+					s += "   "
+				s += "        "
+			s += " " + c.text
 	else:
 		PrintUtility.print_gen("No timecode notes found")
 	return s
@@ -90,9 +95,6 @@ func write_to_file() -> void:
 			PrintUtility.print_gen(file_path)
 			PrintUtility.print_gen("Unknown error : " + str(FileAccess.get_open_error()))
 
-func _on_open_folder_pressed() -> void:
-	get_node("FileDialog").visible = true
-
 func find_last_edit_version(project_path: String) -> void:
 	var name_result: String = ""
 	var suffix_result: String = ""
@@ -123,21 +125,6 @@ func find_last_edit_version(project_path: String) -> void:
 	version_name = name_result
 	project_summary.set_version_name(name_result)
 
-func _on_file_dialog_dir_selected(dir: String) -> void:
-	for d in DirAccess.get_directories_at(dir):
-		if d.contains("Working renders"):
-			if DirAccess.dir_exists_absolute(dir + "/" + d + "/Online drafts"):
-				PrintUtility.print_info("Found online drafts folder of project")
-				md_file_path = dir + "/" + d + "/Online drafts"
-	project_name = get_dir_name(dir)
-	project_summary.set_project_name(get_dir_name(dir))
-	customer_name = get_dir_name(get_parent_path(dir))
-	project_summary.set_customer_name(get_dir_name(get_parent_path(dir)))
-	find_last_edit_version(dir)
-	
-	main_scene.user_preferences.last_edit_manager_path = dir
-	main_scene.user_preferences.save_to_file(main_scene.SAVE_PREFERENCES_PATH)
-
 func get_dir_name(path: String) -> String:
 	var path_dirs = path.split("/")
 	for i in range(0, path_dirs.size()):
@@ -154,6 +141,43 @@ func get_parent_path(path: String) -> String:
 			if i < path_dirs.size()-2:
 				parent_path += "/"
 	return parent_path
+
+func show_ids(is_visible: bool) -> void:
+	for c in timecode_notes.notes_container.get_children():
+		c.get_node("Label").visible = is_visible
+
+func print_notes() -> void:
+	PrintUtility.print_info("Current notes are :")
+	if timecode_notes.notes.notes.size() > 0:
+		print("----------------------------------------------------------------")
+		for n in timecode_notes.notes.notes:
+			if n.has_timecode():
+				print(formatted_timecode_binome(n.hour) + ":" + formatted_timecode_binome(n.minute) + ":" + formatted_timecode_binome(n.second) + ":" + formatted_timecode_binome(n.frame) + " " + n.text)
+			else:
+				print("            " + n.text)
+		print("----------------------------------------------------------------")
+	else:
+		print("No note")
+
+# Signals -----------------------------------------------------------------------------------------
+
+func _on_open_folder_pressed() -> void:
+	get_node("FileDialog").visible = true
+
+func _on_file_dialog_dir_selected(dir: String) -> void:
+	for d in DirAccess.get_directories_at(dir):
+		if d.contains("Working renders"):
+			if DirAccess.dir_exists_absolute(dir + "/" + d + "/Online drafts"):
+				PrintUtility.print_info("Found online drafts folder of project")
+				md_file_path = dir + "/" + d + "/Online drafts"
+	project_name = get_dir_name(dir)
+	project_summary.set_project_name(get_dir_name(dir))
+	customer_name = get_dir_name(get_parent_path(dir))
+	project_summary.set_customer_name(get_dir_name(get_parent_path(dir)))
+	find_last_edit_version(dir)
+	
+	main_scene.user_preferences.last_edit_manager_path = dir
+	main_scene.user_preferences.save_to_file(main_scene.SAVE_PREFERENCES_PATH)
 
 func _on_button_pressed() -> void:
 	write_to_file()

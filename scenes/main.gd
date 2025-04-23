@@ -60,6 +60,7 @@ func _ready() -> void:
 	tutorial.tutorial_ended.connect(_on_tutorial_ended)
 	update_tutorial_screen()
 	update_edit_folder_follow_conventions()
+	update_edit_show_ids()
 	update_edit_hide_logo()
 	update_edit_show_highlights()
 	update_preferences_dialog()
@@ -166,6 +167,10 @@ func _on_edit_menu_id_pressed(id: int) -> void:
 			user_preferences.folder_follow_conventions = not user_preferences.folder_follow_conventions
 			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
 			update_edit_folder_follow_conventions()
+		8: # Show IDs
+			user_preferences.show_ids = not user_preferences.show_ids
+			user_preferences.save_to_file(SAVE_PREFERENCES_PATH)
+			update_edit_show_ids()
 		_:
 			PrintUtility.print_info("Unkown edition menu option")
 
@@ -181,6 +186,10 @@ func _on_help_menu_id_pressed(id: int) -> void:
 			splashscreen.enable(true)
 		_: #
 			PrintUtility.print_info("Unkown help menu option")
+
+func update_edit_show_ids() -> void:
+	edit_manager.show_ids(user_preferences.show_ids)
+	edit_menu.set_item_checked(edit_menu.get_item_index(8), user_preferences.show_ids)
 
 func update_edit_folder_follow_conventions() -> void:
 	edit_menu.set_item_checked(edit_menu.get_item_index(7), user_preferences.folder_follow_conventions)
@@ -233,7 +242,10 @@ func _on_users_users_imported(imported_count: int, imported_text: String, change
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("PrintFolders"):
-		PrintUtility.print_folders(folder_manager.folder_tree)
+		if tabs_manager.active_tab == 0:
+			PrintUtility.print_folders(folder_manager.folder_tree)
+		elif tabs_manager.active_tab == 2:
+			edit_manager.print_notes()
 
 func _on_import_dialog_file_selected(path: String) -> void:
 	users.import_from_file(path)
