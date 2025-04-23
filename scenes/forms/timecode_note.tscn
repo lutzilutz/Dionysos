@@ -11,9 +11,40 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_d74mw")
 
-[node name="TimecodeEdit" type="LineEdit" parent="."]
+[node name="HourEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("1_8j303")
+theme_override_constants/minimum_character_width = 2
+placeholder_text = "00"
+alignment = 1
+max_length = 2
+
+[node name="MinuteEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("1_8j303")
+theme_override_constants/minimum_character_width = 2
+placeholder_text = "00"
+alignment = 1
+max_length = 2
+
+[node name="SecondEdit" type="LineEdit" parent="."]
 layout_mode = 2
 theme = ExtResource("1_8j303")
+theme_override_constants/minimum_character_width = 2
+placeholder_text = "00"
+alignment = 1
+max_length = 2
+
+[node name="FrameEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("1_8j303")
+theme_override_constants/minimum_character_width = 2
+placeholder_text = "00"
+alignment = 1
+max_length = 2
 
 [node name="TextEdit" type="LineEdit" parent="."]
 layout_mode = 2
