@@ -14,6 +14,7 @@ const HAS_SEEN_TUTORIAL: bool = false
 @export var show_highlights: bool = SHOW_HIGHLIGHTS
 @export var has_seen_tutorial: bool = HAS_SEEN_TUTORIAL
 @export var last_user_import_path: String = DEFAULT_PATH
+@export var last_edit_manager_path: String = DEFAULT_PATH
 
 @export var achievements: Array = []
 
@@ -28,7 +29,8 @@ func save_to_file(path:String) -> Error:
 			"hide_logo": hide_logo,
 			"show_highlights": show_highlights,
 			"has_seen_tutorial": has_seen_tutorial,
-			"last_user_import_path": last_user_import_path
+			"last_user_import_path": last_user_import_path,
+			"last_edit_manager_path": last_edit_manager_path
 			},
 		"achievements": []
 	}
@@ -56,7 +58,8 @@ static func load_from_file(path: String) -> UserPreferences:
 				"hide_logo": HIDE_LOGO,
 				"show_highlights": SHOW_HIGHLIGHTS,
 				"has_seen_tutorial": HAS_SEEN_TUTORIAL,
-				"last_user_import_path": DEFAULT_PATH
+				"last_user_import_path": DEFAULT_PATH,
+				"last_edit_manager_path": DEFAULT_PATH
 				},
 			"achievements": []
 		}
@@ -82,6 +85,7 @@ static func load_from_file(path: String) -> UserPreferences:
 	res.show_highlights = json_pref.get("show_highlights", SHOW_HIGHLIGHTS)
 	res.has_seen_tutorial = json_pref.get("has_seen_tutorial", HAS_SEEN_TUTORIAL)
 	res.last_user_import_path = json_pref.get("last_user_import_path", DEFAULT_PATH)
+	res.last_edit_manager_path = json_pref.get("last_edit_manager_path", DEFAULT_PATH)
 	if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
 		PrintUtility.print_info("Current preferences are version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
 		PrintUtility.print_TODO("Manage upgrade of preferences.json")
@@ -95,4 +99,5 @@ func reset_user_preferences(path: String) -> void:
 	show_highlights = SHOW_HIGHLIGHTS
 	has_seen_tutorial = HAS_SEEN_TUTORIAL
 	last_user_import_path = DEFAULT_PATH
+	last_edit_manager_path = DEFAULT_PATH
 	save_to_file(path)

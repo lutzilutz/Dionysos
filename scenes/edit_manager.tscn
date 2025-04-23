@@ -97,4 +97,5 @@ ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]

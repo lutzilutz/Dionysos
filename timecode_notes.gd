@@ -43,7 +43,7 @@ func compare_times(a, b) -> bool:
 	
 	return false
 
-func build_notes_control():
+func build_notes_controls():
 	if notes.notes.size() == 0:
 		PrintUtility.print_info("No notes")
 	
@@ -55,14 +55,18 @@ func build_notes_control():
 		var new_note = timecode_note_scene.instantiate()
 		new_note.set_text(notes.notes[i].text)
 		new_note.set_line_id(notes.notes[i].line_id)
-		new_note.get_node("HourEdit").text = str(notes.notes[i].hour)
-		new_note.get_node("MinuteEdit").text = str(notes.notes[i].minute)
-		new_note.get_node("SecondEdit").text = str(notes.notes[i].second)
-		new_note.get_node("FrameEdit").text = str(notes.notes[i].frame)
-		print(notes.notes[i].frame)
+		if notes.notes[i].hour > 0: new_note.get_node("HourEdit").text = str(notes.notes[i].hour)
+		if notes.notes[i].minute > 0: new_note.get_node("MinuteEdit").text = str(notes.notes[i].minute)
+		if notes.notes[i].second > 0: new_note.get_node("SecondEdit").text = str(notes.notes[i].second)
+		if notes.notes[i].frame > 0: new_note.get_node("FrameEdit").text = str(notes.notes[i].frame)
+		#print(notes.notes[i].frame)
 		notes_container.add_child(new_note)
-	#var users: Array = main_scene.users.all_users.duplicate(true)
-	#users.sort_custom(sort_users)
+	
+	
+	var new_edit_note = timecode_note_scene.instantiate()
+	notes_container.add_child(new_edit_note)
+	new_edit_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
+	new_edit_note.set_line_id(notes_container.get_child_count()-1)
 
 # Signals -----------------------------------------------------------------------------------------
 
@@ -81,14 +85,14 @@ func _on_text_submitted_or_next(line_id: int) -> void:
 		
 		# Sort notes
 		notes.notes.sort_custom(compare_times)
-		build_notes_control()
+		build_notes_controls()
 		#print(notes.notes.size())
 		
 		# Generate new field
-		var new_edit_note = timecode_note_scene.instantiate()
-		notes_container.add_child(new_edit_note)
-		new_edit_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
-		new_edit_note.set_line_id(notes_container.get_child_count()-1)
+		#var new_edit_note = timecode_note_scene.instantiate()
+		#notes_container.add_child(new_edit_note)
+		#new_edit_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
+		#new_edit_note.set_line_id(notes_container.get_child_count()-1)
 		
 		# Manage scroll and focus
 		
