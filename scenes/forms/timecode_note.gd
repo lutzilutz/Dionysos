@@ -55,8 +55,8 @@ func has_timecode() -> bool:
 
 # Signals -----------------------------------------------------------------------------------------
 
-func _on_text_edit_text_submitted(new_text: String) -> void:
-	text_submitted_or_next.emit(line_id)
+#func _on_text_edit_text_submitted(new_text: String) -> void:
+	#text_submitted_or_next.emit(line_id)
 
 func _on_text_edit_focus_exited() -> void:
 	if get_node("TextEdit").text != "":

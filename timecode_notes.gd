@@ -59,6 +59,9 @@ func build_notes_controls():
 		n.queue_free()
 		await n.tree_exited
 	
+	if notes_container.get_child_count() > 0:
+		PrintUtility.print_error("Notes aren't emptied ! still " + str(notes_container.get_child_count()) + " children")
+	
 	for i in range(notes.notes.size()):
 		var new_note = timecode_note_scene.instantiate()
 		new_note.set_text(notes.notes[i].text)
@@ -89,7 +92,7 @@ func update_hour_slot(use_hour: bool) -> void:
 # Signals -----------------------------------------------------------------------------------------
 
 func _on_field_has_changed(line_id: int, field_id: int, text: String) -> void:
-	if line_id < notes.notes.size()-1:
+	if line_id <= notes.notes.size()-1:
 		PrintUtility.print_signal("Field has changed : " + str(line_id) + " - " + str(field_id) + " - " + text)
 		match field_id:
 			0: # Hour
@@ -114,12 +117,12 @@ func _on_text_submitted_or_next(line_id: int) -> void:
 	new_note.frame = int(notes_container.get_child(notes_container.get_child_count()-1).get_node("FrameEdit").text)
 	notes.notes.append(new_note)
 	
-	if line_id == notes_container.get_child_count()-1: # is the last line
+	#if line_id == notes_container.get_child_count()-1: # is the last line
 		
-		# Sort notes
-		notes.notes.sort_custom(compare_times)
-		build_notes_controls()
-		#print(notes.notes.size())
+	# Sort notes
+	notes.notes.sort_custom(compare_times)
+	build_notes_controls()
+	#print(notes.notes.size())
 		
 		# Generate new field
 		#var new_edit_note = timecode_note_scene.instantiate()
@@ -128,25 +131,3 @@ func _on_text_submitted_or_next(line_id: int) -> void:
 		#new_edit_note.set_line_id(notes_container.get_child_count()-1)
 		
 		# Manage scroll and focus
-		
-
-func _on_text_submitted_or_next_OLD(line_id: int) -> void:
-	if line_id == get_node("VBoxContainer").get_child_count()-1: # is the last line
-		
-		#sort_notes_by_time()
-		
-		var new_note = timecode_note_scene.instantiate()
-		get_node("VBoxContainer").add_child(new_note)
-		new_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
-		new_note.set_line_id(get_node("VBoxContainer").get_child_count()-1)
-		
-		new_note.get_node("TextEdit").grab_focus.call_deferred()
-		set_deferred("scroll_vertical", 20*scroll_vertical + 10000)
-		
-		# Go to previous control (coz of automatic tab behavior)
-		#var event := InputEventKey.new()
-		#event.pressed = true
-		#event.keycode = KEY_TAB
-		#event.shift_pressed = true
-		#Input.parse_input_event(event)
-		

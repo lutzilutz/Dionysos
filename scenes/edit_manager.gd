@@ -53,11 +53,8 @@ func generate_notes_string() -> String:
 					s += formatted_timecode_binome(c.frame)
 				else:
 					s += "00"
-			else:
-				if get_node("VBoxContainer/HBoxContainer/CheckBox").button_pressed:
-					s += "   "
-				s += "        "
-			s += " " + c.text
+				s += " "
+			s += c.text
 	else:
 		PrintUtility.print_gen("No timecode notes found")
 	return s
