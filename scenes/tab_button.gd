@@ -5,10 +5,12 @@ signal ask_tab_change(type)
 
 enum TabType {
 	FOLDER_MANAGER,
-	USER_MANAGER
+	USER_MANAGER,
+	EDIT_MANAGER
 }
 
 var folder_texture: Texture2D = preload("res://resources/icons/folder_64.png")
+var film_texture: Texture2D = preload("res://resources/icons/film_64.png")
 var user_texture: Texture2D = preload("res://resources/icons/user_64.png")
 
 @onready var texture_button = get_node("MarginContainer/TextureButton")
@@ -30,6 +32,8 @@ func update_textures() -> void:
 				texture_button.texture_normal = folder_texture
 			TabType.USER_MANAGER:
 				texture_button.texture_normal = user_texture
+			TabType.EDIT_MANAGER:
+				texture_button.texture_normal = film_texture
 
 func _on_texture_button_pressed() -> void:
 	ask_tab_change.emit(tab_type)

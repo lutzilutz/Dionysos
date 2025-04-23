@@ -21,6 +21,7 @@ var information_texture: Texture2D = preload("res://resources/icons/information_
 @onready var import_result_dialog = get_node("ImportResultDialog")
 @onready var tabs_manager = get_node("Window/Workspace/TabsManager")
 @onready var folder_manager = get_node("Window/Workspace/FolderManager")
+@onready var edit_manager = get_node("Window/Workspace/EditManager")
 @onready var user_manager = get_node("Window/Workspace/UserManager")
 
 @onready var workspace_title = get_node("Window/MenuContainer/WorkspaceTitle")
@@ -64,11 +65,19 @@ func _on_tabs_manager_change(type) -> void:
 		folder_manager.reset_project()
 		workspace_title.text = "Générateur de dossiers"
 		folder_manager.visible = true
+		edit_manager.visible = false
 		user_manager.visible = false
 		get_node("Window/MenuContainer/MenuBar/FileMenu").set_item_disabled(get_node("Window/MenuContainer/MenuBar/FileMenu").get_item_index(1), false)
+	elif type == TabButton.TabType.EDIT_MANAGER:
+		workspace_title.text = "Gestionnaire de montage"
+		folder_manager.visible = false
+		edit_manager.visible = true
+		user_manager.visible = false
+		get_node("Window/MenuContainer/MenuBar/FileMenu").set_item_disabled(get_node("Window/MenuContainer/MenuBar/FileMenu").get_item_index(1), true)
 	elif type == TabButton.TabType.USER_MANAGER:
 		workspace_title.text = "Gestionnaire des utilisateurs"
 		folder_manager.visible = false
+		edit_manager.visible = false
 		user_manager.visible = true
 		get_node("Window/MenuContainer/MenuBar/FileMenu").set_item_disabled(get_node("Window/MenuContainer/MenuBar/FileMenu").get_item_index(1), true)
 

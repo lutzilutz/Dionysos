@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dig0xjtabkdo7"]
+
+[ext_resource type="PackedScene" uid="uid://bin2jdsnx10cl" path="res://scenes/project_summary.tscn" id="1_4mfba"]
+[ext_resource type="Script" uid="uid://ga44f3k2eur7" path="res://scenes/edit_manager.gd" id="1_6twr2"]
+
+[node name="EditManager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6twr2")
+
+[node name="ProjectSummary" parent="." instance=ExtResource("1_4mfba")]
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+initial_position = 2
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
