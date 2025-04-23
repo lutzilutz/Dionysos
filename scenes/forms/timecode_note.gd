@@ -4,8 +4,12 @@ signal text_submitted_or_next(line_id)
 
 var line_id: int = 0
 
+func set_text(new_text: String) -> void:
+	get_node("TextEdit").text = new_text
+
 func set_line_id(new_id: int) -> void:
 	line_id = new_id
+	get_node("Label").text = str(new_id)
 
 func get_hour() -> int:
 	if get_node("HourEdit").text != "":

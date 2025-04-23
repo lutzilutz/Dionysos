@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://hjvjbhdtdj58"]
+[gd_scene load_steps=4 format=3 uid="uid://hjvjbhdtdj58"]
 
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_8j303"]
 [ext_resource type="Script" uid="uid://b03eeg23a72n" path="res://scenes/forms/timecode_note.gd" id="1_d74mw"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="3_o1e8s"]
 
 [node name="TimecodeNote" type="HBoxContainer"]
 anchors_preset = 10
@@ -10,6 +11,11 @@ offset_bottom = 17.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_d74mw")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("3_o1e8s")
+text = "0"
 
 [node name="HourEdit" type="LineEdit" parent="."]
 layout_mode = 2

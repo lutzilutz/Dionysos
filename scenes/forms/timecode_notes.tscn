@@ -3,12 +3,22 @@
 [ext_resource type="Script" uid="uid://da7cu2qja15yr" path="res://timecode_notes.gd" id="1_686ck"]
 [ext_resource type="PackedScene" uid="uid://hjvjbhdtdj58" path="res://scenes/forms/timecode_note.tscn" id="2_4mleq"]
 
-[node name="TimecodeNotes" type="VBoxContainer"]
-anchors_preset = 10
+[node name="TimecodeNotes" type="ScrollContainer"]
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 17.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+follow_focus = true
+draw_focus_border = true
 script = ExtResource("1_686ck")
 
-[node name="TimecodeNote" parent="." instance=ExtResource("2_4mleq")]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TimecodeNote" parent="VBoxContainer" instance=ExtResource("2_4mleq")]
 layout_mode = 2
