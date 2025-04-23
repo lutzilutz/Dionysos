@@ -19,3 +19,7 @@ LineEdit/styles/read_only = ExtResource("4_kr4kt")
 OptionButton/font_sizes/font_size = 12
 PopupMenu/font_sizes/font_size = 12
 PopupMenu/styles/panel = ExtResource("2_03wx3")
+TextEdit/font_sizes/font_size = 12
+TextEdit/styles/focus = ExtResource("1_r5rtp")
+TextEdit/styles/normal = ExtResource("2_03wx3")
+TextEdit/styles/read_only = ExtResource("4_kr4kt")

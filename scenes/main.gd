@@ -43,14 +43,19 @@ func _ready() -> void:
 	check_if_release()
 	version_label.set_text("Version " + ProjectSettings.get_setting("application/config/version"))
 	user_preferences = UserPreferences.load_from_file(SAVE_PREFERENCES_PATH)
+	
+	# Users --------------------
 	users = Users.load_from_file(SAVE_USERS_PATH)
 	user_manager.main_scene = self
 	user_manager.build_users()
 	user_manager.users_changed.connect(_on_user_manager_users_changed)
 	users.users_imported.connect(_on_users_users_imported)
 	
-	# Read-me init -----
+	# Read-me init --------------------
 	folder_manager.init(self)
+	
+	# Edit manager --------------------
+	edit_manager.init(self)
 	
 	tutorial.tutorial_ended.connect(_on_tutorial_ended)
 	update_tutorial_screen()

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd18obeh5crfo"]
+
+[ext_resource type="Script" uid="uid://da7cu2qja15yr" path="res://timecode_notes.gd" id="1_686ck"]
+[ext_resource type="PackedScene" uid="uid://hjvjbhdtdj58" path="res://scenes/forms/timecode_note.tscn" id="2_4mleq"]
+
+[node name="TimecodeNotes" type="VBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 17.0
+grow_horizontal = 2
+script = ExtResource("1_686ck")
+
+[node name="TimecodeNote" parent="." instance=ExtResource("2_4mleq")]
+layout_mode = 2

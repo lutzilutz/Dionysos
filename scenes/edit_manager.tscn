@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dig0xjtabkdo7"]
+[gd_scene load_steps=6 format=3 uid="uid://dig0xjtabkdo7"]
 
 [ext_resource type="PackedScene" uid="uid://bin2jdsnx10cl" path="res://scenes/project_summary.tscn" id="1_4mfba"]
 [ext_resource type="Script" uid="uid://ga44f3k2eur7" path="res://scenes/edit_manager.gd" id="1_6twr2"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="3_bsji4"]
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="4_djefy"]
+[ext_resource type="PackedScene" uid="uid://bd18obeh5crfo" path="res://scenes/forms/timecode_notes.tscn" id="5_djefy"]
 
 [node name="EditManager" type="Control"]
 layout_mode = 3
@@ -12,7 +15,70 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6twr2")
 
-[node name="ProjectSummary" parent="." instance=ExtResource("1_4mfba")]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProjectSummary" parent="VBoxContainer" instance=ExtResource("1_4mfba")]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="GeneralLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_bsji4")
+text = "Informations générales"
+
+[node name="GeneralEdit" type="TextEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme = ExtResource("4_djefy")
+placeholder_text = "Écrire ici"
+
+[node name="AdditionsLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_bsji4")
+text = "Ajouts"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TimecodeEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_djefy")
+
+[node name="TextEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_djefy")
+
+[node name="ChangesLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_bsji4")
+text = "Modifications"
+
+[node name="TimecodeNotes" parent="VBoxContainer" instance=ExtResource("5_djefy")]
+layout_mode = 2
+
+[node name="DeletionsLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_bsji4")
+text = "Suppressions"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TimecodeEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_djefy")
+
+[node name="TextEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_djefy")
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"

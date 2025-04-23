@@ -146,7 +146,9 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="EditManager" parent="Window/Workspace" instance=ExtResource("6_85g3d")]
+visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="UserManager" parent="Window/Workspace" instance=ExtResource("11_trceg")]
 visible = false

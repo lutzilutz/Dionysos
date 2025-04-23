@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://hjvjbhdtdj58"]
+
+[ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="1_8j303"]
+[ext_resource type="Script" uid="uid://b03eeg23a72n" path="res://scenes/forms/timecode_note.gd" id="1_d74mw"]
+
+[node name="TimecodeNote" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 17.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("1_d74mw")
+
+[node name="TimecodeEdit" type="LineEdit" parent="."]
+layout_mode = 2
+theme = ExtResource("1_8j303")
+
+[node name="TextEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_8j303")
+
+[connection signal="focus_exited" from="TextEdit" to="." method="_on_text_edit_focus_exited"]
+[connection signal="text_submitted" from="TextEdit" to="." method="_on_text_edit_text_submitted"]
