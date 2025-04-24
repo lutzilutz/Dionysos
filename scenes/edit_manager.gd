@@ -144,14 +144,15 @@ func show_ids(is_visible: bool) -> void:
 		c.get_node("Label").visible = is_visible
 
 func print_notes() -> void:
+	PrintUtility.print_info("Currently " + str(timecode_notes.notes_container.get_child_count()) + " TimecodeNotes and " + str(timecode_notes.notes.notes.size()) + " EditNotes")
 	PrintUtility.print_info("Current notes are :")
 	if timecode_notes.notes.notes.size() > 0:
 		print("----------------------------------------------------------------")
 		for n in timecode_notes.notes.notes:
 			if n.has_timecode():
-				print(formatted_timecode_binome(n.hour) + ":" + formatted_timecode_binome(n.minute) + ":" + formatted_timecode_binome(n.second) + ":" + formatted_timecode_binome(n.frame) + " " + n.text)
+				print(str(n.note_id) + " " + formatted_timecode_binome(n.hour) + ":" + formatted_timecode_binome(n.minute) + ":" + formatted_timecode_binome(n.second) + ":" + formatted_timecode_binome(n.frame) + " " + n.text)
 			else:
-				print("            " + n.text)
+				print(str(n.note_id) + "             " + n.text)
 		print("----------------------------------------------------------------")
 	else:
 		print("No note")

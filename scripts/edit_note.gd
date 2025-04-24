@@ -1,6 +1,6 @@
 class_name EditNote extends Node
 
-var line_id: int = 0
+var note_id: int = 0
 var hour: int = 0
 var minute: int = 0
 var second: int = 0
