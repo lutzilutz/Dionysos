@@ -1,9 +1,7 @@
 class_name TimecodeNote extends HBoxContainer
 
-signal text_submitted_or_next(line_id: int)
 signal note_submitted(note_id: int, hour: int, minute: int, second: int, frame: int, text: String)
 signal field_has_changed(line_id: int, field_id: int, text: String)
-signal new_note(id: int)
 signal note_need_deletion(note_id: int)
 
 var empty_note: bool = true
@@ -24,15 +22,8 @@ func update_timecode_visibility() -> void:
 		get_node("SecondEdit").modulate = Color(1,1,1,0.25)
 		get_node("FrameEdit").modulate = Color(1,1,1,0.25)
 
-#func update_new_note_visibility(new_visibility: bool) -> void:
-	#print("updating timecode note to " + str(new_visibility))
-	#if new_visibility:
-		#empty_note = false
-		##modulate = Color(1,1,1,1)
-
 func set_empty_note() -> void:
 	if empty_note:
-		#new_note.emit(note_id)
 		modulate = Color(1,1,1,1)
 	empty_note = false
 
@@ -77,28 +68,19 @@ func has_timecode() -> bool:
 func _on_text_edit_text_submitted(new_text: String) -> void:
 	note_submitted.emit(note_id, int(get_node("HourEdit").text), int(get_node("MinuteEdit").text), int(get_node("SecondEdit").text), int(get_node("FrameEdit").text), new_text)
 
-func _on_text_edit_focus_exited() -> void:
-	if get_node("TextEdit").text != "":
-		text_submitted_or_next.emit(note_id)
-
 func _on_hour_edit_text_changed(new_text: String) -> void:
-	#set_empty_note()
 	field_has_changed.emit(note_id, 0, new_text)
 
 func _on_minute_edit_text_changed(new_text: String) -> void:
-	#set_empty_note()
 	field_has_changed.emit(note_id, 1, new_text)
 
 func _on_second_edit_text_changed(new_text: String) -> void:
-	#set_empty_note()
 	field_has_changed.emit(note_id, 2, new_text)
 
 func _on_frame_edit_text_changed(new_text: String) -> void:
-	#set_empty_note()
 	field_has_changed.emit(note_id, 3, new_text)
 
 func _on_text_edit_text_changed(new_text: String) -> void:
-	#set_empty_note()
 	field_has_changed.emit(note_id, 4, new_text)
 
 func _on_delete_button_pressed() -> void:

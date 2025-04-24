@@ -9,9 +9,7 @@ var edit_manager
 var notes: EditNotes = EditNotes.new()
 
 func _ready() -> void:
-	notes_container.get_node("TimecodeNote").text_submitted_or_next.connect(_on_text_submitted_or_next)
 	notes_container.get_node("TimecodeNote").field_has_changed.connect(_on_field_has_changed)
-	notes_container.get_node("TimecodeNote").new_note.connect(_on_new_note)
 	notes_container.get_node("TimecodeNote").note_submitted.connect(_on_note_submitted)
 	notes_container.get_node("TimecodeNote").note_need_deletion.connect(_on_note_need_deletion)
 	notes_container.get_node("TimecodeNote").set_line_id(0)
@@ -20,6 +18,7 @@ func init(gparent, parent) -> void:
 	main_scene = gparent
 	edit_manager = parent
 	notes_container.get_node("TimecodeNote").show_ids(main_scene.user_preferences.show_ids)
+	update_hour_slot(edit_manager.use_hour)
 
 func sort_notes_by_time() -> void:
 	notes_container.get_children().sort_custom(compare_times)
@@ -74,18 +73,14 @@ func build_notes_controls():
 		if notes.notes[i].second > 0: new_note.get_node("SecondEdit").text = str(notes.notes[i].second)
 		if notes.notes[i].frame > 0: new_note.get_node("FrameEdit").text = str(notes.notes[i].frame)
 		new_note.show_ids(main_scene.user_preferences.show_ids)
-		new_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
 		new_note.field_has_changed.connect(_on_field_has_changed)
-		new_note.new_note.connect(_on_new_note)
 		new_note.update_timecode_visibility()
 		new_note.update_new_note_visibility(true)
 		notes_container.add_child(new_note)
 	
 	var new_edit_note = timecode_note_scene.instantiate()
 	new_edit_note.show_ids(main_scene.user_preferences.show_ids)
-	new_edit_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
 	new_edit_note.field_has_changed.connect(_on_field_has_changed)
-	new_edit_note.new_note.connect(_on_new_note)
 	new_edit_note.set_line_id(notes.get_next_id())
 	new_edit_note.update_new_note_visibility(false)
 	notes_container.add_child(new_edit_note)
@@ -141,26 +136,14 @@ func _on_note_submitted(note_id: int, hour: int, minute: int, second: int, frame
 		get_timecode_note(note_id).set_empty_note()
 		var tcn: TimecodeNote = timecode_note_scene.instantiate()
 		notes_container.add_child(tcn)
-		tcn.text_submitted_or_next.connect(_on_text_submitted_or_next)
 		tcn.field_has_changed.connect(_on_field_has_changed)
-		tcn.new_note.connect(_on_new_note)
 		tcn.note_submitted.connect(_on_note_submitted)
 		tcn.note_need_deletion.connect(_on_note_need_deletion)
 		tcn.set_line_id(notes.get_next_id())
+		tcn.get_node("TextEdit").grab_focus()
+		update_hour_slot(edit_manager.use_hour)
 	else:
 		PrintUtility.print_TODO("Manage existing note (maybe unecessary)")
-	
-	#if not notes.contains_note_id(note_id):
-		#var note: EditNote = EditNote.new()
-		#note.note_id = note_id
-		#note.hour = hour
-		#note.minute = minute
-		#note.second = second
-		#note.frame = frame
-		#note.text = text
-		#notes.notes.append(note)
-	#else:
-		#PrintUtility.print_TODO("Change existing note with new fields in _on_note_submitted")
 
 func _on_new_note(note_id: int) -> void:
 	PrintUtility.print_signal("TimecodeNotes recieved new_note(" + str(note_id) + ")")
@@ -169,7 +152,6 @@ func _on_field_has_changed(note_id: int, field_id: int, text: String) -> void:
 	PrintUtility.print_signal("Field has changed : " + str(note_id) + " - " + str(field_id) + " - " + text)
 	
 	if not get_timecode_note(note_id).empty_note:
-		#PrintUtility.print_TODO("Manage existing note update")
 		if notes.contains_note_id(note_id):
 			var current_note: EditNote = notes.get_note_by_id(note_id)
 			match field_id:
@@ -185,49 +167,3 @@ func _on_field_has_changed(note_id: int, field_id: int, text: String) -> void:
 					current_note.text = text
 		else:
 			PrintUtility.print_error("Didn't find corresponding note id in EditNotes !")
-	
-	#if not notes.contains_note_id(line_id):
-		#var note: EditNote = EditNote.new()
-		#note.note_id = notes.get_next_id()
-		#notes.notes.append(note)
-	#else:
-		#PrintUtility.print_TODO("Change existing note with new fields")
-	#
-	#match field_id:
-		#0: # Hour
-			#notes.notes[line_id].hour = int(text)
-		#1: # Minute
-			#notes.notes[line_id].minute = int(text)
-		#2: # Second
-			#notes.notes[line_id].second = int(text)
-		#3: # Frame
-			#notes.notes[line_id].frame = int(text)
-		#4: # Text
-			#notes.notes[line_id].text = text
-
-func _on_text_submitted_or_next(line_id: int) -> void:
-	# Save current line
-	#var new_note: EditNote = EditNote.new()
-	#new_note.text = notes_container.get_child(notes_container.get_child_count()-1).get_node("TextEdit").text
-	#new_note.note_id = notes_container.get_child_count()-1
-	#new_note.hour = int(notes_container.get_child(notes_container.get_child_count()-1).get_node("HourEdit").text)
-	#new_note.minute = int(notes_container.get_child(notes_container.get_child_count()-1).get_node("MinuteEdit").text)
-	#new_note.second = int(notes_container.get_child(notes_container.get_child_count()-1).get_node("SecondEdit").text)
-	#new_note.frame = int(notes_container.get_child(notes_container.get_child_count()-1).get_node("FrameEdit").text)
-	#notes.notes.append(new_note)
-	
-	#if line_id == notes_container.get_child_count()-1: # is the last line
-		
-	# Sort notes
-	#notes.notes.sort_custom(compare_times)
-	#build_notes_controls()
-	#print(notes.notes.size())
-		
-		# Generate new field
-		#var new_edit_note = timecode_note_scene.instantiate()
-		#notes_container.add_child(new_edit_note)
-		#new_edit_note.text_submitted_or_next.connect(_on_text_submitted_or_next)
-		#new_edit_note.set_line_id(notes_container.get_child_count()-1)
-		
-		# Manage scroll and focus
-	pass
