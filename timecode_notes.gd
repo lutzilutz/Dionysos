@@ -169,10 +169,9 @@ func _on_field_has_changed(note_id: int, field_id: int, text: String) -> void:
 	PrintUtility.print_signal("Field has changed : " + str(note_id) + " - " + str(field_id) + " - " + text)
 	
 	if not get_timecode_note(note_id).empty_note:
-		PrintUtility.print_TODO("Manage existing note update")
+		#PrintUtility.print_TODO("Manage existing note update")
 		if notes.contains_note_id(note_id):
 			var current_note: EditNote = notes.get_note_by_id(note_id)
-			print(current_note)
 			match field_id:
 				0: # Hour
 					current_note.hour = int(text)

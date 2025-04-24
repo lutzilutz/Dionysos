@@ -31,7 +31,7 @@ func get_note_by_id(new_id: int) -> EditNote:
 	return result
 
 func remove_note_by_id(new_id: int) -> void:
-	PrintUtility.print_info("Before deletion " + str(notes.size()) + " notes")
+	#PrintUtility.print_info("Before deletion " + str(notes.size()) + " notes")
 	var index_to_delete: int = -1
 	for i in range(notes.size()):
 		if notes[i].note_id == new_id:
@@ -42,4 +42,4 @@ func remove_note_by_id(new_id: int) -> void:
 	else:
 		notes.remove_at(index_to_delete)
 	
-	PrintUtility.print_info("After deletion " + str(notes.size()) + " notes")
+	#PrintUtility.print_info("After deletion " + str(notes.size()) + " notes")
