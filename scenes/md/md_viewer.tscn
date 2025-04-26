@@ -10,32 +10,6 @@ offset_right = 474.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n0rui")
-text = "# Version v12
-
-Première maquette de la vidéo. Tout peut encore changer, et tout serait à affiner (certains effets sont très grossiers pour l'instant).
-Ne pas trop s'attarder sur les détails, regarder l'ensemble, le rythme, l'ambiance générale. Pas besoin de faire de retour type \"on aurait un meilleur plan que celui-là ?\".
-J'ai posé mes idées sur la table. Plus bas une liste des différents effets et délires.
-
-Après discussion avec Théo (qui lui a discuté avec toi je crois) :
-Il faudrait que vous décidiez quel public vous souhaitez atteindre. Ma proposition marche bien pour toucher un public large.
-Théo m'a exprimé votre doute concernant Massive Sunstroke. Il faut décider d'un public cible et ça vous aidera à trouver le meilleur morceau.
-Pour rebondir, je pense je pourrai pas faire un montage aussi punchy et fun sur un des autres morceaux. Ca m'inspire beaucoup Massive Sunstroke.
-Exemples de public cible possible :
-- Grand public, tout le monde -> Massive Sunstroke, montage bien rapide, fun
-- Amateurs·ices de musique plus raffinée -> autre morceau à décider
-- Amateurs·ices de jazz en particulier -> autre morceau à décider
-
-(Alternative ... faire 2 vidéos, la présente + une autre sur un autre morceau que vous préférez. Forcément c'est du travail en plus mais je reconnais être un peu chaud tout de même ... Je laisse ça là et te laisse me redire si jamais.)
-
-Liste des modifications :
- - Couleurs de l'affiche du Cully sur le titre
- - Désaturé et peu contrasté jusqu'au drop 16:00, ensuite toute la couleur et contraste
- - Levers de bras avant le drop, sorte de \"Non c'est pas vrai, on est pas musiciens, je vois pas de quoi tu parles\" ou alors sorte de \"C'est pas ma faute si on crée plein de musiques incroyables\", avec un effet d'éblouissement en crescendo
- - (J'ai failli ajouter des lunettes cartoons, des palmiers, une planche de surf, à 15:03 sur Nathan. Ca me semblait too much)
- - 3 plans sur la peluche caisse claire finissant sur un \"rude\" à force de se faire taper par Nathan. Je peux affiner les expressions des yeux et l'émotion de la peluche : elle a pas remarqué Nathan -> aïe un 1er coup -> 2ème coup elle commence à s'énerver -> 3ème coup elle est soulée \"rude\"
- - Effet kaléïdoscope à plusieurs moments (02:11, 11:00, ...)
- - 42:00:00 Défenses de morse (type cartoon) sur S+T+N à mais parfaitement tracké et intégré à la vidéo. Même esthétique que les yeux, cartoon-2D-flat
- - 44:00:00 Morse + \"It's alive\" dans les spots de Cully. J'ai essayé une version un peu discrète, comme pas bien éclairé, le morse est inquiétant, on ne voit presque que ses yeux et ses défenses (à améliorer bien sûr)"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

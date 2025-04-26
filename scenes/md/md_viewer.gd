@@ -1,4 +1,3 @@
-@tool
 extends Control
 
 const MD_Title: PackedScene = preload("res://scenes/md/md_title.tscn")
@@ -28,8 +27,18 @@ func parse_md_file() -> void:
 				new_title.text = remove_heading_prefix(line)
 				container.add_child(new_title)
 				previous_line_empty = false
-			#elif line[0] == " " and line[1] == "-":
+			elif line.begins_with(" - "):
 				#PrintUtility.print_info("Line is list : " + line)
+				if new_paragraph:
+					current_paragraph = MD_Text.instantiate()
+					current_paragraph.text = ""
+					container.add_child(current_paragraph)
+					new_paragraph = false
+					current_paragraph.text += line.right(line.length()-3)
+				else:
+					if previous_line_empty:
+						current_paragraph.text += "\n"
+					current_paragraph.text += "\n   • " + line.right(line.length()-3)
 				#new_paragraph = true
 				#previous_line_empty = false
 			else:
