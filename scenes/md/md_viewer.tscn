@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://dbmtthi4qngmy" path="res://scenes/md/md_viewer.gd" id="1_n0rui"]
 
-[node name="MDViewer" type="VBoxContainer"]
+[node name="MDViewer" type="ScrollContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 474.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n0rui")
@@ -35,3 +36,8 @@ Liste des modifications :
  - Effet kaléïdoscope à plusieurs moments (02:11, 11:00, ...)
  - 42:00:00 Défenses de morse (type cartoon) sur S+T+N à mais parfaitement tracké et intégré à la vidéo. Même esthétique que les yeux, cartoon-2D-flat
  - 44:00:00 Morse + \"It's alive\" dans les spots de Cully. J'ai essayé une version un peu discrète, comme pas bien éclairé, le morse est inquiétant, on ne voit presque que ses yeux et ses défenses (à améliorer bien sûr)"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

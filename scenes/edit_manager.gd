@@ -103,7 +103,7 @@ func get_versions_list(project_path: String) -> Array:
 	for d in DirAccess.get_directories_at(project_path):
 		if d.contains("Working renders"):
 			if DirAccess.dir_exists_absolute(project_path + "/" + d + "/Online drafts"):
-				PrintUtility.print_info("Found online drafts folder of project")
+				#PrintUtility.print_info("Found online drafts folder of project")
 				found_drafts_folder = true
 				drafts_folder = project_path + "/" + d + "/Online drafts"
 	if found_drafts_folder:
@@ -121,6 +121,7 @@ func get_versions_list(project_path: String) -> Array:
 			var current = versions.pop_front()
 			if current == version_id:
 				if versions.size() >= 1:
+					#PrintUtility.print_info("Trying to find previous version in notes : " + str(versions[0]))
 					find_previous_edit_version(drafts_folder, versions.pop_front())
 				break
 			loop_count += 1
@@ -130,6 +131,7 @@ func get_versions_list(project_path: String) -> Array:
 func find_previous_edit_version(folder: String, version: int) -> void:
 	PrintUtility.print_info("Searching previous version notes v" + str(version))
 	var result: String = ""
+	var parsing_previous: bool = false
 	var found_previous: bool = false
 	for f in DirAccess.get_files_at(folder):
 		if f.ends_with(".md"):
@@ -138,26 +140,33 @@ func find_previous_edit_version(folder: String, version: int) -> void:
 			var content = FileAccess.get_file_as_string(folder + "/" + f)
 			for line in content.split("\n", false, 0):
 				
-				if found_previous:
+				if parsing_previous:
 					if line != "---" and not line.begins_with("#"):
 						result += "\n" + line
 				
 				if line.length() >= 4:
 					if line.begins_with("#"):
+						#PrintUtility.print_info("Found title line : " + line)
 						var line_elements = line.split(" ")
 						line_elements.remove_at(0)
 						while line_elements.size() > 0:
 							var tmp_line_element: String = line_elements[0]
 							if tmp_line_element.length() <= 4:
 								if tmp_line_element.begins_with("v"):
+									#PrintUtility.print_info("Line version is " + tmp_line_element)
 									var version_string = tmp_line_element.erase(0, 1)
 									if int(version_string) == version:
+										PrintUtility.print_info("Found previous version title " + tmp_line_element)
+										print(line)
+										parsing_previous = true
 										found_previous = true
 										result += line
+										break
 									else:
-										found_previous = false
+										parsing_previous = false
 							line_elements.remove_at(0)
-	
+	if not found_previous:
+		result = "Aucune note pour la version précédente"
 	get_node("HBoxContainer/MDViewer").text = result
 	get_node("HBoxContainer/MDViewer").parse_md_file()
 
@@ -169,7 +178,7 @@ func find_last_edit_version(project_path: String) -> void:
 	for d in DirAccess.get_directories_at(project_path):
 		if d.contains("Working renders"):
 			if DirAccess.dir_exists_absolute(project_path + "/" + d + "/Online drafts"):
-				PrintUtility.print_info("Found online drafts folder of project")
+				#PrintUtility.print_info("Found online drafts folder of project")
 				found_drafts_folder = true
 				drafts_folder = project_path + "/" + d + "/Online drafts"
 	if found_drafts_folder:
@@ -232,7 +241,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	for d in DirAccess.get_directories_at(dir):
 		if d.contains("Working renders"):
 			if DirAccess.dir_exists_absolute(dir + "/" + d + "/Online drafts"):
-				PrintUtility.print_info("Found online drafts folder of project")
+				#PrintUtility.print_info("Found online drafts folder of project")
 				md_file_path = dir + "/" + d + "/Online drafts"
 	project_name = get_dir_name(dir)
 	project_summary.set_project_name(get_dir_name(dir))

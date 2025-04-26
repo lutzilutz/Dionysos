@@ -6,11 +6,13 @@ const MD_Text: PackedScene = preload("res://scenes/md/md_text.tscn")
 
 @export_multiline var text: String
 
+@onready var container = get_node("VBoxContainer")
+
 func _ready() -> void:
 	parse_md_file()
 
 func parse_md_file() -> void:
-	for c in get_children():
+	for c in container.get_children():
 		c.queue_free()
 		await c.tree_exited
 	var lines = text.split("\n")
@@ -24,7 +26,7 @@ func parse_md_file() -> void:
 				new_paragraph = true
 				var new_title = MD_Title.instantiate()
 				new_title.text = remove_heading_prefix(line)
-				add_child(new_title)
+				container.add_child(new_title)
 				previous_line_empty = false
 			#elif line[0] == " " and line[1] == "-":
 				#PrintUtility.print_info("Line is list : " + line)
@@ -35,7 +37,7 @@ func parse_md_file() -> void:
 				if new_paragraph:
 					current_paragraph = MD_Text.instantiate()
 					current_paragraph.text = ""
-					add_child(current_paragraph)
+					container.add_child(current_paragraph)
 					new_paragraph = false
 					current_paragraph.text += line
 				else:
