@@ -135,7 +135,7 @@ func find_previous_edit_version(folder: String, version: int) -> void:
 		if f.ends_with(".md"):
 			var file = FileAccess.open(folder + "/" + f, FileAccess.READ_WRITE)
 			var content = FileAccess.get_file_as_string(folder + "/" + f)
-			for line in content.split("\n", false, 0):
+			for line in content.split("\n", true, 0):
 				
 				if parsing_previous:
 					if line != "---" and not line.begins_with("#"):
@@ -160,6 +160,7 @@ func find_previous_edit_version(folder: String, version: int) -> void:
 							line_elements.remove_at(0)
 	if not found_previous:
 		result = "Aucune note pour la version précédente"
+	#print(result)
 	get_node("HBoxContainer/MDViewer").text = result
 	get_node("HBoxContainer/MDViewer").parse_md_file()
 

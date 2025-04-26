@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dig0xjtabkdo7"]
+[gd_scene load_steps=8 format=3 uid="uid://dig0xjtabkdo7"]
 
 [ext_resource type="PackedScene" uid="uid://bin2jdsnx10cl" path="res://scenes/project_summary.tscn" id="1_4mfba"]
 [ext_resource type="Script" uid="uid://ga44f3k2eur7" path="res://scenes/edit_manager.gd" id="1_6twr2"]
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="3_bsji4"]
 [ext_resource type="Theme" uid="uid://dyrjygu16dfdq" path="res://resources/themes/default_ui_control.tres" id="4_djefy"]
 [ext_resource type="PackedScene" uid="uid://bd18obeh5crfo" path="res://scenes/forms/timecode_notes.tscn" id="5_djefy"]
+[ext_resource type="Theme" uid="uid://c8uwvslah7v4d" path="res://resources/themes/default_separator.tres" id="6_l2ktm"]
 [ext_resource type="PackedScene" uid="uid://dad27nvn8w3bu" path="res://scenes/md/md_viewer.tscn" id="6_vmtd3"]
 
 [node name="EditManager" type="Control"]
@@ -122,6 +123,10 @@ layout_mode = 2
 theme = ExtResource("4_djefy")
 theme_override_font_sizes/font_size = 24
 text = "Save"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("6_l2ktm")
 
 [node name="MDViewer" parent="HBoxContainer" instance=ExtResource("6_vmtd3")]
 layout_mode = 2
