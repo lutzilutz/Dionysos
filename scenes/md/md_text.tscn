@@ -1,8 +1,31 @@
-[gd_scene format=3 uid="uid://bh8g7hjxgnwnq"]
+[gd_scene load_steps=3 format=3 uid="uid://bh8g7hjxgnwnq"]
 
-[node name="MDText" type="Label"]
-offset_right = 40.0
+[ext_resource type="Script" uid="uid://bpr8vter7xd7t" path="res://scenes/md/md_text.gd" id="1_6r4an"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_mk0fe"]
+
+[node name="MDText" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
 offset_bottom = 23.0
-theme_override_font_sizes/font_size = 12
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("1_6r4an")
+
+[node name="ListLabel" type="Label" parent="."]
+visible = false
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("2_mk0fe")
+text = "•"
+horizontal_alignment = 2
+autowrap_mode = 2
+
+[node name="TextLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_mk0fe")
+theme_override_constants/line_spacing = 1
 text = "Text"
 autowrap_mode = 2

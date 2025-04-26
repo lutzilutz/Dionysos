@@ -2,60 +2,48 @@ extends Control
 
 const MD_Title: PackedScene = preload("res://scenes/md/md_title.tscn")
 const MD_Text: PackedScene = preload("res://scenes/md/md_text.tscn")
+const MD_Space: PackedScene = preload("res://scenes/md/md_space.tscn")
 
 @export_multiline var text: String
 
 @onready var container = get_node("VBoxContainer")
 
-func _ready() -> void:
-	parse_md_file()
-
 func parse_md_file() -> void:
 	for c in container.get_children():
 		c.queue_free()
 		await c.tree_exited
-	var lines = text.split("\n")
+	var lines = text.split("\n", true, 0)
 	var new_paragraph: bool = true
 	var current_paragraph = null
-	var previous_line_empty: bool = false
 	for line: String in lines:
 		if line.length() > 0:
-			if line[0] == "#":
-				#PrintUtility.print_info("Line is a title : " + line)
-				new_paragraph = true
-				var new_title = MD_Title.instantiate()
-				new_title.text = remove_heading_prefix(line)
-				container.add_child(new_title)
-				previous_line_empty = false
-			elif line.begins_with(" - "):
-				#PrintUtility.print_info("Line is list : " + line)
-				if new_paragraph:
+			if not is_empty_line(line):
+				if line[0] == "#":
+					new_paragraph = true
+					var new_title = MD_Title.instantiate()
+					new_title.set_text(remove_heading_prefix(line))
+					container.add_child(new_title)
+				elif line.begins_with(" - "):
 					current_paragraph = MD_Text.instantiate()
-					current_paragraph.text = ""
+					current_paragraph.set_text(line.right(line.length()-3))
+					current_paragraph.set_is_list(true)
 					container.add_child(current_paragraph)
-					new_paragraph = false
-					current_paragraph.text += line.right(line.length()-3)
 				else:
-					if previous_line_empty:
-						current_paragraph.text += "\n"
-					current_paragraph.text += "\n   • " + line.right(line.length()-3)
-				#new_paragraph = true
-				#previous_line_empty = false
+					if new_paragraph:
+						container.add_child(MD_Space.instantiate())
+						current_paragraph = MD_Text.instantiate()
+						current_paragraph.set_text(line)
+						container.add_child(current_paragraph)
+						new_paragraph = false
+					else:
+						current_paragraph.append_text(" " + line)
 			else:
-				#PrintUtility.print_info("Line is text : " + line)
-				if new_paragraph:
-					current_paragraph = MD_Text.instantiate()
-					current_paragraph.text = ""
-					container.add_child(current_paragraph)
-					new_paragraph = false
-					current_paragraph.text += line
-				else:
-					if previous_line_empty:
-						current_paragraph.text += "\n"
-					current_paragraph.text += "\n" + line
-			previous_line_empty = false
+				new_paragraph = true
 		else:
-			previous_line_empty = true
+			PrintUtility.print_error("Line is empty : " + line)
+
+func is_empty_line(new_text: String) -> bool:
+	return new_text == " "
 
 func remove_heading_prefix(new_text: String) -> String:
 	var tmp_splits = new_text.split(" ")
