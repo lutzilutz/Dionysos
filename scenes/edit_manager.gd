@@ -183,3 +183,7 @@ func _on_button_pressed() -> void:
 func _on_check_box_toggled(toggled_on: bool) -> void:
 	timecode_notes.update_hour_slot(toggled_on)
 	use_hour = toggled_on
+
+func _on_sort_button_pressed() -> void:
+	#timecode_notes.rebuild_notes_controls()
+	timecode_notes.sort_notes_by_time()

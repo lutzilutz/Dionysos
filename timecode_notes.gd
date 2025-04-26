@@ -21,41 +21,21 @@ func init(gparent, parent) -> void:
 	update_hour_slot(edit_manager.use_hour)
 
 func sort_notes_by_time() -> void:
-	notes_container.get_children().sort_custom(compare_times)
+	notes.sort_notes_by_time()
+	update_sort_order()
+	PrintUtility.print_info("Notes have been sorted by time")
 
-func compare_times(a, b) -> bool:
-	# Exception for a newly created line (which is empty for now)
-	#if a.note_id == get_child_count()-1:
-		#return false
-	
-	# Both lines have some timecode
-	if a.has_timecode() and b.has_timecode():
-		if a.hour < b.hour:
-			return true
-		elif a.hour == b.hour:
-			if a.minute < b.minute:
-				return true
-			elif a.minute == b.minute:
-				if a.second < b.second:
-					return true
-				elif a.second == b.second:
-					if a.frame < b.frame:
-						return true
-					elif a.frame == b.frame:
-						return a.note_id < b.note_id
-	elif not a.has_timecode() and b.has_timecode():
-		return true
-	elif a.has_timecode() and not b.has_timecode():
-		return false
-	elif not a.has_timecode() and not b.has_timecode():
-		#print("comparing " + str(a.line_id) + " - " + str(b.line_id))
-		return a.note_id < b.note_id
-	
-	return false
+func update_sort_order() -> void:
+	for i in range(notes.notes.size()):
+		var current_tcn: TimecodeNote = null
+		for tcn in notes_container.get_children():
+			if tcn.note_id == notes.notes[i].note_id:
+				current_tcn = tcn
+		notes_container.move_child(current_tcn, i)
 
-func build_notes_controls():
+func rebuild_notes_controls():
 	if notes.notes.size() == 0:
-		PrintUtility.print_info("No notes")
+		PrintUtility.print_info("No notes to rebuild")
 	
 	for n in notes_container.get_children():
 		n.queue_free()
@@ -75,14 +55,14 @@ func build_notes_controls():
 		new_note.show_ids(main_scene.user_preferences.show_ids)
 		new_note.field_has_changed.connect(_on_field_has_changed)
 		new_note.update_timecode_visibility()
-		new_note.update_new_note_visibility(true)
+		new_note.set_empty_note()
 		notes_container.add_child(new_note)
 	
 	var new_edit_note = timecode_note_scene.instantiate()
 	new_edit_note.show_ids(main_scene.user_preferences.show_ids)
 	new_edit_note.field_has_changed.connect(_on_field_has_changed)
 	new_edit_note.set_line_id(notes.get_next_id())
-	new_edit_note.update_new_note_visibility(false)
+	#new_edit_note.set_empty_note()
 	notes_container.add_child(new_edit_note)
 	
 	update_hour_slot(edit_manager.use_hour)

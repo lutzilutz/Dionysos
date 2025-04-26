@@ -56,6 +56,20 @@ layout_mode = 2
 theme = ExtResource("3_bsji4")
 text = "Ajouts"
 
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ChangesLabel" type="Label" parent="VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme = ExtResource("3_bsji4")
+text = "Modifications"
+
+[node name="SortButton" type="Button" parent="VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(57.07, 0)
+layout_mode = 2
+theme = ExtResource("4_djefy")
+text = "Trier"
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
@@ -68,11 +82,6 @@ theme = ExtResource("4_djefy")
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("4_djefy")
-
-[node name="ChangesLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("3_bsji4")
-text = "Modifications"
 
 [node name="TimecodeNotes" parent="VBoxContainer" instance=ExtResource("5_djefy")]
 layout_mode = 2
@@ -110,5 +119,6 @@ file_mode = 2
 access = 2
 
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer4/SortButton" to="." method="_on_sort_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]

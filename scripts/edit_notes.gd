@@ -2,6 +2,33 @@ class_name EditNotes extends Node
 
 var notes: Array = []
 
+func sort_notes_by_time() -> void:
+	notes.sort_custom(compare_times)
+
+func compare_times(a, b) -> bool:
+	if a.has_timecode() and b.has_timecode():
+		if a.hour < b.hour:
+			return true
+		elif a.hour == b.hour:
+			if a.minute < b.minute:
+				return true
+			elif a.minute == b.minute:
+				if a.second < b.second:
+					return true
+				elif a.second == b.second:
+					if a.frame < b.frame:
+						return true
+					elif a.frame == b.frame:
+						return a.note_id < b.note_id
+	elif not a.has_timecode() and b.has_timecode():
+		return true
+	elif a.has_timecode() and not b.has_timecode():
+		return false
+	elif not a.has_timecode() and not b.has_timecode():
+		return a.note_id < b.note_id
+	
+	return false
+
 func get_next_id() -> int:
 	var ids: Array = []
 	for n in notes:
