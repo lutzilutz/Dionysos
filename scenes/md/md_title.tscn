@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ti7ni6epw3xd"]
+
+[ext_resource type="Theme" uid="uid://yx8fs2yo8rb" path="res://resources/themes/default_large_title.tres" id="1_ucqmw"]
+
+[node name="MDTitle" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("1_ucqmw")
+text = "Title"

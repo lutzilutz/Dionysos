@@ -2,8 +2,8 @@ extends Control
 
 var main_scene
 
-@onready var project_summary = get_node("VBoxContainer/ProjectSummary")
-@onready var timecode_notes = get_node("VBoxContainer/TimecodeNotes")
+@onready var project_summary = get_node("HBoxContainer/VBoxContainer/ProjectSummary")
+@onready var timecode_notes = get_node("HBoxContainer/VBoxContainer/TimecodeNotes")
 
 var project_name: String = ""
 var customer_name: String = ""
@@ -26,9 +26,9 @@ func _ready() -> void:
 func generate_notes_string() -> String:
 	var s: String = ""
 	s += "# " + version_name
-	if get_node("VBoxContainer/GeneralEdit").text != "":
+	if get_node("HBoxContainer/VBoxContainer/GeneralEdit").text != "":
 		s += new_line()
-		s += get_node("VBoxContainer/GeneralEdit").text
+		s += get_node("HBoxContainer/VBoxContainer/GeneralEdit").text
 	if timecode_notes.notes.notes.size() > 0:
 		s += new_line()
 		s += "Liste des modifications :"
@@ -39,7 +39,7 @@ func generate_notes_string() -> String:
 				if c.hour > 0:
 					s += formatted_timecode_binome(c.hour) + ":"
 				else:
-					if get_node("VBoxContainer/HBoxContainer/CheckBox").button_pressed:
+					if get_node("HBoxContainer/VBoxContainer/HBoxContainer/CheckBox").button_pressed:
 						s += "00:"
 				if c.minute > 0:
 					s += formatted_timecode_binome(c.minute) + ":"
@@ -187,3 +187,6 @@ func _on_check_box_toggled(toggled_on: bool) -> void:
 func _on_sort_button_pressed() -> void:
 	#timecode_notes.rebuild_notes_controls()
 	timecode_notes.sort_notes_by_time()
+
+func _on_check_button_toggled(toggled_on: bool) -> void:
+	get_node("HBoxContainer/MDViewer").visible = toggled_on
