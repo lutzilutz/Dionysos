@@ -7,6 +7,7 @@ const HIDE_LOGO: bool = false
 const SHOW_HIGHLIGHTS: bool = false
 const SHOW_IDS: bool = false
 const HAS_SEEN_TUTORIAL: bool = false
+const SHOW_PREVIOUS_VERSION: bool = false
 
 @export var default_path: String = DEFAULT_PATH
 @export var has_default_path: bool = HAS_DEFAULT_PATH
@@ -17,6 +18,7 @@ const HAS_SEEN_TUTORIAL: bool = false
 @export var has_seen_tutorial: bool = HAS_SEEN_TUTORIAL
 @export var last_user_import_path: String = DEFAULT_PATH
 @export var last_edit_manager_path: String = DEFAULT_PATH
+@export var show_previous_version: bool = SHOW_PREVIOUS_VERSION
 
 @export var achievements: Array = []
 
@@ -33,7 +35,8 @@ func save_to_file(path:String) -> Error:
 			"show_ids": show_ids,
 			"has_seen_tutorial": has_seen_tutorial,
 			"last_user_import_path": last_user_import_path,
-			"last_edit_manager_path": last_edit_manager_path
+			"last_edit_manager_path": last_edit_manager_path,
+			"show_previous_version": show_previous_version
 			},
 		"achievements": []
 	}
@@ -63,7 +66,8 @@ static func load_from_file(path: String) -> UserPreferences:
 				"show_ids": SHOW_IDS,
 				"has_seen_tutorial": HAS_SEEN_TUTORIAL,
 				"last_user_import_path": DEFAULT_PATH,
-				"last_edit_manager_path": DEFAULT_PATH
+				"last_edit_manager_path": DEFAULT_PATH,
+				"show_previous_version": SHOW_PREVIOUS_VERSION
 				},
 			"achievements": []
 		}
@@ -91,6 +95,7 @@ static func load_from_file(path: String) -> UserPreferences:
 	res.has_seen_tutorial = json_pref.get("has_seen_tutorial", HAS_SEEN_TUTORIAL)
 	res.last_user_import_path = json_pref.get("last_user_import_path", DEFAULT_PATH)
 	res.last_edit_manager_path = json_pref.get("last_edit_manager_path", DEFAULT_PATH)
+	res.show_previous_version = json_pref.get("show_previous_version", SHOW_PREVIOUS_VERSION)
 	if json.get("version", "") != ProjectSettings.get_setting("application/config/version"):
 		PrintUtility.print_info("Current preferences are version " + json.get("version", "") + " but Dionysos is version " + ProjectSettings.get_setting("application/config/version"))
 		PrintUtility.print_TODO("Manage upgrade of preferences.json")
@@ -106,4 +111,5 @@ func reset_user_preferences(path: String) -> void:
 	has_seen_tutorial = HAS_SEEN_TUTORIAL
 	last_user_import_path = DEFAULT_PATH
 	last_edit_manager_path = DEFAULT_PATH
+	show_previous_version = SHOW_PREVIOUS_VERSION
 	save_to_file(path)

@@ -10,6 +10,9 @@ func _ready() -> void:
 	parse_md_file()
 
 func parse_md_file() -> void:
+	for c in get_children():
+		c.queue_free()
+		await c.tree_exited
 	var lines = text.split("\n")
 	var new_paragraph: bool = true
 	var current_paragraph = null
@@ -17,20 +20,21 @@ func parse_md_file() -> void:
 	for line: String in lines:
 		if line.length() > 0:
 			if line[0] == "#":
-				PrintUtility.print_info("Line is a title : " + line)
+				#PrintUtility.print_info("Line is a title : " + line)
 				new_paragraph = true
 				var new_title = MD_Title.instantiate()
 				new_title.text = remove_heading_prefix(line)
 				add_child(new_title)
 				previous_line_empty = false
-			elif line[0] == " " and line[1] == "-":
-				PrintUtility.print_info("Line is list : " + line)
-				new_paragraph = true
-				previous_line_empty = false
+			#elif line[0] == " " and line[1] == "-":
+				#PrintUtility.print_info("Line is list : " + line)
+				#new_paragraph = true
+				#previous_line_empty = false
 			else:
-				PrintUtility.print_info("Line is text : " + line)
+				#PrintUtility.print_info("Line is text : " + line)
 				if new_paragraph:
 					current_paragraph = MD_Text.instantiate()
+					current_paragraph.text = ""
 					add_child(current_paragraph)
 					new_paragraph = false
 					current_paragraph.text += line

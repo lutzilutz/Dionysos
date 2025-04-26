@@ -7,8 +7,9 @@ var main_scene
 
 var project_name: String = ""
 var customer_name: String = ""
+var previous_version_id: int = 0
+var version_id: int = 0
 var version_name: String = ""
-#var version_suffix: String = ""
 var md_file_path: String = ""
 var use_hour: bool = false
 
@@ -18,6 +19,8 @@ func init(scene) -> void:
 		get_node("FileDialog").current_dir = main_scene.user_preferences.default_path
 	if main_scene.user_preferences.last_edit_manager_path != "":
 		_on_file_dialog_dir_selected(main_scene.user_preferences.last_edit_manager_path)
+	get_node("HBoxContainer/MDViewer").visible = main_scene.user_preferences.show_previous_version
+	get_node("HBoxContainer/VBoxContainer/CheckButton").button_pressed = main_scene.user_preferences.show_previous_version
 	timecode_notes.init(main_scene, self)
 
 func _ready() -> void:
@@ -92,6 +95,72 @@ func write_to_file() -> void:
 			PrintUtility.print_gen(file_path)
 			PrintUtility.print_gen("Unknown error : " + str(FileAccess.get_open_error()))
 
+func get_versions_list(project_path: String) -> Array:
+	var versions: Array = []
+	var found_drafts_folder: bool = false
+	var drafts_folder: String = ""
+	
+	for d in DirAccess.get_directories_at(project_path):
+		if d.contains("Working renders"):
+			if DirAccess.dir_exists_absolute(project_path + "/" + d + "/Online drafts"):
+				PrintUtility.print_info("Found online drafts folder of project")
+				found_drafts_folder = true
+				drafts_folder = project_path + "/" + d + "/Online drafts"
+	if found_drafts_folder:
+		for f in DirAccess.get_files_at(drafts_folder):
+			if f.ends_with(".mp4") or f.ends_with(".MP4"):
+				for s in f.get_file().get_basename().split(" "):
+					if s.begins_with("v") and (s.length() <= 4):
+						versions.append(int(s))
+		versions.sort()
+		versions.reverse()
+		
+		var loop_count: int = 0
+		
+		while loop_count < 100:
+			var current = versions.pop_front()
+			if current == version_id:
+				if versions.size() >= 1:
+					find_previous_edit_version(drafts_folder, versions.pop_front())
+				break
+			loop_count += 1
+	
+	return versions
+
+func find_previous_edit_version(folder: String, version: int) -> void:
+	PrintUtility.print_info("Searching previous version notes v" + str(version))
+	var result: String = ""
+	var found_previous: bool = false
+	for f in DirAccess.get_files_at(folder):
+		if f.ends_with(".md"):
+			var file = FileAccess.open(folder + "/" + f, FileAccess.READ_WRITE)
+			#print(file.get_open_error())
+			var content = FileAccess.get_file_as_string(folder + "/" + f)
+			for line in content.split("\n", false, 0):
+				
+				if found_previous:
+					if line != "---" and not line.begins_with("#"):
+						result += "\n" + line
+				
+				if line.length() >= 4:
+					if line.begins_with("#"):
+						var line_elements = line.split(" ")
+						line_elements.remove_at(0)
+						while line_elements.size() > 0:
+							var tmp_line_element: String = line_elements[0]
+							if tmp_line_element.length() <= 4:
+								if tmp_line_element.begins_with("v"):
+									var version_string = tmp_line_element.erase(0, 1)
+									if int(version_string) == version:
+										found_previous = true
+										result += line
+									else:
+										found_previous = false
+							line_elements.remove_at(0)
+	
+	get_node("HBoxContainer/MDViewer").text = result
+	get_node("HBoxContainer/MDViewer").parse_md_file()
+
 func find_last_edit_version(project_path: String) -> void:
 	var name_result: String = ""
 	var suffix_result: String = ""
@@ -108,14 +177,11 @@ func find_last_edit_version(project_path: String) -> void:
 		for f in DirAccess.get_files_at(drafts_folder):
 			if f.ends_with(".mp4") or f.ends_with(".MP4"):
 				for s in f.get_file().get_basename().split(" "):
-					if s.begins_with("v") and (s.length() == 3 or s.length() == 4):
+					if s.begins_with("v") and (s.length() <= 4):
 						versions.append(int(s))
 		versions.sort()
-		#for f in DirAccess.get_files_at(drafts_folder):
-			#if f.ends_with(".mp4") or f.ends_with(".MP4"):
-				#if f.contains("v"+ str(versions.pop_back()):
-					#f.split(" ").
-		name_result = "Version v" + str(versions.pop_back())
+		version_id = versions.pop_back()
+		name_result = "Version v" + str(version_id)
 	else:
 		PrintUtility.print_error("Didn't found drafts folder in project path " + project_path)
 	
@@ -173,6 +239,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	customer_name = get_dir_name(get_parent_path(dir))
 	project_summary.set_customer_name(get_dir_name(get_parent_path(dir)))
 	find_last_edit_version(dir)
+	get_versions_list(dir)
 	
 	main_scene.user_preferences.last_edit_manager_path = dir
 	main_scene.user_preferences.save_to_file(main_scene.SAVE_PREFERENCES_PATH)
@@ -190,3 +257,5 @@ func _on_sort_button_pressed() -> void:
 
 func _on_check_button_toggled(toggled_on: bool) -> void:
 	get_node("HBoxContainer/MDViewer").visible = toggled_on
+	main_scene.user_preferences.show_previous_version = toggled_on
+	main_scene.user_preferences.save_to_file(main_scene.SAVE_PREFERENCES_PATH)
