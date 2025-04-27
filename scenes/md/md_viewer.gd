@@ -13,9 +13,6 @@ func parse_md_file() -> void:
 		c.queue_free()
 		await c.tree_exited
 	
-	#split_by_lines(text)
-	#print(text)
-	
 	var lines = text.split("\n", true, 0)
 	var new_paragraph: bool = true
 	var current_paragraph = null
@@ -44,18 +41,6 @@ func parse_md_file() -> void:
 					current_paragraph.append_text(" " + line)
 		else:
 			new_paragraph = true
-
-func split_by_lines(text: String) -> Array:
-	var lines: Array = []
-	var current_line: String = ""
-	print(str(text.length()) + " characters")
-	for i in range(text.length()):
-		#print(text[i])
-		pass
-	print("Lines :")
-	for line in lines:
-		print(line)
-	return lines
 
 func is_empty_line(new_text: String) -> bool:
 	return new_text.length() == 0

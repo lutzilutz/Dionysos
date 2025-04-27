@@ -160,7 +160,6 @@ func find_previous_edit_version(folder: String, version: int) -> void:
 							line_elements.remove_at(0)
 	if not found_previous:
 		result = "Aucune note pour la version précédente"
-	#print(result)
 	get_node("HBoxContainer/MDViewer").text = result
 	get_node("HBoxContainer/MDViewer").parse_md_file()
 
