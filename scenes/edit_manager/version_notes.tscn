@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://m3dt4wfajnqm"]
+
+[ext_resource type="Theme" uid="uid://dshv066432nhb" path="res://resources/themes/default_title.tres" id="1_56rv6"]
+[ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="2_kk4jy"]
+
+[node name="VersionNotes" type="Button"]
+custom_minimum_size = Vector2(0, 48.05)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_56rv6")
+text = "Version XX"
+
+[node name="ContentLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_kk4jy")
+text = "Content"

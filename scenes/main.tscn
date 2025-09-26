@@ -5,7 +5,7 @@
 [ext_resource type="Theme" uid="uid://dltvaum6axc0k" path="res://resources/themes/default_display_control.tres" id="3_4krfr"]
 [ext_resource type="PackedScene" uid="uid://gmay6upcni02" path="res://scenes/tabs_manager.tscn" id="4_a8y0u"]
 [ext_resource type="PackedScene" uid="uid://dljpx2q5kn00k" path="res://scenes/folder_manager.tscn" id="5_tipki"]
-[ext_resource type="PackedScene" uid="uid://dig0xjtabkdo7" path="res://scenes/edit_manager.tscn" id="6_85g3d"]
+[ext_resource type="PackedScene" uid="uid://dig0xjtabkdo7" path="res://scenes/edit_manager/edit_manager.tscn" id="6_85g3d"]
 [ext_resource type="PackedScene" uid="uid://chx2gfya25vkc" path="res://scenes/tutorial/tutorial.tscn" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c4218x6ymovkk" path="res://scenes/user_manager.tscn" id="11_trceg"]
 [ext_resource type="PackedScene" uid="uid://c7wy6a71iomhv" path="res://scenes/splashscreen.tscn" id="12_eb6dy"]

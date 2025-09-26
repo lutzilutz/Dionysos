@@ -4,9 +4,8 @@ const MD_Title: PackedScene = preload("res://scenes/md/md_title.tscn")
 const MD_Text: PackedScene = preload("res://scenes/md/md_text.tscn")
 const MD_Space: PackedScene = preload("res://scenes/md/md_space.tscn")
 
-@export_multiline var text: String
-
 @onready var container = get_node("VBoxContainer")
+var text: String
 
 func parse_md_file() -> void:
 	for c in container.get_children():
